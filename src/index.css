@@ -1,0 +1,13 @@
+@import "tailwindcss"; 
+
+  
+
+:root {
+  --primary-blue: #1a4173; /* Based on House of Shah logo */
+  --silver-bg: #fafafa;   /* Based on image background */
+  --white: #ffffff;
+}
+
+.font-outfit {
+  font-family: "Outfit", sans-serif;
+}
