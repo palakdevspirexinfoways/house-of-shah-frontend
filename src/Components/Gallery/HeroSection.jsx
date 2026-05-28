@@ -69,8 +69,8 @@ const ProductHero = () => {
                     transition={{ delay: 0.2, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                     className="relative"
                 >
-                    <h1 className="text-white text-7xl md:text-9xl lg:text-[13rem] uppercase font-bold tracking-tighter leading-none mb-4 mix-blend-difference">
-                        Gallery
+                    <h1 className="text-white text-6xl md:text-9xl lg:text-[10rem] uppercase font-bold tracking-tighter leading-none mb-4 mix-blend-difference">
+                        Digital magazine
                     </h1>
                     {/* Luxury Floating Element */}
                     <motion.div
@@ -78,9 +78,7 @@ const ProductHero = () => {
                         transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
                         className="absolute -top-12 -right-8 md:-top-20 md:-right-20"
                     >
-                        <span className="text-[10px] md:text-xs text-white/20 font-light italic tracking-widest vertical-text uppercase">
-                            Rajkot • India
-                        </span>
+                       
                     </motion.div>
                 </motion.div>
 
@@ -116,26 +114,7 @@ const ProductHero = () => {
             <div className="absolute bottom-12 right-12 w-32 h-[1px] bg-white/5 hidden lg:block" />
             <div className="absolute bottom-12 right-12 w-[1px] h-32 bg-white/5 hidden lg:block" />
 
-            {/* --- Scroll Indicator --- */}
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1.5, duration: 1 }}
-                className="absolute bottom-12 left-12 flex flex-col items-center gap-6"
-            >
-                <div className="flex flex-col gap-2">
-                    {[0.2, 0.4, 0.6].map((op, i) => (
-                        <motion.div
-                            key={i}
-                            animate={{ opacity: [op, 1, op] }}
-                            transition={{ repeat: Infinity, duration: 2, delay: i * 0.3 }}
-                            className="w-[1px] h-4 bg-white"
-                            style={{ opacity: op }}
-                        />
-                    ))}
-                </div>
-                <span className="text-[8px] text-white/30 tracking-[0.5em] uppercase vertical-text">Scroll</span>
-            </motion.div>
+         
 
         </section>
     );

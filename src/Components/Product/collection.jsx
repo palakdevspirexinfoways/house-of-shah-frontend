@@ -2,8 +2,8 @@ import React, { useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, MessageCircle, Search, X, TrendingUp, ArrowUpRight } from 'lucide-react';
 
-const SignatureCollections = ({ 
-  products = [], 
+const SignatureCollections = ({
+  products = [],
   isLoadingData = false,
   searchQuery = '',
   setSearchQuery,
@@ -58,7 +58,7 @@ const SignatureCollections = ({
   return (
     <section className="py-16 bg-white text-[#1a4173] font-outfit overflow-hidden border-b border-gray-100 relative" id="collections">
       <div className="container mx-auto px-6 lg:px-12">
-        
+
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6 border-b border-gray-150 pb-8">
           <div>
@@ -69,19 +69,21 @@ const SignatureCollections = ({
               Signature Collections
             </h2>
           </div>
-          
-          {/* Scroll Buttons */}
-          <div className="flex items-center gap-3">
+
+          {/* Circular Scroll Buttons on Top-Right */}
+          <div className="flex items-center gap-3 shrink-0">
             <button 
+              type="button"
               onClick={() => handleScroll('left')}
-              className="w-12 h-12 rounded-none border border-gray-200 hover:border-[#1a4173] flex items-center justify-center text-[#1a4173]/70 hover:text-[#1a4173] transition-all bg-white shadow-sm"
+              className="w-12 h-12 rounded-full border border-gray-200 hover:border-[#1a4173] flex items-center justify-center text-[#1a4173]/70 hover:text-[#1a4173] transition-all bg-white shadow-sm active:scale-95 hover:shadow-md cursor-pointer"
               aria-label="Scroll left"
             >
               <ChevronLeft size={18} />
             </button>
             <button 
+              type="button"
               onClick={() => handleScroll('right')}
-              className="w-12 h-12 rounded-none border border-gray-200 hover:border-[#1a4173] flex items-center justify-center text-[#1a4173]/70 hover:text-[#1a4173] transition-all bg-white shadow-sm"
+              className="w-12 h-12 rounded-full border border-gray-200 hover:border-[#1a4173] flex items-center justify-center text-[#1a4173]/70 hover:text-[#1a4173] transition-all bg-white shadow-sm active:scale-95 hover:shadow-md cursor-pointer"
               aria-label="Scroll right"
             >
               <ChevronRight size={18} />
@@ -91,9 +93,9 @@ const SignatureCollections = ({
 
         {/* ── Unified Search & Filter Control Center (Rendered inside Signature Collections) ── */}
         <div className="max-w-4xl mb-12 space-y-8">
-          
+
           {/* 1. High-End Search Bar */}
-          <div className="relative z-[2000]">
+          <div className="relative z-10">
             <motion.div 
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
@@ -132,17 +134,17 @@ const SignatureCollections = ({
             <AnimatePresence>
               {showSuggestions && suggestions.length > 0 && (
                 <>
-                  <div className="fixed inset-0 z-[1999]" onClick={() => setShowSuggestions(false)} />
+                  <div className="fixed inset-0 z-[8]" onClick={() => setShowSuggestions(false)} />
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
-                    className="absolute left-0 right-0 top-full mt-2 bg-white border border-[#1a4173]/10 shadow-[0_25px_50px_-12px_rgba(26,65,115,0.25)] p-4 z-[2001] font-outfit rounded-2xl backdrop-blur-xl"
+                    className="absolute left-0 right-0 top-full mt-2 bg-white border border-[#1a4173]/10 shadow-[0_25px_50px_-12px_rgba(26,65,115,0.25)] p-4 z-20 font-outfit rounded-2xl backdrop-blur-xl"
                   >
                     <div className="text-[9px] font-bold text-[#1a4173]/30 uppercase tracking-[0.2em] mb-2 px-1">Masterpiece Matches</div>
                     <div className="space-y-1.5 max-h-64 overflow-y-auto no-scrollbar">
                       {suggestions.map((prod) => (
-                        <div 
+                        <div
                           key={prod.id || prod._id}
                           onClick={() => {
                             setSelectedDetailProduct(prod);
@@ -198,11 +200,10 @@ const SignatureCollections = ({
                 <button
                   key={col}
                   onClick={() => setActiveCollection(col)}
-                  className={`px-5 py-2.5 rounded-none text-[10px] font-bold uppercase tracking-widest transition-all duration-300 border ${
-                    activeCollection === col
+                  className={`px-5 py-2.5 rounded-none text-[10px] font-bold uppercase tracking-widest transition-all duration-300 border ${activeCollection === col
                       ? 'bg-[#1a4173] text-white border-[#1a4173] shadow-md'
                       : 'bg-white text-[#1a4173]/50 border border-gray-150 hover:text-[#1a4173] hover:border-gray-200'
-                  }`}
+                    }`}
                 >
                   {col}
                 </button>
@@ -218,11 +219,10 @@ const SignatureCollections = ({
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
-                  className={`px-5 py-2.5 rounded-none text-[10px] font-bold uppercase tracking-widest transition-all duration-300 border ${
-                    activeCategory === cat
+                  className={`px-5 py-2.5 rounded-none text-[10px] font-bold uppercase tracking-widest transition-all duration-300 border ${activeCategory === cat
                       ? 'bg-[#1a4173] text-white border-[#1a4173] shadow-md'
                       : 'bg-white text-[#1a4173]/50 border border-gray-150 hover:text-[#1a4173] hover:border-gray-200'
-                  }`}
+                    }`}
                 >
                   {cat}
                 </button>
@@ -241,7 +241,7 @@ const SignatureCollections = ({
 
         {/* Left-to-Right Swipeable Product Carousel */}
         <div className="relative z-10">
-          <div 
+          <div
             ref={scrollContainerRef}
             className="flex overflow-x-auto gap-6 scrollbar-hide py-4 px-2 snap-x snap-mandatory touch-pan-x"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
@@ -260,12 +260,12 @@ const SignatureCollections = ({
                   >
                     {/* Full-bleed Square Image with subtle hover zoom */}
                     <div className="relative aspect-[4/5] overflow-hidden bg-gray-100 rounded-none">
-                      <img 
-                        src={item.image} 
-                        alt={item.title} 
+                      <img
+                        src={item.image}
+                        alt={item.title}
                         className="w-full h-full object-cover transition-transform duration-700 hover:scale-105 rounded-none"
                       />
-                      
+
                       {/* Floating Collection Tag - Square/Sharp */}
                       <span className="absolute top-4 left-4 bg-white/90 backdrop-blur-md text-[#1a4173] text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-none shadow-sm">
                         {item.collection || 'Exclusive'}
@@ -285,7 +285,7 @@ const SignatureCollections = ({
                             {item.category || 'Jewellery'}
                           </span>
                         </div>
-                        
+
                         {/* Title */}
                         <h4 className="text-base font-bold text-[#1a4173] leading-snug mb-3">
                           {item.title}

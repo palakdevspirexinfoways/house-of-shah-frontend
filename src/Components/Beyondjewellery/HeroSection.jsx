@@ -42,7 +42,7 @@ const HeroSection = () => {
           className="relative"
         >
           <h1 className="text-white text-5xl md:text-7xl lg:text-[9rem] font-bold tracking-tighter leading-none mb-4 uppercase">
-            Our Legacy
+            Beyound Jewellery
           </h1>
           <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-24 h-[1px] bg-white/40" />
         </motion.div>

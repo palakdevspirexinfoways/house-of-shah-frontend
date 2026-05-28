@@ -103,7 +103,7 @@ const Header = () => {
     { name: 'Home', href: '/' },
     { name: 'Jewellery', href: '/product' },
     { name: 'Digital Magazine', href: '/gallery' },
-    { name: 'About', href: '/about' },
+    { name: 'About Us', href: '/about' },
     { name: 'Beyond Jewellery', href: '/womenempowerment'},
     { name: 'Contact', href: '/contact' },
   ];
@@ -114,7 +114,7 @@ const Header = () => {
       <header className="fixed top-0 w-full z-[100] font-outfit transition-all duration-500">
         {!scrolled && (
           <div className="bg-[var(--primary-blue)] text-[var(--white)] text-[9px] py-2 text-center tracking-[0.25em] uppercase font-medium ">
-            Sterling Silver Jewellery on orders above ₹1999
+           92.5 Sterling Silver Jewellery on orders above ₹1999
           </div>
         )}
 

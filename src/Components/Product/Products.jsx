@@ -2,8 +2,8 @@ import React, { useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, MessageCircle } from 'lucide-react';
 
-const SignaturePieces = ({ 
-  products = [], 
+const SignaturePieces = ({
+  products = [],
   isLoadingData = false,
   activeCategory = 'All',
   setActiveCategory,
@@ -95,11 +95,10 @@ const SignaturePieces = ({
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`px-5 py-2.5 rounded-none text-[10px] font-bold uppercase tracking-widest transition-all duration-300 border ${
-                activeCategory === cat
+              className={`px-5 py-2.5 rounded-none text-[10px] font-bold uppercase tracking-widest transition-all duration-300 border ${activeCategory === cat
                   ? 'bg-[#1a4173] text-white border-[#1a4173] shadow-md'
                   : 'bg-white text-[#1a4173]/50 border border-gray-150 hover:text-[#1a4173] hover:border-gray-200'
-              }`}
+                }`}
             >
               {cat}
             </button>

@@ -208,7 +208,7 @@ const LoginSignupModal = ({ isOpen, onClose }) => {
       return;
     }
     if (!isLogin) {
-      if (!name.trim() || !contactNumber.trim() || interestedProduct.length === 0 || natureOfBusiness.length === 0) {
+      if (!name.trim() || !companyName.trim() || !contactNumber.trim()) {
         setError('Please fill in all mandatory fields (*).');
         return;
       }
@@ -223,9 +223,9 @@ const LoginSignupModal = ({ isOpen, onClose }) => {
           password, 
           companyName, 
           contactNumber, 
-          interestedProduct, 
-          natureOfBusiness, 
-          additionalRemarks 
+          interestedProduct: ['All'], 
+          natureOfBusiness: ['All'], 
+          additionalRemarks: '' 
         };
     const endpoint = isLogin ? '/users/login' : '/users/register';
 
@@ -502,8 +502,8 @@ const LoginSignupModal = ({ isOpen, onClose }) => {
                   ) : (
                     <>
                       {/* Register Fields Form Grid */}
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <motion.div variants={itemVariants} className="relative border-b border-gray-200 focus-within:border-black transition-colors duration-500 pb-1">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-6">
+                        <motion.div variants={itemVariants} className="relative border-b border-gray-200 focus-within:border-black transition-colors duration-500 pb-2">
                           <label className="text-[9px] uppercase tracking-[0.2em] font-bold text-gray-400 block mb-1">Full Name *</label>
                           <input 
                             type="text" 
@@ -515,18 +515,19 @@ const LoginSignupModal = ({ isOpen, onClose }) => {
                           />
                         </motion.div>
 
-                        <motion.div variants={itemVariants} className="relative border-b border-gray-200 focus-within:border-black transition-colors duration-500 pb-1">
-                          <label className="text-[9px] uppercase tracking-[0.2em] font-bold text-gray-400 block mb-1">Company Name</label>
+                        <motion.div variants={itemVariants} className="relative border-b border-gray-200 focus-within:border-black transition-colors duration-500 pb-2">
+                          <label className="text-[9px] uppercase tracking-[0.2em] font-bold text-gray-400 block mb-1">Company Name *</label>
                           <input 
                             type="text" 
                             value={companyName}
                             onChange={(e) => setCompanyName(e.target.value)}
+                            required
                             className="w-full bg-transparent outline-none text-xs font-medium text-black placeholder-gray-300" 
                             placeholder="Acme Corporation" 
                           />
                         </motion.div>
 
-                        <motion.div variants={itemVariants} className="relative border-b border-gray-200 focus-within:border-black transition-colors duration-500 pb-1">
+                        <motion.div variants={itemVariants} className="relative border-b border-gray-200 focus-within:border-black transition-colors duration-500 pb-2">
                           <label className="text-[9px] uppercase tracking-[0.2em] font-bold text-gray-400 block mb-1">Contact Number *</label>
                           <input 
                             type="text" 
@@ -538,7 +539,7 @@ const LoginSignupModal = ({ isOpen, onClose }) => {
                           />
                         </motion.div>
 
-                        <motion.div variants={itemVariants} className="relative border-b border-gray-200 focus-within:border-black transition-colors duration-500 pb-1">
+                        <motion.div variants={itemVariants} className="relative border-b border-gray-200 focus-within:border-black transition-colors duration-500 pb-2">
                           <label className="text-[9px] uppercase tracking-[0.2em] font-bold text-gray-400 block mb-1">Email Address *</label>
                           <input 
                             type="email" 
@@ -550,7 +551,7 @@ const LoginSignupModal = ({ isOpen, onClose }) => {
                           />
                         </motion.div>
 
-                        <motion.div variants={itemVariants} className="relative border-b border-gray-200 focus-within:border-black transition-colors duration-500 pb-1">
+                        <motion.div variants={itemVariants} className="relative border-b border-gray-200 focus-within:border-black transition-colors duration-500 pb-2 col-span-1 sm:col-span-2">
                           <label className="text-[9px] uppercase tracking-[0.2em] font-bold text-gray-400 block mb-1">Password *</label>
                           <input 
                             type="password" 
@@ -561,67 +562,9 @@ const LoginSignupModal = ({ isOpen, onClose }) => {
                             placeholder="••••••••" 
                           />
                         </motion.div>
-
-                        <motion.div variants={itemVariants} className="relative border-b border-gray-200 focus-within:border-black transition-colors duration-500 pb-1">
-                          <label className="text-[9px] uppercase tracking-[0.2em] font-bold text-gray-400 block mb-1">Additional Remarks</label>
-                          <input 
-                            type="text" 
-                            value={additionalRemarks}
-                            onChange={(e) => setAdditionalRemarks(e.target.value)}
-                            className="w-full bg-transparent outline-none text-xs font-medium text-black placeholder-gray-300" 
-                            placeholder="Optional specifications..." 
-                          />
-                        </motion.div>
                       </div>
 
-                      {/* Multi-select checkable tags options block */}
-                      <motion.div variants={itemVariants} className="space-y-4 pt-2">
-                        <div>
-                          <label className="text-[9px] uppercase tracking-[0.2em] font-bold text-gray-400 block mb-2">Interested Product Categories *</label>
-                          <div className="flex flex-wrap gap-1.5">
-                            {['Necklaces', 'Earrings', 'Rings', 'Bracelets', 'Silverware', 'All'].map((prod) => {
-                              const isSelected = interestedProduct.includes(prod);
-                              return (
-                                <button
-                                  type="button"
-                                  key={prod}
-                                  onClick={() => handleToggleProduct(prod)}
-                                  className={`px-3 py-1.5 text-[8px] font-bold uppercase tracking-widest border transition-all rounded-none ${
-                                    isSelected 
-                                      ? 'bg-black text-white border-black' 
-                                      : 'bg-transparent text-gray-400 border-gray-200 hover:text-black hover:border-black'
-                                  }`}
-                                >
-                                  {prod}
-                                </button>
-                              );
-                            })}
-                          </div>
-                        </div>
-
-                        <div>
-                          <label className="text-[9px] uppercase tracking-[0.2em] font-bold text-gray-400 block mb-2">Nature of Business *</label>
-                          <div className="flex flex-wrap gap-1.5">
-                            {['Wholesale', 'Retail', 'Online', 'All'].map((bus) => {
-                              const isSelected = natureOfBusiness.includes(bus);
-                              return (
-                                <button
-                                  type="button"
-                                  key={bus}
-                                  onClick={() => handleToggleBusiness(bus)}
-                                  className={`px-3 py-1.5 text-[8px] font-bold uppercase tracking-widest border transition-all rounded-none ${
-                                    isSelected 
-                                      ? 'bg-black text-white border-black' 
-                                      : 'bg-transparent text-gray-400 border-gray-200 hover:text-black hover:border-black'
-                                  }`}
-                                >
-                                  {bus}
-                                </button>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      </motion.div>
+                     
                     </>
                   )}
 

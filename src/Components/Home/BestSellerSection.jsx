@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUpRight, ShoppingBag, Star, Plus, X, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 
 const defaultProducts = [
@@ -120,22 +121,31 @@ const BestSellerSection = () => {
             </h2>
           </div>
 
-          {/* Elegant Slider Navigation Buttons */}
-          <div className="flex gap-3">
-            <button
-              onClick={() => handleScroll('left')}
-              className="p-3 lg:p-4 border border-[var(--primary-blue)]/10 text-[var(--primary-blue)] hover:bg-[var(--primary-blue)] hover:text-white transition-all rounded-full hover:scale-105 active:scale-95"
-              aria-label="Previous Design"
+          {/* Elegant Slider Navigation & View All */}
+          <div className="flex items-center gap-6 pb-2 sm:pb-3 shrink-0">
+            <Link 
+              to="/product" 
+              className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] text-[var(--primary-blue)] hover:text-black transition-colors duration-300 flex items-center gap-2 group border-b border-[var(--primary-blue)]/20 hover:border-black pb-1 shrink-0"
             >
-              <ChevronLeft size={20} strokeWidth={1.5} />
-            </button>
-            <button
-              onClick={() => handleScroll('right')}
-              className="p-3 lg:p-4 border border-[var(--primary-blue)]/10 text-[var(--primary-blue)] hover:bg-[var(--primary-blue)] hover:text-white transition-all rounded-full hover:scale-105 active:scale-95"
-              aria-label="Next Design"
-            >
-              <ChevronRight size={20} strokeWidth={1.5} />
-            </button>
+              View All
+              <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
+            </Link>
+            <div className="flex gap-3">
+              <button
+                onClick={() => handleScroll('left')}
+                className="p-3 lg:p-4 border border-[var(--primary-blue)]/10 text-[var(--primary-blue)] hover:bg-[var(--primary-blue)] hover:text-white transition-all rounded-full hover:scale-105 active:scale-95"
+                aria-label="Previous Design"
+              >
+                <ChevronLeft size={20} strokeWidth={1.5} />
+              </button>
+              <button
+                onClick={() => handleScroll('right')}
+                className="p-3 lg:p-4 border border-[var(--primary-blue)]/10 text-[var(--primary-blue)] hover:bg-[var(--primary-blue)] hover:text-white transition-all rounded-full hover:scale-105 active:scale-95"
+                aria-label="Next Design"
+              >
+                <ChevronRight size={20} strokeWidth={1.5} />
+              </button>
+            </div>
           </div>
         </div>
 
