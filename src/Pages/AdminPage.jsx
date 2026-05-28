@@ -938,6 +938,8 @@ const AdminPage = () => {
                 <Dashboard 
                   slidesCount={slides.length} productsCount={products.length}
                   galleryCount={gallery.length} popupEnabled={popupEnabled}
+                  users={users}
+                  products={products}
                 />
               )}
 
