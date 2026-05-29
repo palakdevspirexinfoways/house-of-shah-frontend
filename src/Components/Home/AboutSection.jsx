@@ -58,12 +58,13 @@ const AboutSection = () => {
               </div>
 
               <h2 className="text-5xl md:text-7xl font-bold text-[var(--primary-blue)] leading-[0.95] mb-10 tracking-tighter">
-                The Art Of Radiant <br />
-                <span className="font-light italic text-[var(--primary-blue)]/40">Silver Refinement</span>
+                Built On Legacy Crafted<br />
+                <span className="font-light italic text-[var(--primary-blue)]/40">  With Purpose.
+</span>
               </h2>
 
               <p className="text-[var(--primary-blue)]/70 leading-relaxed mb-12 text-lg font-light max-w-xl">
-                At <span className="font-semibold text-[var(--primary-blue)]">House of Shah</span>, we bridge the gap between traditional craftsmanship and modern architectural design. We believe silver is not just a metal; it’s a symphony of <span className="text-[var(--primary-blue)] italic">artistry and precision.</span>
+                At <span className="font-semibold text-[var(--primary-blue)]">House of Shah</span>,  is a new-age 925 sterling silver jewellery manufacturing house rooted in generations of expertise. Combining contemporary design sensibilities with advanced production techniques, we create refined collections tailored for evolving retail <span className="text-[var(--primary-blue)] italic">brands and modern consumers.</span>
               </p>
 
               {/* Core Values Grid (Instead of numeric stats) */}

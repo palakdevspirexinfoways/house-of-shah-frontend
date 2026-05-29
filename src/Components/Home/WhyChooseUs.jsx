@@ -2,11 +2,11 @@ import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 const reasons = [
-  { id: "01", title: " Plating Options", desc: "Every piece of silver is crafted using architectural-grade precision, ensuring flawless geometry." },
-  { id: "02", title: "Screw Options", desc: "Blending a 15-year legacy with traditional Gujarati silver artistry." },
-  { id: "03", title: "Meticulous", desc: "We provide 100% transparency with BIS hallmarking on all silver artifacts." },
-  { id: "04", title: "Bespoke Design Lab", desc: "Our in-house design lab converts your vision into 3D prototypes." },
-  { id: "05", title: "Luxury Quality Control", desc: "Multi-stage inspection ensures every artifact meets global luxury benchmarks." }
+  { id: "01", title: " Plating Options", desc: "Nickel-free plating options available in gold, rose gold, silver, and rhodium finishes for enhanced durability, comfort, and refined aesthetics." },
+  { id: "02", title: "Screw Options", desc: "Custom jewellery screw options including Bombay screw, Push screw, and South screw fittings tailored for comfort, security, and varied retail preferences." },
+  { id: "03", title: "Meticulous", desc: "Strict quality control checks are conducted at every stage of the manufacturing process, including wax, casting, filling, buffing, and plating. A final visual audit then ensures a pore-free mirror finish with exceptional detailing and consistency." },
+  { id: "04", title: " CAD-CAM Development ", desc: "Advanced CAD-CAM development enables precise product visualization, accurate prototyping, and efficient design execution for contemporary jewellery manufacturing." },
+  { id: "05", title: "Laser & CNC Machining", desc: "Precision laser cutting and CNC machining technology allow for intricate detailing, sharp finishes, lightweight construction, and superior accuracy across every jewellery piece." }
 ];
 
 const WhyUs = () => {
@@ -41,7 +41,7 @@ const WhyUs = () => {
                 </div>
                 
                 <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[var(--primary-blue)] leading-[1.1] mb-8 tracking-tighter">
-                Services and  <br />
+               Precision  Silver Jewellery <br />
                    
                  Manufacturing
                 </h2>
@@ -55,7 +55,8 @@ const WhyUs = () => {
                 </div>
 
                 <p className="text-[var(--primary-blue)]/70 text-base lg:text-lg font-light leading-relaxed max-w-sm">
-                  We engineer excellence through a unique blend of technology and tradition.
+                  Advanced 925 sterling silver jewellery manufacturing solutions combining CAD-CAM development, precision engineering, customized finishing, and stringent quality control.
+
                 </p>
               </motion.div>
             </div>

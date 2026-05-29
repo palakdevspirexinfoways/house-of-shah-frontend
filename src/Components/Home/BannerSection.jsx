@@ -47,10 +47,10 @@ const HeroBanner = () => {
                 </span>
               </div>
 
-              <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-bold text-white leading-[0.85] tracking-tighter mb-8">
-                ULTRA <br />
+              <h1 className="text-6xl md:text-8xl lg:text-[8rem] font-bold text-white leading-[0.85] tracking-tighter mb-8">
+               House Of Shah Values &<br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white/50 to-white/20 italic font-light">
-                  Silver
+                    Initiatives
                 </span>
               </h1>
             </motion.div>
@@ -65,9 +65,9 @@ const HeroBanner = () => {
               className="relative lg:pl-8 border-l border-white/10"
             >
               <p className="text-white/60 text-lg font-light leading-relaxed mb-10 tracking-wide">
-                Where <span className="text-white">Architectural Precision</span> meets
-                <span className="italic"> 99.9% Purity.</span> We engineer silver artifacts
-                for global leaders who demand nothing less than perfection.
+                At HOS <span className="text-white">our vision extends beyond jewellery manufacturing. Through initiatives focused on women empowerment,  skill development, and Make in India craftsmanship, </span> 
+                 we are committed to creating meaningful impact alongside timeless design. 
+
               </p>
 
               <div className="flex flex-col gap-6">
@@ -76,7 +76,7 @@ const HeroBanner = () => {
                     whileHover={{ x: 10 }}
                     className="flex items-center gap-6 text-white group"
                   >
-                    <span className="text-xs font-black uppercase tracking-[0.4em]">Explore Products</span>
+                    <span className="text-xs font-black uppercase tracking-[0.4em]">Discover Our Initiatives</span>
                     <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-500">
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                         <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
