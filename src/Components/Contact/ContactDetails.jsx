@@ -47,7 +47,7 @@ const ContactDetails = () => {
                 <div>
                   <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-gray-400 mb-2">Direct Line</h4>
                   <p className="text-[var(--primary-blue)] font-medium leading-relaxed">
-                    +91 98765 43210
+                    +91 95108 06869
                   </p>
                 </div>
               </motion.div>

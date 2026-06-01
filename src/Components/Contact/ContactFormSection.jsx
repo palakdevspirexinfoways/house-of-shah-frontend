@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUpRight, ChevronDown, Check, AlertCircle } from 'lucide-react';
+import hosLogo3 from '../../aasets/HOS Logo V.3.png';
 
 const ContactFormSection = () => {
   const [formData, setFormData] = useState({
@@ -139,25 +140,24 @@ const ContactFormSection = () => {
                 <span className="text-[var(--primary-blue)] font-bold tracking-[0.4em] uppercase text-[10px]">Client Service</span>
               </div>
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[var(--primary-blue)] tracking-tighter leading-none mb-6">
-                Exceptional <br />
-                <span className="font-light italic text-[var(--primary-blue)]/40 lowercase tracking-normal">Service</span>
+                Your Manufacturing <br />
+                <span className="font-light italic text-[var(--primary-blue)]/40 tracking-normal"> Partner </span>
               </h2>
               <p className="text-[var(--primary-blue)]/60 leading-relaxed font-light text-sm md:text-base ">
-                Whether you seek a bespoke creation tailored to your vision or require assistance with our curated museum-grade collections, our master artisans and consultants are here to guide you. Every piece we deliver is a testament to timeless luxury.
+               Whether you're building a private label, expanding an existing collection, or exploring new product ideas, our team is here to support you at every stage of the journey. From design development and manufacturing to finishing and quality assurance, House of Shah collaborates closely with its partners to transform their vision into thoughtfully crafted, market-ready jewellery collections.
               </p>
               <br />
-              <p className="text-[var(--primary-blue)]/60 leading-relaxed font-light text-sm md:text-base ">
+              {/* <p className="text-[var(--primary-blue)]/60 leading-relaxed font-light text-sm md:text-base ">
                 Whether you seek a bespoke creation tailored to your vision or require assistance with our curated museum-grade collections, our master artisans and consultants are here to guide you. Every piece we deliver is a testament to timeless luxury.
-              </p>
+              </p> */}
             </div>
 
-            <div className="relative w-full overflow-hidden shadow-2xl group h-90">
+            <div className="relative w-full overflow-hidden scale-[1.4] group h-90 ">
               <img 
-                src="https://i.pinimg.com/736x/36/1a/7f/361a7f95331b3abd78c53a1e8d3b1a35.jpg" 
-                alt="House of Shah Craft" 
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[2s] ease-out"
+                src={hosLogo3} 
+                alt="House of Shah Logo" 
+                className="w-full h-full object-cover   ease-out"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[var(--primary-blue)]/80 via-transparent to-transparent opacity-60 mix-blend-multiply" />
             </div>
           </motion.div>
           

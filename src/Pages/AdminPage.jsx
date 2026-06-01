@@ -216,7 +216,7 @@ const AdminPage = () => {
   const [products, setProducts] = useState([]);
   const [gallery, setGallery] = useState([]);
   const [popupEnabled, setPopupEnabled] = useState(true);
-
+  const [exhibitionMode, setExhibitionMode] = useState(false);
   // Form / Modal States
   const [showAddModal, setShowAddModal] = useState(false);
   const [editItem, setEditItem] = useState(null);
@@ -279,6 +279,7 @@ const AdminPage = () => {
       const dataSettings = await resSettings.json();
       if (dataSettings.success) {
         setPopupEnabled(dataSettings.data.popupEnabled !== false);
+        setExhibitionMode(dataSettings.data.exhibitionMode === true);
       }
 
       const token = localStorage.getItem('hos_admin_token');
@@ -382,6 +383,23 @@ const AdminPage = () => {
       if (response.ok && data.success) {
         setPopupEnabled(nextVal);
         triggerToast(`5s Popup ${nextVal ? 'Enabled' : 'Disabled'}.`);
+      } else { triggerToast(data.message || 'Failed to update settings.'); }
+    } catch (error) { triggerToast('Server connection failed.'); }
+  };
+
+  const handleExhibitionToggle = async () => {
+    const nextVal = !exhibitionMode;
+    const token = localStorage.getItem('hos_admin_token');
+    try {
+      const response = await fetch(`${API_BASE_URL}/settings`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ key: 'exhibitionMode', value: nextVal })
+      });
+      const data = await response.json();
+      if (response.ok && data.success) {
+        setExhibitionMode(nextVal);
+        triggerToast(`Exhibition Mode ${nextVal ? 'Enabled' : 'Disabled'}.`);
       } else { triggerToast(data.message || 'Failed to update settings.'); }
     } catch (error) { triggerToast('Server connection failed.'); }
   };
@@ -938,6 +956,7 @@ const AdminPage = () => {
                 <Dashboard 
                   slidesCount={slides.length} productsCount={products.length}
                   galleryCount={gallery.length} popupEnabled={popupEnabled}
+                  exhibitionMode={exhibitionMode}
                   users={users}
                   products={products}
                 />
@@ -1221,7 +1240,30 @@ const AdminPage = () => {
                       </button>
                     </div>
 
-
+                    <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-5 pb-2">
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <h4 className="text-sm font-black uppercase tracking-wider" style={{ color: '#1a4173' }}>Exhibition Mode</h4>
+                          <span className="px-2 py-0.5 text-[8px] font-bold uppercase tracking-widest rounded-full bg-red-100 text-red-600 border border-red-200">Strict</span>
+                        </div>
+                        <p className="text-xs text-gray-400 font-light leading-relaxed max-w-md">
+                          Makes registration <span className="font-bold text-gray-600">compulsory</span>. The authentication modal appears immediately on load and cannot be closed without signing in or registering.
+                        </p>
+                      </div>
+                      <button 
+                        onClick={handleExhibitionToggle}
+                        className="shrink-0 text-[11px] font-black uppercase tracking-widest transition-all rounded-xl px-6 py-3"
+                        style={{
+                          background: exhibitionMode ? 'rgba(5,150,105,0.08)' : 'rgba(220,38,38,0.08)',
+                          color: exhibitionMode ? '#059669' : '#dc2626',
+                          border: `1.5px solid ${exhibitionMode ? 'rgba(5,150,105,0.25)' : 'rgba(220,38,38,0.25)'}`
+                        }}
+                        onMouseOver={e => { e.currentTarget.style.background = exhibitionMode ? '#059669' : '#dc2626'; e.currentTarget.style.color = 'white'; }}
+                        onMouseOut={e => { e.currentTarget.style.background = exhibitionMode ? 'rgba(5,150,105,0.08)' : 'rgba(220,38,38,0.08)'; e.currentTarget.style.color = exhibitionMode ? '#059669' : '#dc2626'; }}
+                      >
+                        {exhibitionMode ? '● Enabled' : '○ Disabled'}
+                      </button>
+                    </div>
                   </div>
                 </div>
               )}

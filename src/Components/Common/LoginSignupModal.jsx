@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ArrowRight } from 'lucide-react';
 
-const LoginSignupModal = ({ isOpen, onClose }) => {
+const LoginSignupModal = ({ isOpen, onClose, isExhibitionMode = false }) => {
   const [isLogin, setIsLogin] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -208,25 +208,25 @@ const LoginSignupModal = ({ isOpen, onClose }) => {
       return;
     }
     if (!isLogin) {
-      if (!name.trim() || !companyName.trim() || !contactNumber.trim()) {
+      if (!name.trim() || !contactNumber.trim()) {
         setError('Please fill in all mandatory fields (*).');
         return;
       }
     }
 
     setIsLoading(true);
-    const payload = isLogin 
-      ? { email, password } 
-      : { 
-          name, 
-          email, 
-          password, 
-          companyName, 
-          contactNumber, 
-          interestedProduct: ['All'], 
-          natureOfBusiness: ['All'], 
-          additionalRemarks: '' 
-        };
+    const payload = isLogin
+      ? { email, password }
+      : {
+        name,
+        email,
+        password,
+        companyName,
+        contactNumber,
+        interestedProduct: ['All'],
+        natureOfBusiness: ['All'],
+        additionalRemarks: ''
+      };
     const endpoint = isLogin ? '/users/login' : '/users/register';
 
     try {
@@ -244,7 +244,7 @@ const LoginSignupModal = ({ isOpen, onClose }) => {
         localStorage.setItem('hos_user_token', data.token);
         localStorage.setItem('hos_user_session', 'active');
         localStorage.setItem('hos_user_name', data.user.name);
-        
+
         // Dispatch custom event to notify other components like Header
         window.dispatchEvent(new Event('userSessionChange'));
 
@@ -271,6 +271,20 @@ const LoginSignupModal = ({ isOpen, onClose }) => {
     }
   };
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    };
+  }, [isOpen]);
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -279,8 +293,12 @@ const LoginSignupModal = ({ isOpen, onClose }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={onClose}
-            className="absolute inset-0 bg-black/40 backdrop-blur-md fixed"
+            onClick={() => {
+              if (!isExhibitionMode) {
+                onClose();
+              }
+            }}
+            className="absolute inset-0 bg-black/40 backdrop-blur-md"
           />
           <motion.div
             initial={{ opacity: 0, scale: 0.98, y: 20 }}
@@ -290,22 +308,24 @@ const LoginSignupModal = ({ isOpen, onClose }) => {
             className="relative bg-white w-full max-w-6xl min-h-[650px] my-8 shadow-[0_30px_100px_-15px_rgba(0,0,0,0.3)] flex flex-col md:flex-row font-outfit z-10"
             onClick={(e) => e.stopPropagation()}
           >
-            <button 
-              onClick={onClose}
-              className="absolute top-6 right-6 z-50 p-3 text-black/40 hover:text-black transition-all duration-500"
-            >
-              <X size={28} strokeWidth={1} />
-            </button>
+            {!isExhibitionMode && (
+              <button
+                onClick={onClose}
+                className="absolute top-6 right-6 z-50 p-3 text-black/40 hover:text-black transition-all duration-500"
+              >
+                <X size={28} strokeWidth={1} />
+              </button>
+            )}
 
             {/* Left/Image Side */}
             <div className="w-full md:w-[40%] relative hidden md:block overflow-hidden bg-black group shrink-0">
-              <img 
-                src="https://www.ross-simons.com/dw/image/v2/BKHT_PRD/on/demandware.static/-/Sites-RossSimons-Library/default/dwea3c75da/graphics/education/education-top-images/000160_EDU_D_RingMetals.jpg?sw=1920&q=70" 
-                alt="House of Shah Authentication" 
+              <img
+                src="https://www.ross-simons.com/dw/image/v2/BKHT_PRD/on/demandware.static/-/Sites-RossSimons-Library/default/dwea3c75da/graphics/education/education-top-images/000160_EDU_D_RingMetals.jpg?sw=1920&q=70"
+                alt="House of Shah Authentication"
                 className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-[4s] ease-out"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-              
+
               <div className="absolute inset-0 p-14 flex flex-col justify-end pb-20">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -314,10 +334,10 @@ const LoginSignupModal = ({ isOpen, onClose }) => {
                 >
                   <div className="w-8 h-[1px] bg-white mb-6" />
                   <h3 className="text-4xl font-bold uppercase tracking-tighter leading-none mb-4 text-white">
-                    Enter <br /> The Atelier
+                    Enter <br /> The House
                   </h3>
                   <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/50 leading-relaxed max-w-[80%]">
-                    Access our exclusive museum-grade collections and personalized bespoke services.
+                    Register to access our exclusive catalogue of import-quality 925 sterling silver jewellery collections and designs.
                   </p>
                 </motion.div>
               </div>
@@ -325,13 +345,13 @@ const LoginSignupModal = ({ isOpen, onClose }) => {
 
             {/* Right/Form Side */}
             <div className="w-full md:w-[60%] p-8 sm:p-12 lg:p-16 flex flex-col justify-center bg-white relative overflow-y-auto max-h-[90vh]">
-              
+
               <div className="mb-8">
                 <h2 className="text-3xl font-bold text-[var(--primary-blue)] tracking-tighter uppercase mb-2">
                   {isForgot ? (isOtpSent ? 'Verify OTP Code' : 'Recover Password') : (isLogin ? 'Sign In' : 'Register')}
                 </h2>
                 <p className="text-xs text-gray-400 font-medium uppercase tracking-[0.2em]">
-                  {isForgot ? (isOtpSent ? 'Reset your credential password' : 'Recover your luxury account') : (isLogin ? 'Access your personal account' : 'Become a member of our legacy')}
+                  {isForgot ? (isOtpSent ? 'Reset your credential password' : 'Recover your luxury account') : (isLogin ? 'Access your personal account' : 'To Enter House Of Shah')}
                 </p>
               </div>
 
@@ -340,13 +360,13 @@ const LoginSignupModal = ({ isOpen, onClose }) => {
                 {isForgot ? (
                   isOtpSent ? (
                     // Reset Password Form (OTP + New Password)
-                    <motion.form 
+                    <motion.form
                       key="reset-password"
                       variants={formVariants}
                       initial="hidden"
                       animate="visible"
                       exit="exit"
-                      className="space-y-6" 
+                      className="space-y-6"
                       onSubmit={handleResetPassword}
                     >
                       {error && (
@@ -362,59 +382,59 @@ const LoginSignupModal = ({ isOpen, onClose }) => {
 
                       <motion.div variants={itemVariants} className="relative border-b border-gray-200 focus-within:border-black transition-colors duration-500 pb-2">
                         <label className="text-[9px] uppercase tracking-[0.2em] font-bold text-gray-400 block mb-2">Registered Email Address</label>
-                        <input 
-                          type="email" 
+                        <input
+                          type="email"
                           value={email}
                           disabled
-                          className="w-full bg-transparent outline-none text-sm font-medium text-gray-400 placeholder-gray-300 cursor-not-allowed" 
+                          className="w-full bg-transparent outline-none text-sm font-medium text-gray-400 placeholder-gray-300 cursor-not-allowed"
                         />
                       </motion.div>
 
                       <motion.div variants={itemVariants} className="relative border-b border-gray-200 focus-within:border-black transition-colors duration-500 pb-2">
                         <label className="text-[9px] uppercase tracking-[0.2em] font-bold text-gray-400 block mb-2">Verification OTP (6-digits)</label>
-                        <input 
-                          type="text" 
+                        <input
+                          type="text"
                           value={otp}
                           onChange={(e) => setOtp(e.target.value)}
                           required
                           maxLength={6}
-                          className="w-full bg-transparent outline-none text-sm font-medium text-black placeholder-gray-300 tracking-[0.3em] font-mono" 
-                          placeholder="000000" 
+                          className="w-full bg-transparent outline-none text-sm font-medium text-black placeholder-gray-300 tracking-[0.3em] font-mono"
+                          placeholder="000000"
                         />
                       </motion.div>
 
                       <motion.div variants={itemVariants} className="relative border-b border-gray-200 focus-within:border-black transition-colors duration-500 pb-2">
                         <label className="text-[9px] uppercase tracking-[0.2em] font-bold text-gray-400 block mb-2">New Password</label>
-                        <input 
-                          type="password" 
+                        <input
+                          type="password"
                           value={newPassword}
                           onChange={(e) => setNewPassword(e.target.value)}
                           required
-                          className="w-full bg-transparent outline-none text-sm font-medium text-black placeholder-gray-300" 
-                          placeholder="••••••••" 
+                          className="w-full bg-transparent outline-none text-sm font-medium text-black placeholder-gray-300"
+                          placeholder="••••••••"
                         />
                       </motion.div>
 
                       <motion.div variants={itemVariants} className="pt-4">
-                        <button 
+                        <button
                           type="submit"
                           disabled={isLoading}
                           className="w-full bg-black text-white py-4 text-[10px] font-bold uppercase tracking-[0.4em] hover:bg-gray-900 transition-all flex items-center justify-center gap-4 group disabled:opacity-50"
                         >
-                          {isLoading ? 'Resetting...' : 'Reset Password & Sign In'} 
+                          {isLoading ? 'Resetting...' : 'Reset Password & Sign In'}
                           <ArrowRight size={14} strokeWidth={1.5} className="group-hover:translate-x-2 transition-transform duration-500" />
                         </button>
                       </motion.div>
                     </motion.form>
                   ) : (
                     // Request OTP Form
-                    <motion.form 
+                    <motion.form
                       key="forgot-password"
                       variants={formVariants}
                       initial="hidden"
                       animate="visible"
                       exit="exit"
-                      className="space-y-6" 
+                      className="space-y-6"
                       onSubmit={handleSendOtp}
                     >
                       {error && (
@@ -430,36 +450,36 @@ const LoginSignupModal = ({ isOpen, onClose }) => {
 
                       <motion.div variants={itemVariants} className="relative border-b border-gray-200 focus-within:border-black transition-colors duration-500 pb-2">
                         <label className="text-[9px] uppercase tracking-[0.2em] font-bold text-gray-400 block mb-2">Registered Email Address</label>
-                        <input 
-                          type="email" 
+                        <input
+                          type="email"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           required
-                          className="w-full bg-transparent outline-none text-sm font-medium text-black placeholder-gray-300" 
-                          placeholder="client@example.com" 
+                          className="w-full bg-transparent outline-none text-sm font-medium text-black placeholder-gray-300"
+                          placeholder="client@example.com"
                         />
                       </motion.div>
 
                       <motion.div variants={itemVariants} className="pt-4">
-                        <button 
+                        <button
                           type="submit"
                           disabled={isLoading}
                           className="w-full bg-black text-white py-4 text-[10px] font-bold uppercase tracking-[0.4em] hover:bg-gray-900 transition-all flex items-center justify-center gap-4 group disabled:opacity-50"
                         >
-                          {isLoading ? 'Sending...' : 'Send Verification OTP'} 
+                          {isLoading ? 'Sending...' : 'Send Verification OTP'}
                           <ArrowRight size={14} strokeWidth={1.5} className="group-hover:translate-x-2 transition-transform duration-500" />
                         </button>
                       </motion.div>
                     </motion.form>
                   )
                 ) : (
-                  <motion.form 
+                  <motion.form
                     key={isLogin ? 'login' : 'signup'}
                     variants={formVariants}
                     initial="hidden"
                     animate="visible"
                     exit="exit"
-                    className="space-y-6" 
+                    className="space-y-6"
                     onSubmit={handleSubmit}
                   >
                     {error && (
@@ -474,140 +494,139 @@ const LoginSignupModal = ({ isOpen, onClose }) => {
                     )}
 
                     {isLogin ? (
-                    <>
-                      <motion.div variants={itemVariants} className="relative border-b border-gray-200 focus-within:border-black transition-colors duration-500 pb-2">
-                        <label className="text-[9px] uppercase tracking-[0.2em] font-bold text-gray-400 block mb-2">Email Address</label>
-                        <input 
-                          type="email" 
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          required
-                          className="w-full bg-transparent outline-none text-sm font-medium text-black placeholder-gray-300" 
-                          placeholder="client@example.com" 
-                        />
-                      </motion.div>
-                      
-                      <motion.div variants={itemVariants} className="relative border-b border-gray-200 focus-within:border-black transition-colors duration-500 pb-2">
-                        <label className="text-[9px] uppercase tracking-[0.2em] font-bold text-gray-400 block mb-2">Password</label>
-                        <input 
-                          type="password" 
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          required
-                          className="w-full bg-transparent outline-none text-sm font-medium text-black placeholder-gray-300" 
-                          placeholder="••••••••" 
-                        />
-                      </motion.div>
-                    </>
-                  ) : (
-                    <>
-                      {/* Register Fields Form Grid */}
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-6">
+                      <>
                         <motion.div variants={itemVariants} className="relative border-b border-gray-200 focus-within:border-black transition-colors duration-500 pb-2">
-                          <label className="text-[9px] uppercase tracking-[0.2em] font-bold text-gray-400 block mb-1">Full Name *</label>
-                          <input 
-                            type="text" 
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                            className="w-full bg-transparent outline-none text-xs font-medium text-black placeholder-gray-300" 
-                            placeholder="John Doe" 
-                          />
-                        </motion.div>
-
-                        <motion.div variants={itemVariants} className="relative border-b border-gray-200 focus-within:border-black transition-colors duration-500 pb-2">
-                          <label className="text-[9px] uppercase tracking-[0.2em] font-bold text-gray-400 block mb-1">Company Name *</label>
-                          <input 
-                            type="text" 
-                            value={companyName}
-                            onChange={(e) => setCompanyName(e.target.value)}
-                            required
-                            className="w-full bg-transparent outline-none text-xs font-medium text-black placeholder-gray-300" 
-                            placeholder="Acme Corporation" 
-                          />
-                        </motion.div>
-
-                        <motion.div variants={itemVariants} className="relative border-b border-gray-200 focus-within:border-black transition-colors duration-500 pb-2">
-                          <label className="text-[9px] uppercase tracking-[0.2em] font-bold text-gray-400 block mb-1">Contact Number *</label>
-                          <input 
-                            type="text" 
-                            value={contactNumber}
-                            onChange={(e) => setContactNumber(e.target.value)}
-                            required
-                            className="w-full bg-transparent outline-none text-xs font-medium text-black placeholder-gray-300" 
-                            placeholder="+91 99999 99999" 
-                          />
-                        </motion.div>
-
-                        <motion.div variants={itemVariants} className="relative border-b border-gray-200 focus-within:border-black transition-colors duration-500 pb-2">
-                          <label className="text-[9px] uppercase tracking-[0.2em] font-bold text-gray-400 block mb-1">Email Address *</label>
-                          <input 
-                            type="email" 
+                          <label className="text-[9px] uppercase tracking-[0.2em] font-bold text-gray-400 block mb-2">Email Address</label>
+                          <input
+                            type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            className="w-full bg-transparent outline-none text-xs font-medium text-black placeholder-gray-300" 
-                            placeholder="client@example.com" 
+                            className="w-full bg-transparent outline-none text-sm font-medium text-black placeholder-gray-300"
+                            placeholder="client@example.com"
                           />
                         </motion.div>
 
-                        <motion.div variants={itemVariants} className="relative border-b border-gray-200 focus-within:border-black transition-colors duration-500 pb-2 col-span-1 sm:col-span-2">
-                          <label className="text-[9px] uppercase tracking-[0.2em] font-bold text-gray-400 block mb-1">Password *</label>
-                          <input 
-                            type="password" 
+                        <motion.div variants={itemVariants} className="relative border-b border-gray-200 focus-within:border-black transition-colors duration-500 pb-2">
+                          <label className="text-[9px] uppercase tracking-[0.2em] font-bold text-gray-400 block mb-2">Password</label>
+                          <input
+                            type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
-                            className="w-full bg-transparent outline-none text-xs font-medium text-black placeholder-gray-300" 
-                            placeholder="••••••••" 
+                            className="w-full bg-transparent outline-none text-sm font-medium text-black placeholder-gray-300"
+                            placeholder="••••••••"
                           />
                         </motion.div>
-                      </div>
+                      </>
+                    ) : (
+                      <>
+                        {/* Register Fields Form Grid */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-6">
+                          <motion.div variants={itemVariants} className="relative border-b border-gray-200 focus-within:border-black transition-colors duration-500 pb-2">
+                            <label className="text-[9px] uppercase tracking-[0.2em] font-bold text-gray-400 block mb-1">Full Name *</label>
+                            <input
+                              type="text"
+                              value={name}
+                              onChange={(e) => setName(e.target.value)}
+                              required
+                              className="w-full bg-transparent outline-none text-xs font-medium text-black placeholder-gray-300"
+                              placeholder="John Doe"
+                            />
+                          </motion.div>
 
-                     
-                    </>
-                  )}
+                          <motion.div variants={itemVariants} className="relative border-b border-gray-200 focus-within:border-black transition-colors duration-500 pb-2">
+                            <label className="text-[9px] uppercase tracking-[0.2em] font-bold text-gray-400 block mb-1">Company Name </label>
+                            <input
+                              type="text"
+                              value={companyName}
+                              onChange={(e) => setCompanyName(e.target.value)}
+                              className="w-full bg-transparent outline-none text-xs font-medium text-black placeholder-gray-300"
+                              placeholder="Acme Corporation"
+                            />
+                          </motion.div>
 
-                  {isLogin && (
-                    <motion.div variants={itemVariants} className="flex justify-between items-center pt-2">
-                      <label className="flex items-center gap-3 cursor-pointer group">
-                        <div className="w-4 h-4 border border-gray-300 group-hover:border-black transition-colors flex items-center justify-center relative">
-                          <input type="checkbox" className="opacity-0 absolute w-4 h-4 cursor-pointer" />
-                          <div className="absolute inset-0 bg-black scale-0 transition-transform peer-checked:scale-100" />
+                          <motion.div variants={itemVariants} className="relative border-b border-gray-200 focus-within:border-black transition-colors duration-500 pb-2">
+                            <label className="text-[9px] uppercase tracking-[0.2em] font-bold text-gray-400 block mb-1">Contact Number *</label>
+                            <input
+                              type="text"
+                              value={contactNumber}
+                              onChange={(e) => setContactNumber(e.target.value)}
+                              required
+                              className="w-full bg-transparent outline-none text-xs font-medium text-black placeholder-gray-300"
+                              placeholder="+91 99999 99999"
+                            />
+                          </motion.div>
+
+                          <motion.div variants={itemVariants} className="relative border-b border-gray-200 focus-within:border-black transition-colors duration-500 pb-2">
+                            <label className="text-[9px] uppercase tracking-[0.2em] font-bold text-gray-400 block mb-1">Email Address *</label>
+                            <input
+                              type="email"
+                              value={email}
+                              onChange={(e) => setEmail(e.target.value)}
+                              required
+                              className="w-full bg-transparent outline-none text-xs font-medium text-black placeholder-gray-300"
+                              placeholder="client@example.com"
+                            />
+                          </motion.div>
+
+                          <motion.div variants={itemVariants} className="relative border-b border-gray-200 focus-within:border-black transition-colors duration-500 pb-2 col-span-1 sm:col-span-2">
+                            <label className="text-[9px] uppercase tracking-[0.2em] font-bold text-gray-400 block mb-1">Password *</label>
+                            <input
+                              type="password"
+                              value={password}
+                              onChange={(e) => setPassword(e.target.value)}
+                              required
+                              className="w-full bg-transparent outline-none text-xs font-medium text-black placeholder-gray-300"
+                              placeholder="••••••••"
+                            />
+                          </motion.div>
                         </div>
-                        <span className="text-[10px] text-gray-500 uppercase tracking-widest font-medium group-hover:text-black transition-colors">Remember me</span>
-                      </label>
-                      <button 
-                        type="button" 
-                        onClick={() => { setIsForgot(true); setIsOtpSent(false); setError(''); setSuccess(''); }}
-                        className="text-[10px] text-gray-400 uppercase tracking-widest font-medium hover:text-black transition-colors border-b border-transparent hover:border-black pb-0.5"
+
+
+                      </>
+                    )}
+
+                    {isLogin && (
+                      <motion.div variants={itemVariants} className="flex justify-between items-center pt-2">
+                        <label className="flex items-center gap-3 cursor-pointer group">
+                          <div className="w-4 h-4 border border-gray-300 group-hover:border-black transition-colors flex items-center justify-center relative">
+                            <input type="checkbox" className="opacity-0 absolute w-4 h-4 cursor-pointer" />
+                            <div className="absolute inset-0 bg-black scale-0 transition-transform peer-checked:scale-100" />
+                          </div>
+                          <span className="text-[10px] text-gray-500 uppercase tracking-widest font-medium group-hover:text-black transition-colors">Remember me</span>
+                        </label>
+                        <button
+                          type="button"
+                          onClick={() => { setIsForgot(true); setIsOtpSent(false); setError(''); setSuccess(''); }}
+                          className="text-[10px] text-gray-400 uppercase tracking-widest font-medium hover:text-black transition-colors border-b border-transparent hover:border-black pb-0.5"
+                        >
+                          Recover Password
+                        </button>
+                      </motion.div>
+                    )}
+
+                    <motion.div variants={itemVariants} className="pt-4">
+                      <button
+                        type="submit"
+                        disabled={isLoading}
+                        className="w-full bg-black text-white py-4 text-[10px] font-bold uppercase tracking-[0.4em] hover:bg-gray-900 transition-all flex items-center justify-center gap-4 group disabled:opacity-50"
                       >
-                        Recover Password
+                        {isLoading ? 'Processing...' : (isLogin ? 'Sign In To Account' : 'Create Account')}
+                        <ArrowRight size={14} strokeWidth={1.5} className="group-hover:translate-x-2 transition-transform duration-500" />
                       </button>
                     </motion.div>
-                  )}
 
-                  <motion.div variants={itemVariants} className="pt-4">
-                    <button 
-                      type="submit"
-                      disabled={isLoading}
-                      className="w-full bg-black text-white py-4 text-[10px] font-bold uppercase tracking-[0.4em] hover:bg-gray-900 transition-all flex items-center justify-center gap-4 group disabled:opacity-50"
-                    >
-                      {isLoading ? 'Processing...' : (isLogin ? 'Sign In To Account' : 'Create Account')} 
-                      <ArrowRight size={14} strokeWidth={1.5} className="group-hover:translate-x-2 transition-transform duration-500" />
-                    </button>
-                  </motion.div>
-
-                </motion.form>
-              )}
-            </AnimatePresence>
+                  </motion.form>
+                )}
+              </AnimatePresence>
 
               {/* Toggle Login/Signup */}
               <div className="mt-8 pt-6 border-t border-gray-100 flex items-center justify-center gap-4">
                 <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-gray-400">
                   {isForgot ? "Remembered your credentials?" : (isLogin ? "New to House of Shah?" : "Already a member?")}
                 </span>
-                <button 
+                <button
                   onClick={isForgot ? () => { setIsForgot(false); setIsOtpSent(false); setError(''); setSuccess(''); } : handleToggleMode}
                   className="text-[10px] text-black font-bold uppercase tracking-[0.2em] border-b border-black/30 hover:border-black transition-colors pb-1 flex items-center gap-2 group"
                 >

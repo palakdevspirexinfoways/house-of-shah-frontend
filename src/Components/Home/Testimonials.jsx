@@ -5,28 +5,28 @@ import { Award, Globe, Compass, History } from 'lucide-react';
 const credentials = [
   {
     id: 1,
-    icon: <History size={32} strokeWidth={1} />,
-    title: "Established 2011",
-    tagline: "EST. 2011",
+    icon: <Award size={32} strokeWidth={1} />,
+    title: "BIS Hallmarked",
+    tagline: "100% CERTIFIED PURITY",
   },
   {
     id: 2,
     icon: <Award size={32} strokeWidth={1} />,
-    title: "BIS Hallmarked",
-    tagline: "100% CERTIFIED PURITY",
+    title: "Lightweight Jewellery",
+    tagline: "AFFORDABLE LUXURY",
    
   },
   {
     id: 3,
     icon: <Globe size={32} strokeWidth={1} />,
-    title: "Global Shipping",
-    tagline: "WORLDWIDE LUXURY EXPRESS",
+    title: "Export Finishing",
+    tagline: "EXPORT QUALITY FINISH",
   },
   {
     id: 4,
     icon: <Compass size={32} strokeWidth={1} />,
-    title: "Bespoke Design",
-    tagline: "INDIVIDUALIZED ATELIER",
+    title: "Global Shipping",
+    tagline: "EXPRESS DELIVERY",
   }
 ];
 
@@ -52,7 +52,7 @@ const Testimonials = () => {
             transition={{ delay: 0.1 }}
             className="text-4xl md:text-6xl font-bold text-[var(--primary-blue)] tracking-tighter leading-tight"
           >
-            Pillars of <span className="font-light italic text-[var(--primary-blue)]/50">Trust & Legacy</span>
+            Pillars   of <span className="font-light italic text-[var(--primary-blue)]/50">Trust</span>
           </motion.h2>
         </div>
 

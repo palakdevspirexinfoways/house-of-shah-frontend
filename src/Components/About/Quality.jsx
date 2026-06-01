@@ -116,7 +116,7 @@ const QualityAssurancePremium = () => {
             </div>
             <div>
               <h4 className="text-xl font-bold tracking-tight">BIS Hallmark Traceability</h4>
-              <p className="opacity-50 text-[11px] font-light uppercase tracking-widest">The Gold Standard of Silver Purity since 15 years.</p>
+              <p className="opacity-50 text-[11px] font-light uppercase tracking-widest">The Gold Standard of Silver Purity since 2023.</p>
             </div>
           </div>
 

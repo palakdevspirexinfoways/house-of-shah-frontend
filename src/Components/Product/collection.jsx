@@ -33,7 +33,7 @@ const SignatureCollections = ({
 
   // WhatsApp Inquiry Link Generator
   const handleInquiry = (item) => {
-    const phoneNumber = "919000000000"; // WhatsApp Number
+    const phoneNumber = "919510806869"; // WhatsApp Number
     const message = encodeURIComponent(
       `Hi House of Shah, I would like to inquire about this masterpiece from the ${item.collection || 'Exclusive'} Collection:\n\n` +
       `• Section: Signature Collections\n` +

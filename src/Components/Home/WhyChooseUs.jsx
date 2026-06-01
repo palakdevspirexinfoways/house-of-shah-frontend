@@ -3,9 +3,9 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 
 const reasons = [
   { id: "01", title: " Plating Options", desc: "Nickel-free plating options available in gold, rose gold, silver, and rhodium finishes for enhanced durability, comfort, and refined aesthetics." },
-  { id: "02", title: "Screw Options", desc: "Custom jewellery screw options including Bombay screw, Push screw, and South screw fittings tailored for comfort, security, and varied retail preferences." },
-  { id: "03", title: "Meticulous", desc: "Strict quality control checks are conducted at every stage of the manufacturing process, including wax, casting, filling, buffing, and plating. A final visual audit then ensures a pore-free mirror finish with exceptional detailing and consistency." },
-  { id: "04", title: " CAD-CAM Development ", desc: "Advanced CAD-CAM development enables precise product visualization, accurate prototyping, and efficient design execution for contemporary jewellery manufacturing." },
+  { id: "02", title: "Screw Options", desc: "Custom jewellery screw options include Bombay screw, push screw, and south screw fittings designed to meet diverse market and customer preferences." },
+  { id: "03", title: "Meticulous QC", desc: "Strict quality control checks are conducted after every step of the manufacturing process, including wax modelling and cleaning, casting, filling, buffing, and plating. A final visual audit then ensures a pore-free mirror finish with exceptional detailing and consistency." },
+  { id: "04", title: " CAD-CAM Development ", desc: "Advanced CAD-CAM development enables precise product visualization, accurate prototyping, and seamless translation of concepts into production-ready jewellery designs." },
   { id: "05", title: "Laser & CNC Machining", desc: "Precision laser cutting and CNC machining technology allow for intricate detailing, sharp finishes, lightweight construction, and superior accuracy across every jewellery piece." }
 ];
 

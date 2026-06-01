@@ -23,7 +23,7 @@ const SignaturePieces = ({
 
   // WhatsApp Inquiry Link Generator
   const handleInquiry = (item) => {
-    const phoneNumber = "919000000000"; // WhatsApp Number
+    const phoneNumber = "919510806869"; // WhatsApp Number
     const message = encodeURIComponent(
       `Hi House of Shah, I would like to inquire about this masterpiece from the Signature Pieces registry:\n\n` +
       `• Section: Signature Pieces\n` +

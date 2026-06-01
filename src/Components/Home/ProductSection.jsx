@@ -104,11 +104,11 @@ const ProductSection = () => {
   };
 
   return (
-    <section id="products" className="py-24 bg-[var(--white)] relative font-outfit overflow-x-hidden">
+    <section id="products" className="py-12 md:py-16 bg-[var(--white)] relative font-outfit overflow-x-hidden">
       <div className="container mx-auto px-6 lg:px-12">
 
         {/* Header Section */}
-        <div className="flex flex-row items-end justify-between mb-20 gap-8">
+        <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-8 md:mb-12 gap-6 md:gap-8">
           <div className="max-w-2xl">
             <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="flex items-center gap-4 mb-4">
               <div className="w-10 h-[1px] bg-[var(--primary-blue)]" />
@@ -116,12 +116,12 @@ const ProductSection = () => {
             </motion.div>
             <h2 className="text-5xl md:text-7xl font-bold text-[var(--primary-blue)] tracking-tighter leading-none">
               Signature <br />
-              <span className="font-light italic text-[var(--primary-blue)]/40 lowercase tracking-normal">Creations</span>
+              <span className="font-light italic text-[var(--primary-blue)]/40 lowercase tracking-normal">Collection</span>
             </h2>
           </div>
 
           {/* Elegant Slider Navigation & View All */}
-          <div className="flex items-center gap-6 pb-2 sm:pb-3 shrink-0">
+          <div className="flex items-center justify-between md:justify-end w-full md:w-auto gap-6 pb-2 sm:pb-3 shrink-0">
             <Link 
               to="/product" 
               className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] text-[var(--primary-blue)] hover:text-black transition-colors duration-300 flex items-center gap-2 group border-b border-[var(--primary-blue)]/20 hover:border-black pb-1 shrink-0"

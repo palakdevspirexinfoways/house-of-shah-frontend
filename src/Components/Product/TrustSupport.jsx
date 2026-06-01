@@ -119,7 +119,7 @@ const TrustSupport = () => {
                 <div className="space-y-5">
                   {/* WhatsApp Chat */}
                   <a 
-                    href="https://wa.me/919026387472" 
+                    href="https://wa.me/919510806869" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="flex items-center justify-between p-5 border border-gray-100 hover:border-[#001f3f] bg-gray-50/50 hover:bg-white transition-all duration-500 group"
@@ -138,7 +138,7 @@ const TrustSupport = () => {
 
                   {/* Direct Call */}
                   <a 
-                    href="tel:+919026387472" 
+                    href="tel:+919510806869" 
                     className="flex items-center justify-between p-5 border border-gray-100 hover:border-[#001f3f] bg-gray-50/50 hover:bg-white transition-all duration-500 group"
                   >
                     <div className="flex items-center gap-5">
@@ -147,7 +147,7 @@ const TrustSupport = () => {
                       </div>
                       <div>
                         <p className="text-[10px] font-bold uppercase tracking-widest group-hover:text-[#001f3f] transition-colors">Direct Concierge Line</p>
-                        <p className="text-[9px] text-gray-400 mt-1">International: +91 90263 87472</p>
+                        <p className="text-[9px] text-gray-400 mt-1">International: +91 95108 06869</p>
                       </div>
                     </div>
                     <ArrowRight size={14} className="text-gray-300 group-hover:text-[#001f3f] group-hover:translate-x-1 transition-all" />

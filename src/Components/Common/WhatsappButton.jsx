@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { FaWhatsapp } from "react-icons/fa";
 
 const WhatsAppButton = () => {
-  const phoneNumber = "919026387472"; // apna number
+  const phoneNumber = "919510806869"; // apna number
 
   return (
     <motion.a

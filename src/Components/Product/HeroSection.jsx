@@ -152,7 +152,7 @@ const ProductHero = () => {
               {/* Luxury Floating Element */}
               <div className="absolute -top-10 -right-8 md:-top-16 md:-right-16">
                 <span className="text-[8px] md:text-[10px] text-white/20 font-light italic tracking-widest vertical-text uppercase">
-                  HOS • EST. 2011
+                  HOS • EST. 2023
                 </span>
               </div>
             </motion.div>

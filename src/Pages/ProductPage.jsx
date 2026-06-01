@@ -174,7 +174,7 @@ const ProductPage = () => {
 
                 <button 
                   onClick={() => {
-                    const phoneNumber = "919000000000";
+                    const phoneNumber = "919510806869";
                     const message = encodeURIComponent(
                       `Hi House of Shah, I would like to inquire about this masterpiece discovered through the collection search registry:\n\n` +
                       `• Category: ${selectedDetailProduct.category}\n` +

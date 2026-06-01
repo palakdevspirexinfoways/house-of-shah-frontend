@@ -57,7 +57,9 @@ const MakeInIndia = () => {
 
             {/* Premium Editorial Quote Block */}
             <p className="text-base font-light italic leading-relaxed text-[var(--primary-blue)]/80 border-l-2 border-[var(--primary-blue)]/30 pl-6 max-w-2xl">
-              "We preserve Rajkot's ancestral silvercrafting legacy by marrying classical Karigar hand-filigree with modern computer-aided computational symmetry."
+              "House of Shah is committed to building a stronger manufacturing ecosystem through in-house production, advanced technology, and a deep respect for Indian craftsmanship. By combining generations of jewellery expertise with modern manufacturing capabilities, we create contemporary 925 sterling silver jewellery that is proudly designed and manufactured in India.
+              Our commitment to Make in India reflects a belief that world-class quality, innovation, and craftsmanship can be built at home and shared with the world.
+"
             </p>
 
             {/* Atelier Phase Timeline (Blueprint Panels) */}

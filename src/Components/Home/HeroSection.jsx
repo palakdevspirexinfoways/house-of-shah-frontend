@@ -158,7 +158,7 @@ const HeroSlider = () => {
       </div>
 
       {/* Indicators */}
-      <div className="absolute left-12 bottom-12 flex flex-col gap-6 z-30">
+      <div className="absolute left-12 bottom-12 hidden md:flex flex-col gap-6 z-30">
         {slides.map((_, index) => (
           <button key={index} onClick={() => setCurrent(index)} className="group flex items-center gap-4 outline-none">
             <div className={`h-16 w-[2px] transition-all duration-700 ${index === current ? 'bg-white' : 'bg-white/30 group-hover:bg-white/50'}`} />

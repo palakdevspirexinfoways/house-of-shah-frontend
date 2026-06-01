@@ -124,7 +124,7 @@ const SignaturePieces = () => {
 
   // WhatsApp Inquiry Link Generator
   const handleInquiry = (item) => {
-    const phoneNumber = "919000000000"; // Dummy WhatsApp Number, can be edited
+    const phoneNumber = "919510806869"; // WhatsApp Number
     const message = encodeURIComponent(
       `Hi House of Shah, I would like to inquire about this exquisite Signature Piece:\n\n` +
       `• Category: ${activeCategory.name}\n` +

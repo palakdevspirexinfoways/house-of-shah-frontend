@@ -4,10 +4,12 @@ import { X, ShoppingBag, Search, Heart, Trash2, ArrowUpRight, User } from 'lucid
 import LanguageSelector from './LanguageSelector';
 import { useCart } from '../../context/CartContext';
 import LoginSignupModal from './LoginSignupModal';
+import logo from '../../aasets/HOS_Logo_V.1-removebg-preview.png';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [exhibitionMode, setExhibitionMode] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { cartItems, isCartOpen, setIsCartOpen, removeFromCart, totalPrice } = useCart();
 
@@ -73,11 +75,18 @@ const Header = () => {
       .then((data) => {
         if (data.success) {
           const popupEnabled = data.data.popupEnabled !== false;
+          const isExhibit = data.data.exhibitionMode === true;
+          setExhibitionMode(isExhibit);
           const userSession = localStorage.getItem('hos_user_session');
-          if (popupEnabled && userSession !== 'active') {
-            timer = setTimeout(() => {
-              setIsAuthOpen(true);
-            }, 5000);
+          
+          if (userSession !== 'active') {
+            if (isExhibit) {
+              setIsAuthOpen(true); // Open immediately
+            } else if (popupEnabled) {
+              timer = setTimeout(() => {
+                setIsAuthOpen(true);
+              }, 5000);
+            }
           }
         }
       })
@@ -112,29 +121,28 @@ const Header = () => {
   return (
     <>
       <header className="fixed top-0 w-full z-[100] font-outfit transition-all duration-500">
-        {!scrolled && (
-          <div className="bg-[var(--primary-blue)] text-[var(--white)] text-[9px] py-2 text-center tracking-[0.25em] uppercase font-medium ">
-           92.5 Sterling Silver Jewellery on orders above ₹1999
-          </div>
-        )}
 
         <div className="w-full bg-gradient-to-b from-black/60 to-transparent ">
-          <nav className={`container mx-auto transition-all duration-500 px-10 py-5 flex items-center justify-between rounded-full
+          <nav className={`w-full max-w-[1440px] mx-auto transition-all duration-500 px-4 lg:px-8 xl:px-12 py-5 flex items-center justify-between rounded-full
               ${scrolled 
                 ? 'bg-[var(--primary-blue)]/95 backdrop-blur-xl shadow-2xl w-full max-w-full rounded-none' 
                 : 'bg-transparent'}`}>
             
             {/* LEFT: LOGO */}
-            <div className="flex-shrink-0">
-              <a href="/" className="group">
-                 <span className="text-white font-bold tracking-[0.3em] uppercase text-sm transition-opacity group-hover:opacity-80">House of Shah</span>
+            <div className="flex-shrink-0 flex items-center mr-8 lg:mr-16 xl:mr-24">
+              <a href="/" className="group block">
+                <img 
+                  src={logo} 
+                  alt="House of Shah Logo" 
+                  className="h-12 md:h-16 w-auto object-contain scale-[2.8] md:scale-[2.9] lg:scale-[2.5] xl:scale-[3.0] origin-left transition-transform duration-500"
+                />
               </a>
             </div>
 
             {/* CENTER: NAV LINKS */}
-            <div className="hidden lg:flex flex-1 justify-center items-center gap-12">
+            <div className="hidden lg:flex flex-1 justify-center items-center gap-4 lg:gap-5 xl:gap-8">
               {navLinks.map((link) => (
-                <a key={link.name} href={link.href} className="text-xs font-bold uppercase tracking-[0.3em] text-[var(--white)]/70 hover:text-[var(--white)] transition-all relative group">
+                <a key={link.name} href={link.href} className="text-[10px] xl:text-xs font-bold uppercase tracking-[0.15em] xl:tracking-[0.3em] text-[var(--white)]/70 hover:text-[var(--white)] transition-all relative group whitespace-nowrap">
                   {link.name}
                   <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-[var(--white)] transition-all duration-300 group-hover:w-full"></span>
                 </a>
@@ -142,7 +150,7 @@ const Header = () => {
             </div>
 
             {/* RIGHT: E-COMMERCE ACTIONS */}
-            <div className="flex items-center gap-5 lg:gap-7 flex-shrink-0">
+            <div className="flex items-center gap-5 md:gap-6 lg:gap-5 xl:gap-7 flex-shrink-0">
               {/* INLINE EXPANDING SEARCH CONTROLLER */}
               {isSearchOpen ? (
                 <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 pl-3 pr-2 py-1.5 transition-all w-48 sm:w-64 relative font-outfit">
@@ -206,7 +214,7 @@ const Header = () => {
               ) : (
                 <button 
                   onClick={() => setIsSearchOpen(true)}
-                  className="text-[var(--white)] hover:opacity-60 transition-opacity pt-1 block"
+                  className="text-[var(--white)] hover:opacity-60 transition-opacity flex items-center justify-center"
                   aria-label="Toggle Search Panel"
                 >
                   <Search size={18} strokeWidth={1.5} />
@@ -255,13 +263,13 @@ const Header = () => {
                     </AnimatePresence>
                   </>
                 ) : (
-                  <button onClick={() => setIsAuthOpen(true)} className="relative text-[var(--white)] group hover:scale-110 transition-transform">
+                  <button onClick={() => setIsAuthOpen(true)} className="relative text-[var(--white)] group hover:scale-110 transition-transform flex items-center justify-center">
                     <User size={19} strokeWidth={1.5} />
                   </button>
                 )}
               </div>
 
-              <button className="lg:hidden text-[var(--white)] flex flex-col gap-1.5 items-end group" onClick={() => setIsOpen(true)}>
+              <button className="lg:hidden text-[var(--white)] flex flex-col gap-1.5 items-end justify-center group" onClick={() => setIsOpen(true)}>
                  <span className="w-6 h-[1px] bg-[var(--white)]"></span>
                  <span className="w-4 h-[1px] bg-[var(--white)]"></span>
               </button>
@@ -353,7 +361,9 @@ const Header = () => {
         )}
       </AnimatePresence>
 
-      <LoginSignupModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
+      <LoginSignupModal isOpen={isAuthOpen} onClose={() => {
+        if (!exhibitionMode) setIsAuthOpen(false);
+      }} isExhibitionMode={exhibitionMode} />
 
       {/* Visual Search Masterpiece Detail Modal */}
       <AnimatePresence>
@@ -421,7 +431,7 @@ const Header = () => {
 
                 <button 
                   onClick={() => {
-                    const phoneNumber = "919000000000"; // Dummy WhatsApp Number, can be edited
+                    const phoneNumber = "919510806869"; // WhatsApp Number
                     const message = encodeURIComponent(
                       `Hi House of Shah, I would like to inquire about this masterpiece discovered through the search gallery:\n\n` +
                       `• Category: ${selectedSearchProduct.category}\n` +

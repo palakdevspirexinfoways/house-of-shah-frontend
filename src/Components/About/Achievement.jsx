@@ -5,7 +5,7 @@ import { MousePointer2, Box, Globe, Star } from 'lucide-react';
 const LegacyBlueprint = () => {
   const milestones = [
     {
-      year: "2011",
+      year: "2023",
       value: "15+",
       label: "Years of Mastery",
       desc: "Started with a vision to redefine Rajkot's silver craftsmanship through architectural logic.",
@@ -52,7 +52,7 @@ const LegacyBlueprint = () => {
           </motion.div>
           <h2 className="text-5xl md:text-7xl font-bold tracking-tighter leading-none mb-8">
             Engineering <br />
-            <span className="opacity-30 italic font-light">Success Since 2011.</span>
+            <span className="opacity-30 italic font-light">Success Since 2023.</span>
           </h2>
         </div>
 

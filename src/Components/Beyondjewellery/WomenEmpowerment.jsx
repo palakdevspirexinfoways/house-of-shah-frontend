@@ -62,7 +62,13 @@ const WomenEmpowerment = () => {
             <div className="w-20 h-[2px] bg-[var(--primary-blue)]" />
 
             <p className="text-sm opacity-70 font-light leading-relaxed border-l-2 border-[var(--primary-blue)]/10 pl-6">
-              We believe that financial autonomy at the grassroots level creates long-lasting community transformation. House of Shah actively sponsors craft training programs for women in rural and semi-urban communities around Rajkot. We teach women the detailed arts of silver filigree, quality sorting, gem-setting, and logistics management, helping them achieve true financial self-reliance and local leadership roles.
+             While women form a significant part of the jewellery industry's consumer base, their representation within jewellery manufacturing remains limited. At House of Shah, we are committed to helping bridge this gap.
+
+<br/><br/>
+             To support this vision, HOS launched a dedicated initiative, training women from nearby villages and small towns in jewellery manufacturing processes. Beyond vocational training, the program also supports continued education, offering opportunities for women to pursue further studies through evening schooling if they choose.
+
+<br/><br/>
+             Today, 85+ women are part of the HOS workforce, contributing their skills, dedication, and craftsmanship to the brand's journey. Their growth and success remain an important part of our purpose beyond jewellery
             </p>
 
             {/* Custom High-Contrast Stats Block */}

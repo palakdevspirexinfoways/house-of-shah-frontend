@@ -14,6 +14,7 @@ const Dashboard = ({
   productsCount, 
   galleryCount, 
   popupEnabled, 
+  exhibitionMode,
   users = [] 
 }) => {
   const [timeline, setTimeline] = useState('7D'); // '7D' | '30D' | 'AllTime'
@@ -60,6 +61,15 @@ const Dashboard = ({
       color: popupEnabled ? '#059669' : '#dc2626',
       lightBg: popupEnabled ? 'rgba(5,150,105,0.08)' : 'rgba(220,38,38,0.08)',
       border: popupEnabled ? 'rgba(5,150,105,0.15)' : 'rgba(220,38,38,0.15)'
+    },
+    { 
+      title: 'Exhibition Mode', 
+      value: exhibitionMode ? 'STRICT' : 'OFF', 
+      code: 'SYSTEM.EXHIBIT', 
+      icon: <ToggleLeft size={18} />, 
+      color: exhibitionMode ? '#dc2626' : '#9ca3af',
+      lightBg: exhibitionMode ? 'rgba(220,38,38,0.08)' : 'rgba(156,163,175,0.08)',
+      border: exhibitionMode ? 'rgba(220,38,38,0.15)' : 'rgba(156,163,175,0.15)'
     }
   ];
 

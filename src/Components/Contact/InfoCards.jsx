@@ -7,7 +7,7 @@ const InfoCards = () => {
     {
       icon: <Phone size={32} strokeWidth={1} />,
       title: "Contact Info",
-      details: ["+91 98765 43210", "inquiries@houseofshah.com"]
+      details: ["+91 95108 06869", "inquiries@houseofshah.com"]
     },
     {
       icon: <MapPin size={32} strokeWidth={1} />,

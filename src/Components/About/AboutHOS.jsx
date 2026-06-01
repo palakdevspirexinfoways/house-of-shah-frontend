@@ -8,38 +8,38 @@ const AboutHOS = () => {
       letter: "H",
       title: "Honored Heritage",
       subtitle: "The Rajkot Artistry",
-      desc: "Deeply rooted in the ancestral silver metalwork legacy of Rajkot, we collaborate with generations of master karigars. Every curve and hammer strike preserves centuries of rich Indian silver heritage, made relevant for the modern world.",
+      desc: "Tracing our roots back to 1944 with Shah Raichand Premchand & Co., we preserve Rajkot's artistry. Today, we actively train and upskill local Gujarati workers, transforming raw talent into skilled artisans.",
       icon: <Compass className="w-6 h-6 text-[#1a4173]" />
     },
     {
       letter: "O",
       title: "Omnipresent Purity",
       subtitle: "BIS 925 Hallmark",
-      desc: "At House of Shah, trust is our most valuable metal. We assure 100% absolute traceability and BIS Hallmark purity certification on every single creation. Our commitment guarantees a pristine legacy that lasts generations.",
+      desc: "With complete in-house control over manufacturing and plating, we assure absolute purity. Every piece undergoes stringent quality control to ensure hallmarked 925 sterling silver that meets the highest global standards.",
       icon: <Shield className="w-6 h-6 text-[#1a4173]" />
     },
     {
       letter: "S",
       title: "Symmetric Design",
-      subtitle: "Mathematical Precision",
-      desc: "Our design DNA blends fine art with architectural logic. We engineer each piece with strict geometric symmetry, resulting in structural balance and a hand-polished, mirror-engineered finish that reflects flawless luxury.",
+      subtitle: "Contemporary Craft",
+      desc: "Specialising in lightweight, high-finish silver jewellery, our collections are designed for contemporary wearers. We blend fashion-forward aesthetics with premium finishing options including rhodium, gold, and rose gold.",
       icon: <Sparkles className="w-6 h-6 text-[#1a4173]" />
     }
   ];
 
   return (
     <section className="py-24 bg-white text-[#1a4173] font-outfit overflow-hidden relative">
-      
+
       {/* Decorative Brand Text Background */}
       <div className="absolute top-10 left-10 text-[120px] font-black opacity-[0.02] select-none tracking-tighter leading-none pointer-events-none hidden lg:block">
         HOUSE OF SHAH
       </div>
 
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
-        
+
         {/* Header Section */}
         <div className="max-w-3xl mx-auto text-center mb-20">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -50,8 +50,8 @@ const AboutHOS = () => {
             <span className="text-[10px] font-bold uppercase tracking-[0.4em] opacity-60">The Brand Philosophy</span>
             <div className="w-8 h-[1px] bg-[#1a4173]/30" />
           </motion.div>
-          
-          <motion.h2 
+
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -61,7 +61,7 @@ const AboutHOS = () => {
             Defining The <br />
             <span className="opacity-30 italic font-light">H.O.S Signature</span>
           </motion.h2>
-          
+
           <motion.p 
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -69,7 +69,7 @@ const AboutHOS = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-[#1a4173]/70 font-light text-sm md:text-base leading-relaxed max-w-xl mx-auto"
           >
-            House of Shah (HOS) represents more than just exquisite silver jewelry. It is a philosophy where raw silver is refined through heritage, guaranteed with absolute purity, and sculpted with creative geometry.
+            Founded in 2023 by siblings Hitanshu and Heer Shah, House Of Shah carries forward a legacy that began in 1944. We create high-finish 925 sterling silver jewellery that stands alongside imported designs in unparalleled quality and craftsmanship.
           </motion.p>
         </div>
 

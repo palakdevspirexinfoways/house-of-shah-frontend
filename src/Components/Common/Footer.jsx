@@ -4,6 +4,7 @@ import { ArrowUpRight, Phone, MessageSquare, Globe } from 'lucide-react';
 import { BsInstagram } from 'react-icons/bs';
 import { FaFacebookF } from 'react-icons/fa';
 import { LiaLinkedinIn } from 'react-icons/lia';
+import logo from '../../aasets/HOS_Logo_V.2-removebg-preview.png';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -40,13 +41,17 @@ const Footer = () => {
 
               <div className="relative flex items-center gap-4">
                 {/* Logo Image Wrapper with precise borders */}
-                <div className="relative     border-white/20 transition-all duration-500 group-hover:border-[var(--primary-blue)]">
-                  <span className="text-white font-bold tracking-[0.35em] uppercase text-base transition-all duration-500 group-hover:scale-105 inline-block">House of Shah</span>
+                <div className="relative flex items-center border-white/20 transition-all duration-500 group-hover:border-[var(--primary-blue)]">
+                  <img 
+                    src={logo} 
+                    alt="House of Shah Logo" 
+                    className="h-12 md:h-16 w-auto object-contain scale-[1.5] md:scale-[2.0] transition-transform duration-500"
+                  />
                 </div>
               </div>
             </motion.div>
             <p className="text-[var(--white)]/60 text-sm leading-relaxed font-light tracking-wide italic">
-              "Redefining the metallurgy of pure silver for the elite. Every artifact is a testament to industrial precision and ancestral soul."
+              "Where silver finds its form, and craftsmanship finds its legacy."
             </p>
           </div>
 
@@ -117,7 +122,7 @@ const Footer = () => {
 
           {/* Item 2: Concierge Line */}
           <a
-            href="tel:+919026387472"
+            href="tel:+919510806869"
             className="flex flex-col md:flex-row items-center md:items-start text-center md:text-left gap-4   transition-colors p-4 rounded group justify-self-center"
           >
             <div className="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-[var(--white)]/5 rounded-full group-hover:bg-[var(--white)] group-hover:text-[var(--primary-blue)] transition-all">
@@ -125,13 +130,13 @@ const Footer = () => {
             </div>
             <div>
               <p className="text-[9px] uppercase tracking-[0.3em] text-[var(--white)]/30 font-bold">Concierge Line</p>
-              <p className="text-xs font-bold tracking-widest uppercase">+91 90263 87472</p>
+              <p className="text-xs font-bold tracking-widest uppercase">+91 95108 06869</p>
             </div>
           </a>
 
           {/* Item 3: Instant Inquiry */}
           <a
-            href="https://wa.me/919026387472"
+            href="https://wa.me/919510806869"
             className="flex flex-col md:flex-row items-center md:items-start text-center md:text-left gap-4   transition-colors p-4 rounded group justify-self-center"
           >
             <div className="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-[var(--white)]/5 rounded-full group-hover:bg-[var(--white)] group-hover:text-[var(--primary-blue)] transition-all">
@@ -153,7 +158,7 @@ const Footer = () => {
             </p>
             <div className="hidden md:block w-24 h-[1px] bg-[var(--white)]/10"></div>
             <p className="text-[9px] font-medium tracking-[0.2em] opacity-30 italic hidden lg:block uppercase">
-              The Architecture of Purity.
+              Where heritage inspires innovation.
             </p>
           </div>
 
