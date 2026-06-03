@@ -4,10 +4,11 @@ import { FaWhatsapp } from "react-icons/fa";
 
 const WhatsAppButton = () => {
   const phoneNumber = "919510806869"; // apna number
+  const message = "Hello,\n\nI'm interested in learning more about your jewellery collections and manufacturing services.";
 
   return (
     <motion.a
-      href={`https://wa.me/${phoneNumber}`}
+      href={`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`}
       target="_blank"
       rel="noopener noreferrer"
       initial={{ scale: 0, opacity: 0 }}

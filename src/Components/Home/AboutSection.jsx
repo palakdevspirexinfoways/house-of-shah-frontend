@@ -64,7 +64,7 @@ const AboutSection = () => {
               </h2>
 
               <p className="text-[var(--primary-blue)]/70 leading-relaxed mb-12 text-lg font-light max-w-xl">
-                <span className="font-semibold text-[var(--primary-blue)]">House of Shah</span>  is a new-age 925 sterling silver jewellery manufacturing house rooted in generations of expertise. Combining contemporary design sensibilities with advanced production techniques, we create refined collections tailored for evolving retail <span className="text-[var(--primary-blue)] italic">brands and modern consumers.</span>
+                <span className="font-semibold text-[var(--primary-blue)]">House of Shah</span>  is a new-age 925 sterling silver jewellery manufacturing house rooted in generations of expertise. Combining contemporary design sensibilities with advanced production techniques, we create refined collections tailored for evolving  <span className="text-[var(--primary-blue)] italic">retail brands and modern consumers.</span>
               </p>
 
               {/* Core Values Grid (Instead of numeric stats) */}

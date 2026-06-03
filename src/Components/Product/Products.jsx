@@ -69,33 +69,19 @@ const SignaturePieces = ({
             </h2>
           </div>
 
-          {/* Scroll Arrows */}
-          <div className="flex gap-3 shrink-0">
-            <button
-              onClick={() => handleScroll('left')}
-              className="p-3 lg:p-4 border border-[var(--primary-blue)]/10 text-[var(--primary-blue)] hover:bg-[var(--primary-blue)] hover:text-white transition-all rounded-full hover:scale-105 active:scale-95"
-              aria-label="Previous"
-            >
-              <ChevronLeft size={20} strokeWidth={1.5} />
-            </button>
-            <button
-              onClick={() => handleScroll('right')}
-              className="p-3 lg:p-4 border border-[var(--primary-blue)]/10 text-[var(--primary-blue)] hover:bg-[var(--primary-blue)] hover:text-white transition-all rounded-full hover:scale-105 active:scale-95"
-              aria-label="Next"
-            >
-              <ChevronRight size={20} strokeWidth={1.5} />
-            </button>
-          </div>
+         
         </div>
 
         {/* ── Category Names for Filtering (Rendered directly in Signature Pieces section) ── */}
-        <div className="flex flex-wrap gap-2.5 mb-10 items-center">
-          <span className="text-[10px] uppercase font-bold tracking-widest text-[#1a4173]/40 mr-2">Filter By Category:</span>
+        <div className="mb-10">
+          <span className="text-[10px] uppercase font-bold tracking-widest text-[#1a4173]/40 block mb-3">Filter By Category:</span>
+          <div className='flex flex-row justify-between items-center'>
+            <div className="flex flex-wrap gap-2.5 items-center">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`px-5 py-2.5 rounded-none text-[10px] font-bold uppercase tracking-widest transition-all duration-300 border ${activeCategory === cat
+              className={`px-4 py-1.5 md:py-2 md:px-5 rounded-none text-[9px] md:text-[10px] font-bold uppercase tracking-widest transition-all duration-300 border ${activeCategory === cat
                   ? 'bg-[#1a4173] text-white border-[#1a4173] shadow-md'
                   : 'bg-white text-[#1a4173]/50 border border-gray-150 hover:text-[#1a4173] hover:border-gray-200'
                 }`}
@@ -103,6 +89,25 @@ const SignaturePieces = ({
               {cat}
             </button>
           ))}
+        </div>
+         {/* Scroll Arrows */}
+          <div className="flex gap-2 lg:gap-3 shrink-0">
+            <button
+              onClick={() => handleScroll('left')}
+              className="w-10 h-10 lg:w-12 lg:h-12 flex items-center justify-center border border-[var(--primary-blue)]/10 text-[var(--primary-blue)] hover:bg-[var(--primary-blue)] hover:text-white transition-all rounded-full hover:scale-105 active:scale-95"
+              aria-label="Previous"
+            >
+              <ChevronLeft size={16} strokeWidth={1.5} />
+            </button>
+            <button
+              onClick={() => handleScroll('right')}
+              className="w-10 h-10 lg:w-12 lg:h-12 flex items-center justify-center border border-[var(--primary-blue)]/10 text-[var(--primary-blue)] hover:bg-[var(--primary-blue)] hover:text-white transition-all rounded-full hover:scale-105 active:scale-95"
+              aria-label="Next"
+            >
+              <ChevronRight size={16} strokeWidth={1.5} />
+            </button>
+          </div>
+          </div>
         </div>
 
         {/* Dynamic Items Counter */}

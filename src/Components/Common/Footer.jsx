@@ -17,8 +17,9 @@ const Footer = () => {
       { name: 'Curation', href: '#gallery' }
     ],
     legal: [
-      { name: 'Privacy Policy', href: '#' },
-      { name: 'Terms of Service', href: '#' },
+      { name: 'Privacy Policy', href: '/privacy' },
+      { name: 'Terms & Conditions', href: '/terms' },
+      { name: 'Piracy Policy', href: '/piracy' },
     ]
   };
 
@@ -76,11 +77,11 @@ const Footer = () => {
               <h4 className="text-[10px] font-bold tracking-[0.4em] uppercase mb-8 text-[var(--white)]/30">Presence</h4>
               <div className="flex flex-col gap-4">
                 {[
-                  { icon: BsInstagram, label: 'Instagram' },
-                  { icon: LiaLinkedinIn, label: 'LinkedIn' },
-                  { icon: FaFacebookF, label: 'Facebook' }
+                  { icon: BsInstagram, label: 'Instagram', url: 'https://www.instagram.com/houseofshah.in' },
+                  { icon: LiaLinkedinIn, label: 'LinkedIn', url: 'https://www.linkedin.com/company/house-of-shah-rajkot/' },
+                  { icon: FaFacebookF, label: 'Facebook', url: 'https://www.facebook.com/share/1DPDG6hWv6/' }
                 ].map((social, i) => (
-                  <a key={i} href="#" className="flex items-center gap-3 group">
+                  <a key={i} href={social.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 group">
                     <div className="w-8 h-8 rounded-full border border-[var(--white)]/20 flex items-center justify-center group-hover:bg-[var(--white)] group-hover:text-[var(--primary-blue)] transition-all duration-500">
                       <social.icon size={14} />
                     </div>

@@ -225,7 +225,7 @@ const AdminPage = () => {
   // Slide Form Fields
   const [slideForm, setSlideForm] = useState({ id: '', tagline: '', title: '', desc: '', image: '' });
   // Product Form Fields
-  const [productForm, setProductForm] = useState({ id: '', title: '', collection: 'Heritage', category: 'Necklaces', homepageHighlight: '', weight: '', image: '' });
+  const [productForm, setProductForm] = useState({ id: '', title: '', collection: 'Heritage', category: 'Necklaces', homepageHighlight: '', weight: '', image: '', dynamicText: '' });
   // Gallery Form Fields
   const [galleryForm, setGalleryForm] = useState({ id: '', title: '', category: '', image: '' });
 
@@ -469,7 +469,7 @@ const AdminPage = () => {
     setFormType(type);
     setEditItem(null);
     if (type === 'slide') setSlideForm({ tagline: '', title: '', desc: '', image: '' });
-    else if (type === 'product') setProductForm({ title: '', collection: availableCollections[0] || 'Heritage', category: availableCategories[0] || 'Necklaces', homepageHighlight: '', weight: '', image: '' });
+    else if (type === 'product') setProductForm({ title: '', collection: availableCollections[0] || 'Heritage', category: availableCategories[0] || 'Necklaces', homepageHighlight: '', weight: '', image: '', dynamicText: '' });
     else if (type === 'gallery') setGalleryForm({ title: '', category: 'Magazine Issue #44', image: '' });
     setShowAddModal(true);
   };
@@ -478,7 +478,7 @@ const AdminPage = () => {
     setFormType(type);
     setEditItem(item);
     if (type === 'slide') setSlideForm({ tagline: item.tagline || '', title: item.title, desc: item.desc || '', image: item.image });
-    else if (type === 'product') setProductForm({ title: item.title, collection: item.collection || '', category: item.category, homepageHighlight: item.homepageHighlight || '', weight: item.weight || '', image: item.image });
+    else if (type === 'product') setProductForm({ title: item.title, collection: item.collection || '', category: item.category, homepageHighlight: item.homepageHighlight || '', weight: item.weight || '', image: item.image, dynamicText: item.dynamicText || '' });
     else if (type === 'gallery') setGalleryForm({ title: item.title, category: item.category, image: item.image });
     setShowAddModal(true);
   };
@@ -806,6 +806,11 @@ const AdminPage = () => {
                 <Field label="Product Weight (g)">
                   <LuxInput value={productForm.weight} onChange={e => setProductForm({ ...productForm, weight: e.target.value })} placeholder="e.g. 92.5g" />
                 </Field>
+                <div className="col-span-2">
+                  <Field label="Dynamic Text (e.g. masterpieces matching active filters)">
+                    <LuxInput value={productForm.dynamicText || ''} onChange={e => setProductForm({ ...productForm, dynamicText: e.target.value })} placeholder="Custom text for collection" />
+                  </Field>
+                </div>
               </div>
 
               <Field label="Upload Product Image *">

@@ -70,33 +70,14 @@ const SignatureCollections = ({
             </h2>
           </div>
 
-          {/* Circular Scroll Buttons on Top-Right */}
-          <div className="flex items-center gap-3 shrink-0">
-            <button 
-              type="button"
-              onClick={() => handleScroll('left')}
-              className="w-12 h-12 rounded-full border border-gray-200 hover:border-[#1a4173] flex items-center justify-center text-[#1a4173]/70 hover:text-[#1a4173] transition-all bg-white shadow-sm active:scale-95 hover:shadow-md cursor-pointer"
-              aria-label="Scroll left"
-            >
-              <ChevronLeft size={18} />
-            </button>
-            <button 
-              type="button"
-              onClick={() => handleScroll('right')}
-              className="w-12 h-12 rounded-full border border-gray-200 hover:border-[#1a4173] flex items-center justify-center text-[#1a4173]/70 hover:text-[#1a4173] transition-all bg-white shadow-sm active:scale-95 hover:shadow-md cursor-pointer"
-              aria-label="Scroll right"
-            >
-              <ChevronRight size={18} />
-            </button>
-          </div>
         </div>
 
         {/* ── Unified Search & Filter Control Center (Rendered inside Signature Collections) ── */}
-        <div className="max-w-4xl mb-12 space-y-8">
+        <div className="container mb-12 space-y-8">
 
           {/* 1. High-End Search Bar */}
           <div className="relative z-10">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
@@ -107,7 +88,7 @@ const SignatureCollections = ({
               </div>
               <input
                 type="text"
-                placeholder="Search collections, categories & masterpieces..."
+                placeholder="Search collections & masterpieces..."
                 value={searchQuery}
                 onChange={e => {
                   setSearchQuery(e.target.value);
@@ -193,16 +174,16 @@ const SignatureCollections = ({
           </div>
 
           {/* 3. Collection Filter Row */}
-          <div className="flex flex-col md:flex-row md:items-center gap-3 pt-2">
-            <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#1a4173]/40 md:w-44 shrink-0">Filter By Collection:</span>
-            <div className="flex flex-wrap gap-2">
+          <div className="pt-4">
+            <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#1a4173]/40 block mb-3">Filter By Collection:</span>
+            <div className="flex flex-wrap gap-2 items-center">
               {collections.map((col) => (
                 <button
                   key={col}
                   onClick={() => setActiveCollection(col)}
-                  className={`px-5 py-2.5 rounded-none text-[10px] font-bold uppercase tracking-widest transition-all duration-300 border ${activeCollection === col
-                      ? 'bg-[#1a4173] text-white border-[#1a4173] shadow-md'
-                      : 'bg-white text-[#1a4173]/50 border border-gray-150 hover:text-[#1a4173] hover:border-gray-200'
+                  className={`px-4 py-1.5 md:py-2 md:px-5 rounded-none text-[9px] md:text-[10px] font-bold uppercase tracking-widest transition-all duration-300 border ${activeCollection === col
+                    ? 'bg-[#1a4173] text-white border-[#1a4173] shadow-md'
+                    : 'bg-white text-[#1a4173]/50 border border-gray-150 hover:text-[#1a4173] hover:border-gray-200'
                     }`}
                 >
                   {col}
@@ -211,32 +192,59 @@ const SignatureCollections = ({
             </div>
           </div>
 
+
+
           {/* 4. Sub-category Filter Row */}
-          <div className="flex flex-col md:flex-row md:items-center gap-3 pt-1">
-            <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#1a4173]/40 md:w-44 shrink-0">Filter By Sub-category:</span>
-            <div className="flex flex-wrap gap-2">
-              {categories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  className={`px-5 py-2.5 rounded-none text-[10px] font-bold uppercase tracking-widest transition-all duration-300 border ${activeCategory === cat
+          <div className="pt-4">
+            <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#1a4173]/40 block mb-3">Filter By category:</span>
+            <div className="flex flex-row justify-between items-center">
+              <div className="flex flex-wrap gap-2 items-center">
+                {categories.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setActiveCategory(cat)}
+                    className={`px-4 py-1.5 md:py-2 md:px-5 rounded-none text-[9px] md:text-[10px] font-bold uppercase tracking-widest transition-all duration-300 border ${activeCategory === cat
                       ? 'bg-[#1a4173] text-white border-[#1a4173] shadow-md'
                       : 'bg-white text-[#1a4173]/50 border border-gray-150 hover:text-[#1a4173] hover:border-gray-200'
-                    }`}
-                >
-                  {cat}
-                </button>
-              ))}
+                      }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            <div className="flex items-center gap-2 lg:gap-3 shrink-0 justify-end">
+              <button
+                type="button"
+                onClick={() => handleScroll('left')}
+                className="w-10 h-10 lg:w-12 lg:h-12 rounded-full border border-gray-200 hover:border-[#1a4173] flex items-center justify-center text-[#1a4173]/70 hover:text-[#1a4173] transition-all bg-white shadow-sm active:scale-95 hover:shadow-md cursor-pointer"
+                aria-label="Scroll left"
+              >
+                <ChevronLeft size={16} />
+              </button>
+              <button
+                type="button"
+                onClick={() => handleScroll('right')}
+                className="w-10 h-10 lg:w-12 lg:h-12 rounded-full border border-gray-200 hover:border-[#1a4173] flex items-center justify-center text-[#1a4173]/70 hover:text-[#1a4173] transition-all bg-white shadow-sm active:scale-95 hover:shadow-md cursor-pointer"
+                aria-label="Scroll right"
+              >
+                <ChevronRight size={16} />
+              </button>
+            </div>
             </div>
           </div>
 
+      
         </div>
 
-        {/* Dynamic Items Counter */}
-        <div className="mb-6">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-[#1a4173]/35">
-            {products.length} {products.length === 1 ? 'masterpiece' : 'masterpieces'} matching active filters
-          </span>
+
+        {/* Dynamic Items Counter & Collection Description */}
+        <div className="mb-8 flex flex-col gap-5">
+          {products.length > 0 && products[0].dynamicText && (
+            <p className="text-[10px] md:text-xs text-[#1a4173]/70 font-bold leading-[2] tracking-widest max-w-5xl uppercase">
+              {products[0].dynamicText}
+            </p>
+          )}
+         
         </div>
 
         {/* Left-to-Right Swipeable Product Carousel */}

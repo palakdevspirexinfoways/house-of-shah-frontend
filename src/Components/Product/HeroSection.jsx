@@ -4,27 +4,27 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const slidesData = [
   {
-    tagline: "A 15-Year Legacy of Precision",
+    tagline: "HOS Exclusive",
     title: "Products",
-    desc: "Curating Museum-Grade artifacts and Hallmarked jewelry—where every piece is a 99.9% pure testament to timeless luxury.",
+    desc: "HOS Exclusive",
     image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=1920&auto=format&fit=crop"
   },
   {
-    tagline: "Crafted with Master Artistry",
+    tagline: "HOS Exclusive",
     title: "Artistry",
-    desc: "Experience handcrafted silver masterpieces sculpted with Rajkot's finest techniques and mathematical precision.",
+    desc: "HOS Exclusive",
     image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=1920&auto=format&fit=crop"
   },
   {
-    tagline: "100% BIS Hallmarked Purity",
+    tagline: "HOS Exclusive",
     title: "Purity",
-    desc: "An unbreakable promise of trust. Every creation is certified for ultimate value, absolute tracing, and lifelong beauty.",
+    desc: "",
     image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=1920&auto=format&fit=crop"
   },
   {
-    tagline: "Bespoke Royal Collections",
+    tagline: "HOS Exclusive",
     title: "Legacy",
-    desc: "Reimagined heritage shapes designed to elevate luxury spaces and celebrate modern royalty with timeless symmetry.",
+    desc: "HOS Exclusive",
     image: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?q=80&w=1920&auto=format&fit=crop"
   }
 ];
@@ -224,11 +224,6 @@ const ProductHero = () => {
       <div className="absolute bottom-12 left-12 w-32 h-[1px] bg-white/5 hidden lg:block" />
       <div className="absolute bottom-12 left-12 w-[1px] h-32 bg-white/5 hidden lg:block" />
 
-      {/* --- Slide Index Counter (Bottom Left) --- */}
-      <div className="absolute bottom-12 left-12 z-20 hidden lg:flex items-baseline gap-1 text-white">
-        <span className="text-xl font-bold tracking-tighter">0{currentSlide + 1}</span>
-        <span className="text-xs text-white/30">/ 0{slidesData.length}</span>
-      </div>
 
     </section>
   );

@@ -150,37 +150,18 @@ const SignaturePieces = () => {
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
         
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 border-b border-gray-100 pb-8">
-          <div>
-            <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#1a4173]/50 block mb-3">
-              Elite Individual Masterpieces
-            </span>
-            <h2 className="text-4xl md:text-5xl font-extrabold tracking-tighter uppercase text-[#1a4173]">
-              Signature Pieces
-            </h2>
-          </div>
-          
-          {/* Scroll Navigation */}
-          <div className="flex items-center gap-3">
-            <button 
-              onClick={() => handleScroll('left')}
-              className="w-12 h-12 rounded-none border border-gray-200 hover:border-[#1a4173] flex items-center justify-center text-[#1a4173]/70 hover:text-[#1a4173] transition-all bg-white shadow-sm"
-              aria-label="Scroll left"
-            >
-              <ChevronLeft size={18} />
-            </button>
-            <button 
-              onClick={() => handleScroll('right')}
-              className="w-12 h-12 rounded-none border border-gray-200 hover:border-[#1a4173] flex items-center justify-center text-[#1a4173]/70 hover:text-[#1a4173] transition-all bg-white shadow-sm"
-              aria-label="Scroll right"
-            >
-              <ChevronRight size={18} />
-            </button>
-          </div>
+        <div className="mb-16 border-b border-gray-100 pb-8">
+          <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#1a4173]/50 block mb-3">
+            Elite Individual Masterpieces
+          </span>
+          <h2 className="text-4xl md:text-5xl font-extrabold tracking-tighter uppercase text-[#1a4173]">
+            Signature Pieces
+          </h2>
         </div>
 
-        {/* Brand Acronym Visual Categories Layer (Image-based Luxury Circular buttons) */}
-        <div className="flex flex-wrap justify-center md:justify-start gap-6 md:gap-8 mb-12">
+        {/* Brand Acronym Visual Categories Layer (Image-based Luxury Circular buttons) & Navigation */}
+        <div className="flex flex-col lg:flex-row justify-between lg:items-center gap-6 md:gap-8 mb-12 w-full">
+          <div className="flex flex-wrap justify-center lg:justify-start gap-6 md:gap-8">
           {categoriesData.map((cat, idx) => (
             <button
               key={cat.id}
@@ -208,6 +189,25 @@ const SignaturePieces = () => {
               </span>
             </button>
           ))}
+          </div>
+
+          {/* Scroll Navigation */}
+          <div className="flex items-center gap-3 shrink-0 justify-center lg:justify-end">
+            <button 
+              onClick={() => handleScroll('left')}
+              className="w-12 h-12 rounded-full border border-gray-200 hover:border-[#1a4173] flex items-center justify-center text-[#1a4173]/70 hover:text-[#1a4173] transition-all bg-white shadow-sm"
+              aria-label="Scroll left"
+            >
+              <ChevronLeft size={18} />
+            </button>
+            <button 
+              onClick={() => handleScroll('right')}
+              className="w-12 h-12 rounded-full border border-gray-200 hover:border-[#1a4173] flex items-center justify-center text-[#1a4173]/70 hover:text-[#1a4173] transition-all bg-white shadow-sm"
+              aria-label="Scroll right"
+            >
+              <ChevronRight size={18} />
+            </button>
+          </div>
         </div>
 
         {/* Horizontal Left-to-Right Swipeable List */}

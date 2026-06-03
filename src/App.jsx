@@ -10,6 +10,9 @@ import GalleryPage from './Pages/GalleryPage'
 import ContactPage from './Pages/ContactPage'
 import BeyondJewellery from './Pages/Beyondjewellery'
 import AdminPage from './Pages/AdminPage'
+import TermsCondition from './Components/Common/Terms&Condition'
+import PrivacyPolicy from './Components/Common/Privacypolicy'
+import PiracyPolicy from './Components/Common/PiracyPolicy'
 
 // MainLayout checks if the current route is the admin workspace and hides customer elements
 function MainLayout({ children }) {
@@ -41,6 +44,10 @@ function App() {
             
             {/* Administration Workspace */}
             <Route path="/admin" element={<AdminPage />} />
+
+            <Route path="/terms" element={<TermsCondition />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/piracy" element={<PiracyPolicy />} />
             
             {/* Catch-all redirect to Home */}
             <Route path="*" element={<HomePage />} />
