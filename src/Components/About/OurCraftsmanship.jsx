@@ -4,13 +4,13 @@ import { Layers, Zap, Hexagon, Rocket } from 'lucide-react';
 
 const CraftsmanshipUnique = () => {
   return (
-    <section className="py-24 bg-[var(--silver-bg)] text-[var(--primary-blue)] font-outfit overflow-hidden relative">
+    <section className="py-16 md:py-24 bg-[var(--silver-bg)] text-[var(--primary-blue)] font-outfit overflow-hidden relative">
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
           
           {/* --- LEFT: ARCHITECTURAL IMAGE LAYERING --- */}
-          <div className="lg:col-span-6 relative h-[500px] md:h-[600px]">
+          <div className="lg:col-span-6 relative h-[400px] md:h-[600px]">
             
             {/* Background Image: The Raw Process (Cleaned up - No Overlay) */}
             <motion.div 
@@ -52,7 +52,7 @@ const CraftsmanshipUnique = () => {
                 02 / Engineering Soul
               </span>
               
-              <h2 className="text-5xl md:text-7xl font-bold leading-[0.9] tracking-tighter mb-8 text-[var(--primary-blue)]">
+              <h2 className="text-4xl md:text-7xl font-bold leading-[0.9] tracking-tighter mb-8 text-[var(--primary-blue)]">
                 CRAFTING <br /> 
                 <span className="text-[var(--primary-blue)]/30 italic font-light">
                   THE RADIANCE

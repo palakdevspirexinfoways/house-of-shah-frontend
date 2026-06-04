@@ -2,8 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 
 const ContactHero = () => {
+    const [slide, setSlide] = useState(null);
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
     const { scrollY } = useScroll();
+
+    useEffect(() => {
+        fetch(`${import.meta.env.VITE_API_BASE_URL}/slides?page=contact`)
+          .then(res => res.json())
+          .then(data => {
+            if (data.success && data.data && data.data.length > 0) {
+              setSlide(data.data[0]);
+            }
+          })
+          .catch(err => console.error('[Contact Hero Fetch Error]', err));
+    }, []);
 
     // Parallax effects
     const y1 = useTransform(scrollY, [0, 500], [0, 200]);
@@ -34,8 +46,8 @@ const ContactHero = () => {
             >
                 <motion.img
                     style={{ x: springMouseX, y: springMouseY }}
-                    src="https://www.ross-simons.com/dw/image/v2/BKHT_PRD/on/demandware.static/-/Sites-RossSimons-Library/default/dwea3c75da/graphics/education/education-top-images/000160_EDU_D_RingMetals.jpg?sw=1920&q=70"
-                    alt="Premium Silver Craft"
+                    src={slide?.image || "https://www.ross-simons.com/dw/image/v2/BKHT_PRD/on/demandware.static/-/Sites-RossSimons-Library/default/dwea3c75da/graphics/education/education-top-images/000160_EDU_D_RingMetals.jpg?sw=1920&q=70"}
+                    alt={slide?.title || "Premium Silver Craft"}
                     className="w-full h-full object-cover scale-110"
                 />
                 {/* Sophisticated Gradient Overlay */}
@@ -55,9 +67,9 @@ const ContactHero = () => {
                     transition={{ duration: 1, ease: "circOut" }}
                     className="mb-8"
                 >
-                    <span className="text-white/40 tracking-[0.8em] uppercase text-[9px] md:text-xs font-bold flex items-center gap-4">
+                    <span className="text-white/40 tracking-[0.2em] md:tracking-[0.8em] uppercase text-[9px] md:text-xs font-bold flex items-center gap-4">
                         <div className="w-8 h-[1px] bg-white/20" />
-                        A 15-Year Legacy of Precision
+                        {slide?.tagline || "A 15-Year Legacy of Precision"}
                         <div className="w-8 h-[1px] bg-white/20" />
                     </span>
                 </motion.div>
@@ -69,8 +81,8 @@ const ContactHero = () => {
                     transition={{ delay: 0.2, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                     className="relative"
                 >
-                    <h1 className="text-white text-7xl md:text-9xl lg:text-[13rem] uppercase font-bold leading-none mb-4 mix-blend-difference">
-                        Contact Us
+                    <h1 className="text-white text-5xl md:text-9xl lg:text-[13rem] uppercase font-bold leading-none mb-4 mix-blend-difference">
+                        {slide?.title || "Contact Us"}
                     </h1>
                     {/* Luxury Floating Element */}
                     <motion.div
@@ -115,27 +127,6 @@ const ContactHero = () => {
 
             <div className="absolute bottom-12 right-12 w-32 h-[1px] bg-white/5 hidden lg:block" />
             <div className="absolute bottom-12 right-12 w-[1px] h-32 bg-white/5 hidden lg:block" />
-
-            {/* --- Scroll Indicator --- */}
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1.5, duration: 1 }}
-                className="absolute bottom-12 left-12 flex flex-col items-center gap-6"
-            >
-                <div className="flex flex-col gap-2">
-                    {[0.2, 0.4, 0.6].map((op, i) => (
-                        <motion.div
-                            key={i}
-                            animate={{ opacity: [op, 1, op] }}
-                            transition={{ repeat: Infinity, duration: 2, delay: i * 0.3 }}
-                            className="w-[1px] h-4 bg-white"
-                            style={{ opacity: op }}
-                        />
-                    ))}
-                </div>
-                <span className="text-[8px] text-white/30 tracking-[0.5em] uppercase vertical-text">Scroll</span>
-            </motion.div>
 
         </section>
     );

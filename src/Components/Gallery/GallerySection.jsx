@@ -109,7 +109,7 @@ const GallerySection = () => {
     : galleryItems.filter(item => item.category === activeFilter);
 
   return (
-    <section className="bg-white py-32 px-6 md:px-12 lg:px-24 font-outfit overflow-hidden">
+    <section className="bg-white py-16 md:py-32 px-6 md:px-12 lg:px-24 font-outfit overflow-hidden">
       <div className="max-w-[1600px] mx-auto">
         
         {/* --- SECTION HEADER --- */}
@@ -120,7 +120,7 @@ const GallerySection = () => {
                 Visual Exhibition
               </span>
             </motion.div>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-[var(--primary-blue)] tracking-tighter leading-none uppercase">
+            <h1 className="text-4xl md:text-7xl lg:text-8xl font-bold text-[var(--primary-blue)] tracking-tighter leading-none uppercase">
               THE ARTISTRY <br />
               <span className="font-light italic text-[var(--primary-blue)]/30 lowercase tracking-normal font-serif block mt-2">
                 archive

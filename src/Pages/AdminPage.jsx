@@ -35,7 +35,7 @@ const inputStyle = {
 const inputFocusStyle = { border: '1.5px solid #1a4173', boxShadow: '0 0 0 3px rgba(26,65,115,0.08)' };
 
 // ─── Custom Luxury Dropdown ───────────────────────────────────────────────────
-const CustomDropdown = ({ value, onChange, options, placeholder = 'Select...', hasNewOption, onAddNew }) => {
+const CustomDropdown = ({ value, onChange, options, placeholder = 'Select...', hasNewOption, onAddNew, onDeleteOption }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState('');
   const ref = useRef(null);
@@ -116,23 +116,34 @@ const CustomDropdown = ({ value, onChange, options, placeholder = 'Select...', h
             {/* Options */}
             <div className="max-h-52 overflow-y-auto py-1.5">
               {filtered.map((opt) => (
-                <button
-                  key={opt}
-                  type="button"
-                  onClick={() => handleSelect(opt)}
-                  className="w-full flex items-center justify-between px-4 py-2.5 text-left transition-colors font-outfit"
+                <div key={opt} className="w-full flex items-center justify-between transition-colors font-outfit"
                   style={{
                     color: opt === value ? '#1a4173' : '#374151',
                     background: opt === value ? 'rgba(26,65,115,0.06)' : 'transparent',
-                    fontSize: '13px',
-                    fontWeight: opt === value ? 700 : 500
                   }}
                   onMouseOver={e => { if (opt !== value) e.currentTarget.style.background = 'rgba(26,65,115,0.03)'; }}
                   onMouseOut={e => { if (opt !== value) e.currentTarget.style.background = 'transparent'; }}
                 >
-                  {opt}
-                  {opt === value && <Check size={13} style={{ color: '#1a4173' }} />}
-                </button>
+                  <button
+                    type="button"
+                    onClick={() => handleSelect(opt)}
+                    className="flex-1 flex items-center justify-between px-4 py-2.5 text-left"
+                    style={{ fontSize: '13px', fontWeight: opt === value ? 700 : 500 }}
+                  >
+                    {opt}
+                    {opt === value && <Check size={13} style={{ color: '#1a4173' }} />}
+                  </button>
+                  {onDeleteOption && (
+                    <button
+                      type="button"
+                      onClick={(e) => { e.stopPropagation(); onDeleteOption(opt); }}
+                      className="px-4 py-2.5 text-red-400 hover:text-red-600 transition-colors"
+                      title="Delete Option"
+                    >
+                      <Trash2 size={13} />
+                    </button>
+                  )}
+                </div>
               ))}
               {filtered.length === 0 && (
                 <div className="px-4 py-3 text-sm text-gray-400 text-center">No matches</div>
@@ -169,7 +180,7 @@ const Field = ({ label, children }) => (
 );
 
 // ─── Luxury Form Input ───────────────────────────────────────────────────────
-const LuxInput = ({ value, onChange, placeholder, required, type = 'text', textarea, rows = 3 }) => {
+const LuxInput = ({ value, onChange, placeholder, required, type = 'text', textarea, rows = 3, minLength, maxLength, pattern, min, max, accept }) => {
   const [focused, setFocused] = useState(false);
   const style = { ...inputStyle, ...(focused ? inputFocusStyle : {}) };
   
@@ -181,6 +192,8 @@ const LuxInput = ({ value, onChange, placeholder, required, type = 'text', texta
         onChange={onChange}
         placeholder={placeholder}
         required={required}
+        minLength={minLength}
+        maxLength={maxLength}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         style={{ ...style, resize: 'none' }}
@@ -194,10 +207,71 @@ const LuxInput = ({ value, onChange, placeholder, required, type = 'text', texta
       onChange={onChange}
       placeholder={placeholder}
       required={required}
+      minLength={minLength}
+      maxLength={maxLength}
+      pattern={pattern}
+      min={min}
+      max={max}
+      accept={accept}
       onFocus={() => setFocused(true)}
       onBlur={() => setFocused(false)}
       style={style}
     />
+  );
+};
+
+// ─── Drag & Drop Image Upload ────────────────────────────────────────────────
+const ImageUploadDropzone = ({ onFileSelect, isUploading, required, id }) => {
+  const [isDragActive, setIsDragActive] = useState(false);
+  const inputRef = useRef(null);
+
+  const handleDrag = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === 'dragenter' || e.type === 'dragover') {
+      setIsDragActive(true);
+    } else if (e.type === 'dragleave') {
+      setIsDragActive(false);
+    }
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragActive(false);
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      onFileSelect({ target: { files: e.dataTransfer.files } });
+    }
+  };
+
+  return (
+    <div 
+      onDragEnter={handleDrag}
+      onDragLeave={handleDrag}
+      onDragOver={handleDrag}
+      onDrop={handleDrop}
+      onClick={() => inputRef.current.click()}
+      className={`relative flex flex-col items-center justify-center p-6 cursor-pointer transition-all duration-300 rounded-xl ${isDragActive ? 'bg-[#1a4173]/10 border-2 border-[#1a4173] scale-[1.02]' : 'bg-[#1a4173]/[0.02] border-[1.5px] border-dashed border-[#1a4173]/30 hover:bg-[#1a4173]/[0.05] hover:border-[#1a4173]/50'}`}
+    >
+      <input 
+        ref={inputRef}
+        type="file" 
+        accept="image/*" 
+        onChange={onFileSelect} 
+        required={required}
+        id={id}
+        className="hidden" 
+      />
+      <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-3 shadow-sm border border-[#1a4173]/10">
+        <Plus size={16} className="text-[#1a4173]" />
+      </div>
+      <p className="text-[10px] font-bold uppercase tracking-widest text-[#1a4173] mb-1">
+        {isUploading ? 'Uploading...' : 'Click or Drag Image Here'}
+      </p>
+      <p className="text-[9px] text-gray-400 font-medium tracking-widest uppercase">
+        PNG, JPG up to 3MB
+      </p>
+    </div>
   );
 };
 
@@ -223,9 +297,9 @@ const AdminPage = () => {
   const [formType, setFormType] = useState('');
   
   // Slide Form Fields
-  const [slideForm, setSlideForm] = useState({ id: '', tagline: '', title: '', desc: '', image: '' });
+  const [slideForm, setSlideForm] = useState({ id: '', tagline: '', title: '', desc: '', image: '', page: 'home' });
   // Product Form Fields
-  const [productForm, setProductForm] = useState({ id: '', title: '', collection: 'Heritage', category: 'Necklaces', homepageHighlight: '', weight: '', image: '', dynamicText: '' });
+  const [productForm, setProductForm] = useState({ id: '', title: '', collection: '', category: '', homepageHighlight: '', weight: '', image: '', dynamicText: '' });
   // Gallery Form Fields
   const [galleryForm, setGalleryForm] = useState({ id: '', title: '', category: '', image: '' });
 
@@ -259,6 +333,11 @@ const AdminPage = () => {
   const [toastType, setToastType] = useState('success');
   const [isUploading, setIsUploading] = useState(false);
 
+  // Hero Display Configuration
+  const [heroMode, setHeroMode] = useState('slider');
+  const [heroVideoUrl, setHeroVideoUrl] = useState('');
+  const [isHeroSettingsOpen, setIsHeroSettingsOpen] = useState(true);
+
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const fetchData = async () => {
@@ -280,6 +359,8 @@ const AdminPage = () => {
       if (dataSettings.success) {
         setPopupEnabled(dataSettings.data.popupEnabled !== false);
         setExhibitionMode(dataSettings.data.exhibitionMode === true);
+        if (dataSettings.data.hero_mode) setHeroMode(dataSettings.data.hero_mode);
+        if (dataSettings.data.hero_video_url) setHeroVideoUrl(dataSettings.data.hero_video_url);
       }
 
       const token = localStorage.getItem('hos_admin_token');
@@ -288,7 +369,17 @@ const AdminPage = () => {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const dataUsers = await resUsers.json();
-        if (dataUsers.success) setUsers(dataUsers.data);
+        if (dataUsers.success) {
+          setUsers(dataUsers.data);
+        } else {
+          // Token invalid or user not found
+          localStorage.removeItem('hos_admin_session');
+          localStorage.removeItem('hos_admin_token');
+          setIsLoggedIn(false);
+          setLoginEmail(''); 
+          setLoginPass('');
+          triggerToast('Session expired. Please log in again.', 'error');
+        }
       }
     } catch (error) {
       console.error('Error fetching backend data:', error);
@@ -298,6 +389,10 @@ const AdminPage = () => {
   const handleImageFileChange = async (e, type) => {
     const file = e.target.files[0];
     if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      alert('Please upload a valid image file.');
+      return;
+    }
     if (file.size > 3 * 1024 * 1024) { alert('File size exceeds the 3MB limit.'); return; }
 
     const token = localStorage.getItem('hos_admin_token');
@@ -320,9 +415,65 @@ const AdminPage = () => {
         triggerToast('Image uploaded successfully!', 'success');
       } else { alert(data.message || 'Image upload failed.'); }
     } catch (error) {
-      console.error('Image upload error:', error);
-      alert('Server connection failed during image upload.');
-    } finally { setIsUploading(false); }
+      console.error('Upload Error:', error);
+      alert('Upload failed. Server error.');
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handleVideoUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (!file.type.startsWith('video/')) {
+      alert('Please upload a valid video file.');
+      return;
+    }
+    if (file.size > 99 * 1024 * 1024) { alert('File size exceeds the 99MB limit.'); return; }
+
+    const token = localStorage.getItem('hos_admin_token');
+    const formData = new FormData();
+    formData.append('image', file); // We use the same 'image' field for multer
+    setIsUploading(true);
+    triggerToast('Uploading video…', 'info');
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/upload`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` },
+        body: formData
+      });
+      const data = await response.json();
+      if (response.ok && data.success) {
+        setHeroVideoUrl(data.imageUrl);
+        await saveHeroSettings(heroMode, data.imageUrl);
+        triggerToast('Video uploaded successfully!', 'success');
+      } else { alert(data.message || 'Video upload failed.'); }
+    } catch (error) {
+      console.error('Upload Error:', error);
+      alert('Upload failed. Server error.');
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const saveHeroSettings = async (mode, url) => {
+    const token = localStorage.getItem('hos_admin_token');
+    try {
+      await fetch(`${API_BASE_URL}/settings`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ key: 'hero_mode', value: mode })
+      });
+      await fetch(`${API_BASE_URL}/settings`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ key: 'hero_video_url', value: url })
+      });
+      triggerToast('Hero settings saved.', 'success');
+    } catch (error) {
+      triggerToast('Failed to save hero settings.', 'error');
+    }
   };
 
   useEffect(() => {
@@ -435,18 +586,74 @@ const AdminPage = () => {
     } catch (error) { triggerToast('Server connection failed.'); }
   };
 
+  const handleProductReorder = async (newOrderIds) => {
+    const oldProducts = [...products];
+    const reorderedProducts = newOrderIds.map(id => oldProducts.find(p => p.id === id)).filter(Boolean);
+    setProducts(reorderedProducts);
+
+    const token = localStorage.getItem('hos_admin_token');
+    try {
+      const response = await fetch(`${API_BASE_URL}/products/reorder`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ orderedIds: newOrderIds })
+      });
+      const data = await response.json();
+      if (!response.ok || !data.success) {
+        triggerToast(data.message || 'Failed to save product order.');
+        setProducts(oldProducts);
+      } else {
+        triggerToast('Products reordered successfully.');
+      }
+    } catch (error) {
+      triggerToast('Server connection failed.');
+      setProducts(oldProducts);
+    }
+  };
+
   const handleSaveNewCollection = () => {
     if (newCollectionName && newCollectionName.trim()) {
       const trimmed = newCollectionName.trim();
       if (!availableCollections.includes(trimmed)) {
-        const next = [...availableCollections, trimmed];
-        setAvailableCollections(next);
-        localStorage.setItem('hos_available_collections', JSON.stringify(next));
+        const updated = [...availableCollections, trimmed];
+        setAvailableCollections(updated);
+        localStorage.setItem('hos_available_collections', JSON.stringify(updated));
       }
       setProductForm(prev => ({ ...prev, collection: trimmed }));
-      triggerToast(`Collection '${trimmed}' added.`);
-      setNewCollectionName('');
       setShowNewCollectionInput(false);
+      setNewCollectionName('');
+      triggerToast('Collection added.');
+    }
+  };
+
+  const handleDeleteCollection = async (collectionName) => {
+    const isUsed = products.some(p => p.collection === collectionName);
+    if (isUsed) {
+      if (!window.confirm(`"${collectionName}" is currently assigned to one or more products. Are you sure you want to delete this collection? This will remove it from all assigned products.`)) {
+        return;
+      }
+      // Remove collection from existing products
+      const productsToUpdate = products.filter(p => p.collection === collectionName);
+      const token = localStorage.getItem('hos_admin_token');
+      for (const p of productsToUpdate) {
+        try {
+          await fetch(`${API_BASE_URL}/products/${p.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify({ collection: '' })
+          });
+        } catch (e) {
+          console.error("Failed to update product", p.id);
+        }
+      }
+      fetchData(); // Refresh product list
+    }
+    const updatedCollections = availableCollections.filter(c => c !== collectionName);
+    setAvailableCollections(updatedCollections);
+    localStorage.setItem('hos_available_collections', JSON.stringify(updatedCollections));
+    triggerToast(`Collection '${collectionName}' deleted.`);
+    if (productForm.collection === collectionName) {
+      setProductForm(prev => ({ ...prev, collection: '' }));
     }
   };
 
@@ -454,22 +661,53 @@ const AdminPage = () => {
     if (newCategoryName && newCategoryName.trim()) {
       const trimmed = newCategoryName.trim();
       if (!availableCategories.includes(trimmed)) {
-        const next = [...availableCategories, trimmed];
-        setAvailableCategories(next);
-        localStorage.setItem('hos_available_categories', JSON.stringify(next));
+        const updated = [...availableCategories, trimmed];
+        setAvailableCategories(updated);
+        localStorage.setItem('hos_available_categories', JSON.stringify(updated));
       }
       setProductForm(prev => ({ ...prev, category: trimmed }));
-      triggerToast(`Category '${trimmed}' added.`);
-      setNewCategoryName('');
       setShowNewCategoryInput(false);
+      setNewCategoryName('');
+      triggerToast('Category added.');
+    }
+  };
+
+  const handleDeleteCategory = async (categoryName) => {
+    const isUsed = products.some(p => p.category === categoryName);
+    if (isUsed) {
+      if (!window.confirm(`"${categoryName}" is currently assigned to one or more products. Are you sure you want to delete this category? This will remove it from all assigned products.`)) {
+        return;
+      }
+      // Remove category from existing products
+      const productsToUpdate = products.filter(p => p.category === categoryName);
+      const token = localStorage.getItem('hos_admin_token');
+      for (const p of productsToUpdate) {
+        try {
+          await fetch(`${API_BASE_URL}/products/${p.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify({ category: '' }) // Can be empty or a default value
+          });
+        } catch (e) {
+          console.error("Failed to update product", p.id);
+        }
+      }
+      fetchData(); // Refresh product list
+    }
+    const updatedCategories = availableCategories.filter(c => c !== categoryName);
+    setAvailableCategories(updatedCategories);
+    localStorage.setItem('hos_available_categories', JSON.stringify(updatedCategories));
+    triggerToast(`Category '${categoryName}' deleted.`);
+    if (productForm.category === categoryName) {
+      setProductForm(prev => ({ ...prev, category: '' }));
     }
   };
 
   const handleOpenAdd = (type) => {
     setFormType(type);
     setEditItem(null);
-    if (type === 'slide') setSlideForm({ tagline: '', title: '', desc: '', image: '' });
-    else if (type === 'product') setProductForm({ title: '', collection: availableCollections[0] || 'Heritage', category: availableCategories[0] || 'Necklaces', homepageHighlight: '', weight: '', image: '', dynamicText: '' });
+    if (type === 'slide') setSlideForm({ id: '', tagline: '', title: '', desc: '', image: '', page: 'home' });
+    else if (type === 'product') setProductForm({ title: '', collection: '', category: '', homepageHighlight: '', weight: '', image: '', dynamicText: '' });
     else if (type === 'gallery') setGalleryForm({ title: '', category: 'Magazine Issue #44', image: '' });
     setShowAddModal(true);
   };
@@ -477,7 +715,7 @@ const AdminPage = () => {
   const handleOpenEdit = (type, item) => {
     setFormType(type);
     setEditItem(item);
-    if (type === 'slide') setSlideForm({ tagline: item.tagline || '', title: item.title, desc: item.desc || '', image: item.image });
+    if (type === 'slide') setSlideForm({ id: item.id || item._id, tagline: item.tagline || '', title: item.title, desc: item.desc || '', image: item.image, page: item.page || 'home' });
     else if (type === 'product') setProductForm({ title: item.title, collection: item.collection || '', category: item.category, homepageHighlight: item.homepageHighlight || '', weight: item.weight || '', image: item.image, dynamicText: item.dynamicText || '' });
     else if (type === 'gallery') setGalleryForm({ title: item.title, category: item.category, image: item.image });
     setShowAddModal(true);
@@ -665,14 +903,40 @@ const AdminPage = () => {
           {/* ── SLIDE FORM ── */}
           {formType === 'slide' && (
             <>
+              <Field label="Target Page *">
+                <CustomDropdown
+                  value={
+                    {
+                      home: 'Home',
+                      product: 'Jewellery',
+                      gallery: 'Digital Magazine',
+                      about: 'About Us',
+                      beyond: 'Beyond Jewellery',
+                      contact: 'Contact'
+                    }[slideForm.page] || 'Home'
+                  }
+                  onChange={val => {
+                    const mapped = {
+                      'Home': 'home',
+                      'Jewellery': 'product',
+                      'Digital Magazine': 'gallery',
+                      'About Us': 'about',
+                      'Beyond Jewellery': 'beyond',
+                      'Contact': 'contact'
+                    }[val];
+                    setSlideForm({ ...slideForm, page: mapped });
+                  }}
+                  options={['Home', 'Jewellery', 'Digital Magazine', 'About Us', 'Beyond Jewellery', 'Contact']}
+                />
+              </Field>
               <Field label="Banner Tagline">
-                <LuxInput value={slideForm.tagline} onChange={e => setSlideForm({ ...slideForm, tagline: e.target.value })} placeholder="e.g. A 15-Year Legacy of Purity" />
+                <LuxInput value={slideForm.tagline} onChange={e => setSlideForm({ ...slideForm, tagline: e.target.value })} placeholder="e.g. A 15-Year Legacy of Purity" maxLength={100} />
               </Field>
               <Field label="Main Slide Title *">
-                <LuxInput value={slideForm.title} onChange={e => setSlideForm({ ...slideForm, title: e.target.value })} placeholder="e.g. Artistry" required />
+                <LuxInput value={slideForm.title} onChange={e => setSlideForm({ ...slideForm, title: e.target.value })} placeholder="e.g. Artistry" required minLength={2} maxLength={50} />
               </Field>
               <Field label="Banner Description">
-                <LuxInput textarea value={slideForm.desc} onChange={e => setSlideForm({ ...slideForm, desc: e.target.value })} placeholder="e.g. Curating bespoke silver collections..." />
+                <LuxInput textarea value={slideForm.desc} onChange={e => setSlideForm({ ...slideForm, desc: e.target.value })} placeholder="e.g. Curating bespoke silver collections..." maxLength={300} />
               </Field>
               <Field label="Upload Banner Image *">
                 <div style={{
@@ -688,9 +952,22 @@ const AdminPage = () => {
                     style={{ color: '#1a4173' }}
                   />
                 </div>
+                <p className="text-[9px] text-gray-400 font-medium tracking-widest uppercase mt-2 text-right">
+                  Recommended: 1920x1080px (16:9) | Max: 3MB
+                </p>
                 {slideForm.image && (
-                  <div className="mt-3 p-3 rounded-xl inline-block" style={{ background: 'rgba(26,65,115,0.04)', border: '1px solid rgba(26,65,115,0.1)' }}>
-                    <span className="text-[9px] font-bold uppercase tracking-wider text-gray-400 block mb-2">Preview</span>
+                  <div className="mt-3 p-3 rounded-xl inline-block relative group" style={{ background: 'rgba(26,65,115,0.04)', border: '1px solid rgba(26,65,115,0.1)' }}>
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-[9px] font-bold uppercase tracking-wider text-gray-400">Preview</span>
+                      <button 
+                        type="button" 
+                        onClick={() => setSlideForm({ ...slideForm, image: '' })}
+                        className="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-1 rounded-md transition-colors"
+                        title="Remove image"
+                      >
+                        <Trash2 size={12} />
+                      </button>
+                    </div>
                     <img src={slideForm.image} alt="Preview" className="max-h-28 rounded-lg object-contain" />
                   </div>
                 )}
@@ -705,7 +982,7 @@ const AdminPage = () => {
                 {/* Collection Field with custom dropdown */}
                 <div className="space-y-1.5">
                   <div className="flex justify-between items-center">
-                    <label className="text-[10px] font-black uppercase tracking-widest" style={{ color: '#9ca3af' }}>Collection *</label>
+                    <label className="text-[10px] font-black uppercase tracking-widest" style={{ color: '#9ca3af' }}>Collection</label>
                     <button 
                       type="button" 
                       onClick={() => setShowNewCollectionInput(!showNewCollectionInput)}
@@ -720,6 +997,7 @@ const AdminPage = () => {
                     onChange={v => setProductForm({ ...productForm, collection: v })}
                     options={availableCollections}
                     placeholder="Select Collection"
+                    onDeleteOption={handleDeleteCollection}
                   />
                   {/* Inline new collection input */}
                   <AnimatePresence>
@@ -768,6 +1046,7 @@ const AdminPage = () => {
                     onChange={v => setProductForm({ ...productForm, category: v })}
                     options={availableCategories}
                     placeholder="Select Category"
+                    onDeleteOption={handleDeleteCategory}
                   />
                   {/* Inline new category input */}
                   <AnimatePresence>
@@ -801,10 +1080,10 @@ const AdminPage = () => {
 
               <div className="grid grid-cols-2 gap-4">
                 <Field label="Product Title *">
-                  <LuxInput value={productForm.title} onChange={e => setProductForm({ ...productForm, title: e.target.value })} placeholder="e.g. Royal Rajkot Queen Choker" required />
+                  <LuxInput value={productForm.title} onChange={e => setProductForm({ ...productForm, title: e.target.value })} placeholder="e.g. Royal Rajkot Queen Choker" required minLength={2} maxLength={100} />
                 </Field>
                 <Field label="Product Weight (g)">
-                  <LuxInput value={productForm.weight} onChange={e => setProductForm({ ...productForm, weight: e.target.value })} placeholder="e.g. 92.5g" />
+                  <LuxInput value={productForm.weight} onChange={e => setProductForm({ ...productForm, weight: e.target.value })} placeholder="e.g. 92.5g" maxLength={50} />
                 </Field>
                 <div className="col-span-2">
                   <Field label="Dynamic Text (e.g. masterpieces matching active filters)">
@@ -814,12 +1093,28 @@ const AdminPage = () => {
               </div>
 
               <Field label="Upload Product Image *">
-                <div style={{ background: 'rgba(26,65,115,0.02)', border: '1.5px dashed rgba(26,65,115,0.2)', borderRadius: '10px', padding: '12px' }}>
-                  <input type="file" accept="image/*" onChange={e => handleImageFileChange(e, 'product')} required={!productForm.image} className="w-full text-sm" style={{ color: '#1a4173' }} />
-                </div>
+                <ImageUploadDropzone 
+                  onFileSelect={e => handleImageFileChange(e, 'product')}
+                  isUploading={isUploading}
+                  required={!productForm.image}
+                  id="product-image-upload"
+                />
+                <p className="text-[9px] text-gray-400 font-medium tracking-widest uppercase mt-2 text-right">
+                  Recommended: 1080x1080px (1:1) | Max: 3MB
+                </p>
                 {productForm.image && (
-                  <div className="mt-3 p-3 rounded-xl inline-block" style={{ background: 'rgba(26,65,115,0.04)', border: '1px solid rgba(26,65,115,0.1)' }}>
-                    <span className="text-[9px] font-bold uppercase tracking-wider text-gray-400 block mb-2">Preview</span>
+                  <div className="mt-3 p-3 rounded-xl inline-block relative group" style={{ background: 'rgba(26,65,115,0.04)', border: '1px solid rgba(26,65,115,0.1)' }}>
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-[9px] font-bold uppercase tracking-wider text-gray-400">Preview</span>
+                      <button 
+                        type="button" 
+                        onClick={() => setProductForm({ ...productForm, image: '' })}
+                        className="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-1 rounded-md transition-colors"
+                        title="Remove image"
+                      >
+                        <Trash2 size={12} />
+                      </button>
+                    </div>
                     <img src={productForm.image} alt="Preview" className="max-h-28 rounded-lg object-contain" />
                   </div>
                 )}
@@ -831,18 +1126,34 @@ const AdminPage = () => {
           {formType === 'gallery' && (
             <>
               <Field label="Magazine Page Title *">
-                <LuxInput value={galleryForm.title} onChange={e => setGalleryForm({ ...galleryForm, title: e.target.value })} placeholder="e.g. Symmetric Silver Plate" required />
+                <LuxInput value={galleryForm.title} onChange={e => setGalleryForm({ ...galleryForm, title: e.target.value })} placeholder="e.g. Symmetric Silver Plate" required minLength={2} maxLength={100} />
               </Field>
               <Field label="Magazine Issue / Volume *">
-                <LuxInput value={galleryForm.category} onChange={e => setGalleryForm({ ...galleryForm, category: e.target.value })} placeholder="e.g. Magazine Issue #44" required />
+                <LuxInput value={galleryForm.category} onChange={e => setGalleryForm({ ...galleryForm, category: e.target.value })} placeholder="e.g. Magazine Issue #44" required maxLength={100} />
               </Field>
               <Field label="Upload Gallery Image *">
-                <div style={{ background: 'rgba(26,65,115,0.02)', border: '1.5px dashed rgba(26,65,115,0.2)', borderRadius: '10px', padding: '12px' }}>
-                  <input type="file" accept="image/*" onChange={e => handleImageFileChange(e, 'gallery')} required={!galleryForm.image} className="w-full text-sm" style={{ color: '#1a4173' }} />
-                </div>
+                <ImageUploadDropzone 
+                  onFileSelect={e => handleImageFileChange(e, 'gallery')}
+                  isUploading={isUploading}
+                  required={!galleryForm.image}
+                  id="gallery-image-upload"
+                />
+                <p className="text-[9px] text-gray-400 font-medium tracking-widest uppercase mt-2 text-right">
+                  Recommended: 1080x1350px (4:5) or 1080x1080px | Max: 3MB
+                </p>
                 {galleryForm.image && (
-                  <div className="mt-3 p-3 rounded-xl inline-block" style={{ background: 'rgba(26,65,115,0.04)', border: '1px solid rgba(26,65,115,0.1)' }}>
-                    <span className="text-[9px] font-bold uppercase tracking-wider text-gray-400 block mb-2">Preview</span>
+                  <div className="mt-3 p-3 rounded-xl inline-block relative group" style={{ background: 'rgba(26,65,115,0.04)', border: '1px solid rgba(26,65,115,0.1)' }}>
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-[9px] font-bold uppercase tracking-wider text-gray-400">Preview</span>
+                      <button 
+                        type="button" 
+                        onClick={() => setGalleryForm({ ...galleryForm, image: '' })}
+                        className="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-1 rounded-md transition-colors"
+                        title="Remove image"
+                      >
+                        <Trash2 size={12} />
+                      </button>
+                    </div>
                     <img src={galleryForm.image} alt="Preview" className="max-h-28 rounded-lg object-contain" />
                   </div>
                 )}
@@ -970,12 +1281,128 @@ const AdminPage = () => {
               {/* ── TAB: SLIDER ── */}
               {activeTab === 'slider' && (
                 showAddModal && formType === 'slide' ? renderInPlaceForm() : (
-                  <SliderManage 
-                    slides={slides}
-                    onAddClick={() => handleOpenAdd('slide')}
-                    onEditClick={item => handleOpenEdit('slide', item)}
-                    onDeleteClick={id => handleDeleteItem('slide', id)}
-                  />
+                  <div className="space-y-8">
+                    {/* Home Page Hero Settings */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="bg-white p-6 rounded-2xl shadow-[0_4px_20px_rgba(26,65,115,0.04)] border border-[rgba(26,65,115,0.06)] mb-8 relative overflow-hidden"
+                    >
+                      {/* Decorative background element */}
+                      <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#1a4173]/5 to-transparent rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+
+                      <div className="relative z-10">
+                        <div className="flex items-center justify-between gap-3 mb-6 pb-5 border-b border-[rgba(26,65,115,0.06)] cursor-pointer select-none" onClick={() => setIsHeroSettingsOpen(!isHeroSettingsOpen)}>
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 rounded-full bg-[#1a4173]/10 flex items-center justify-center text-[#1a4173]">
+                              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                              </svg>
+                            </div>
+                            <div>
+                              <h3 className="text-sm font-black uppercase tracking-widest text-[#1a4173]">
+                                Home Page Display Settings
+                              </h3>
+                              <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-1">
+                                Configure the main hero banner for the home page only
+                              </p>
+                            </div>
+                          </div>
+                          <button className="text-[#1a4173]/60 hover:text-[#1a4173] transition-colors p-2 rounded-full hover:bg-gray-50">
+                            <motion.div animate={{ rotate: isHeroSettingsOpen ? 180 : 0 }}>
+                              <ChevronDown size={20} />
+                            </motion.div>
+                          </button>
+                        </div>
+                        
+                        <AnimatePresence>
+                          {isHeroSettingsOpen && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: 'auto', opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              className="overflow-hidden"
+                            >
+                              <div className="flex flex-col md:flex-row gap-8">
+                                <div className="w-full md:w-1/3 space-y-4">
+                            <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 block">Display Mode</label>
+                            <div className="flex flex-col gap-3">
+                              <button
+                                onClick={() => { setHeroMode('slider'); saveHeroSettings('slider', heroVideoUrl); }}
+                                className={`w-full flex items-center justify-between p-4 rounded-xl border transition-all ${heroMode === 'slider' ? 'border-[#1a4173] bg-[#1a4173]/5 shadow-sm' : 'border-gray-100 hover:border-gray-200 bg-white'}`}
+                              >
+                                <span className={`text-[11px] font-bold uppercase tracking-widest ${heroMode === 'slider' ? 'text-[#1a4173]' : 'text-gray-400'}`}>Image Slider</span>
+                                <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${heroMode === 'slider' ? 'border-[#1a4173]' : 'border-gray-300'}`}>
+                                  {heroMode === 'slider' && <div className="w-2 h-2 rounded-full bg-[#1a4173]" />}
+                                </div>
+                              </button>
+                              <button
+                                onClick={() => { setHeroMode('video'); saveHeroSettings('video', heroVideoUrl); }}
+                                className={`w-full flex items-center justify-between p-4 rounded-xl border transition-all ${heroMode === 'video' ? 'border-[#1a4173] bg-[#1a4173]/5 shadow-sm' : 'border-gray-100 hover:border-gray-200 bg-white'}`}
+                              >
+                                <span className={`text-[11px] font-bold uppercase tracking-widest ${heroMode === 'video' ? 'text-[#1a4173]' : 'text-gray-400'}`}>Single Video</span>
+                                <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${heroMode === 'video' ? 'border-[#1a4173]' : 'border-gray-300'}`}>
+                                  {heroMode === 'video' && <div className="w-2 h-2 rounded-full bg-[#1a4173]" />}
+                                </div>
+                              </button>
+                            </div>
+                          </div>
+
+                          <div className="w-full md:w-2/3 space-y-4">
+                            <div className="flex justify-between items-end">
+                              <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 block">Home Video Background</label>
+                              <span className="text-[9px] text-gray-400 font-mono">1920x1080 (16:9), Max: 99MB</span>
+                            </div>
+                            
+                            <div className={`relative group rounded-2xl overflow-hidden bg-gray-50 border-2 border-dashed transition-colors aspect-video w-full max-w-lg ${heroMode === 'video' ? 'border-[#1a4173]/30 hover:border-[#1a4173]/50' : 'border-gray-200 opacity-60 grayscale'}`}>
+                              {heroVideoUrl ? (
+                                <>
+                                  <video src={heroVideoUrl} className="w-full h-full object-cover" controls muted playsInline />
+                                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-all backdrop-blur-sm">
+                                    <label className="cursor-pointer px-6 py-3 bg-white text-[#1a4173] rounded-xl text-[11px] font-bold uppercase tracking-widest hover:bg-gray-50 shadow-lg transition-transform hover:scale-105 active:scale-95">
+                                      {isUploading ? 'Uploading...' : 'Replace Video'}
+                                      <input type="file" accept="video/*" className="hidden" onChange={handleVideoUpload} disabled={isUploading || heroMode !== 'video'} />
+                                    </label>
+                                  </div>
+                                </>
+                              ) : (
+                                <label className="absolute inset-0 flex flex-col items-center justify-center cursor-pointer">
+                                  <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-3 text-gray-400 group-hover:bg-[#1a4173]/10 group-hover:text-[#1a4173] transition-colors">
+                                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                    </svg>
+                                  </div>
+                                  <span className="text-[11px] font-bold uppercase tracking-widest text-gray-500 group-hover:text-[#1a4173] transition-colors">
+                                    {isUploading ? 'Uploading Please Wait...' : 'Click to Upload MP4'}
+                                  </span>
+                                  <input type="file" accept="video/*" className="hidden" onChange={handleVideoUpload} disabled={isUploading || heroMode !== 'video'} />
+                                </label>
+                              )}
+                              
+                              {heroMode !== 'video' && (
+                                <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/60 backdrop-blur-[2px]">
+                                  <div className="bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-100 flex items-center gap-2">
+                                    <span className="w-2 h-2 rounded-full bg-amber-400" />
+                                    <span className="text-[10px] font-bold uppercase tracking-widest text-gray-600">Switch to Video mode to edit</span>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </motion.div>
+
+                    <SliderManage 
+                      slides={slides}
+                      onAddClick={() => handleOpenAdd('slide')}
+                      onEditClick={item => handleOpenEdit('slide', item)}
+                      onDeleteClick={id => handleDeleteItem('slide', id)}
+                    />
+                  </div>
                 )
               )}
 
@@ -990,6 +1417,7 @@ const AdminPage = () => {
                     onEditClick={item => handleOpenEdit('product', item)}
                     onDeleteClick={id => handleDeleteItem('product', id)}
                     onAssignHighlight={handleAssignHighlight}
+                    onReorder={handleProductReorder}
                   />
                 )
               )}
@@ -1036,16 +1464,16 @@ const AdminPage = () => {
                     <form onSubmit={handleSaveUserEdit} className="space-y-5 max-w-4xl">
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                         <Field label="Full Name *">
-                          <LuxInput value={userForm.name} onChange={e => setUserForm({ ...userForm, name: e.target.value })} required placeholder="John Doe" />
+                          <LuxInput value={userForm.name} onChange={e => setUserForm({ ...userForm, name: e.target.value })} required placeholder="John Doe" minLength={2} maxLength={50} pattern="^[A-Za-z\s]+$" />
                         </Field>
                         <Field label="Email Address *">
-                          <LuxInput type="email" value={userForm.email} onChange={e => setUserForm({ ...userForm, email: e.target.value })} required placeholder="john@example.com" />
+                          <LuxInput type="email" value={userForm.email} onChange={e => setUserForm({ ...userForm, email: e.target.value })} required placeholder="john@example.com" maxLength={100} />
                         </Field>
                         <Field label="Company Name">
-                          <LuxInput value={userForm.companyName} onChange={e => setUserForm({ ...userForm, companyName: e.target.value })} placeholder="Acme Corporation" />
+                          <LuxInput value={userForm.companyName} onChange={e => setUserForm({ ...userForm, companyName: e.target.value })} placeholder="Acme Corporation" maxLength={100} />
                         </Field>
                         <Field label="Contact Number *">
-                          <LuxInput value={userForm.contactNumber} onChange={e => setUserForm({ ...userForm, contactNumber: e.target.value })} required placeholder="+91 99999 99999" />
+                          <LuxInput value={userForm.contactNumber} onChange={e => setUserForm({ ...userForm, contactNumber: e.target.value })} required placeholder="+91 99999 99999" minLength={10} maxLength={15} pattern="^[0-9\+\-\s]+$" />
                         </Field>
                       </div>
 
@@ -1057,7 +1485,7 @@ const AdminPage = () => {
                       </div>
 
                       <Field label="Additional Remarks">
-                        <LuxInput textarea value={userForm.additionalRemarks} onChange={e => setUserForm({ ...userForm, additionalRemarks: e.target.value })} placeholder="Custom registry notes or client preferences..." />
+                        <LuxInput textarea value={userForm.additionalRemarks} onChange={e => setUserForm({ ...userForm, additionalRemarks: e.target.value })} placeholder="Custom registry notes or client preferences..." maxLength={500} />
                       </Field>
 
                       {/* Multi-select Tag Sections */}

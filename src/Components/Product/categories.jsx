@@ -135,7 +135,7 @@ const SignaturePieces = () => {
   };
 
   return (
-    <section className="py-24 bg-white text-[#1a4173] font-outfit overflow-hidden relative" id="pieces">
+    <section className="py-16 md:py-24 bg-white text-[#1a4173] font-outfit overflow-hidden relative" id="pieces">
       
       {/* Decorative Grid Pattern */}
       <div className="absolute inset-0 opacity-[0.01] pointer-events-none">
@@ -214,7 +214,7 @@ const SignaturePieces = () => {
         <div className="relative">
           <div 
             ref={scrollContainerRef}
-            className="flex overflow-x-auto gap-6 scrollbar-hide py-4 px-2 snap-x snap-mandatory touch-pan-x"
+            className="flex overflow-x-auto gap-6 scrollbar-hide py-4 px-2 snap-x snap-mandatory"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             <AnimatePresence mode="popLayout">

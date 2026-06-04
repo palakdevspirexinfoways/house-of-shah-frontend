@@ -2,8 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 
 const ProductHero = () => {
+    const [slide, setSlide] = useState(null);
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
     const { scrollY } = useScroll();
+
+    useEffect(() => {
+        fetch(`${import.meta.env.VITE_API_BASE_URL}/slides?page=gallery`)
+          .then(res => res.json())
+          .then(data => {
+            if (data.success && data.data && data.data.length > 0) {
+              setSlide(data.data[0]);
+            }
+          })
+          .catch(err => console.error('[Gallery Hero Fetch Error]', err));
+    }, []);
 
     // Parallax effects
     const y1 = useTransform(scrollY, [0, 500], [0, 200]);
@@ -34,8 +46,8 @@ const ProductHero = () => {
             >
                 <motion.img
                     style={{ x: springMouseX, y: springMouseY }}
-                    src="https://png.pngtree.com/thumb_back/fw800/background/20251123/pngtree-minimalist-triangle-silver-necklace-on-gray-surface-image_20550704.webp"
-                    alt="Premium Silver Craft"
+                    src={slide?.image || "https://png.pngtree.com/thumb_back/fw800/background/20251123/pngtree-minimalist-triangle-silver-necklace-on-gray-surface-image_20550704.webp"}
+                    alt={slide?.title || "Premium Silver Craft"}
                     className="w-full h-full object-cover scale-110"
                 />
                 {/* Sophisticated Gradient Overlay */}
@@ -57,7 +69,7 @@ const ProductHero = () => {
                 >
                     <span className="text-white/40 tracking-[0.8em] uppercase text-[9px] md:text-xs font-bold flex items-center gap-4">
                         <div className="w-8 h-[1px] bg-white/20" />
-                        A 15-Year Legacy of Precision
+                        {slide?.tagline || "A 15-Year Legacy of Precision"}
                         <div className="w-8 h-[1px] bg-white/20" />
                     </span>
                 </motion.div>
@@ -69,8 +81,8 @@ const ProductHero = () => {
                     transition={{ delay: 0.2, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                     className="relative"
                 >
-                    <h1 className="text-white text-6xl md:text-9xl lg:text-[10rem] uppercase font-bold tracking-tighter leading-none mb-4 mix-blend-difference">
-                        Digital magazine
+                    <h1 className="text-white text-4xl md:text-9xl lg:text-[10rem] uppercase font-bold tracking-tighter leading-none mb-4 mix-blend-difference">
+                        {slide?.title || "Digital magazine"}
                     </h1>
                     {/* Luxury Floating Element */}
                     <motion.div
@@ -89,20 +101,6 @@ const ProductHero = () => {
                     transition={{ delay: 0.6, duration: 1 }}
                     className="max-w-3xl mt-12 space-y-8"
                 >
-                    <p className="text-white/70 text-lg md:text-2xl font-light leading-relaxed tracking-wide px-4">
-                        Curating <span className="text-white font-medium italic">Museum-Grade</span> artifacts
-                        and <span className="text-white font-medium">Hallmarked</span> jewelry—where
-                        every piece is a 99.9% pure testament to timeless luxury.
-                    </p>
-
-                    <motion.div
-                        whileHover={{ scale: 1.05 }}
-                        className="inline-flex items-center gap-6 px-10 py-5 bg-white/5 backdrop-blur-xl border border-white/10 text-white cursor-pointer group transition-all"
-                        onClick={() => document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' })}
-                    >
-                        <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Explore Collection</span>
-                        <div className="w-12 h-[1px] bg-white/30 group-hover:w-16 transition-all" />
-                    </motion.div>
                 </motion.div>
 
             </motion.div>

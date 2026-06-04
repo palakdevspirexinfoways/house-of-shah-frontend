@@ -22,7 +22,7 @@ const MakeInIndia = () => {
   ];
 
   return (
-    <section className="py-24 bg-[var(--silver-bg)] text-[var(--primary-blue)] font-outfit overflow-hidden relative">
+    <section className="py-16 md:py-24 bg-[var(--silver-bg)] text-[var(--primary-blue)] font-outfit overflow-hidden relative">
       
       {/* Decorative Blueprint Grid Background */}
       {/* <div className="absolute inset-0 opacity-[0.02] pointer-events-none">
@@ -83,7 +83,7 @@ const MakeInIndia = () => {
           </div>
 
           {/* Right Column: Layered 3D Overlapping Collage (5 cols) */}
-          <div className="lg:col-span-5 relative w-full h-[460px] flex items-center justify-center">
+          <div className="lg:col-span-5 relative w-full h-[380px] md:h-[460px] flex items-center justify-center">
             
             {/* Blueprint Grid Crosshair Accent */}
             <div className="absolute top-10 left-10 w-8 h-8 border-l border-t border-[var(--primary-blue)]/15 pointer-events-none hidden sm:block" />
@@ -98,7 +98,7 @@ const MakeInIndia = () => {
               whileInView={{ opacity: 0.85, y: 0, rotate: -3 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="absolute w-[240px] aspect-square left-0 top-6 bg-white p-3 border border-[var(--primary-blue)]/5 shadow-md rounded-none group z-10"
+              className="absolute w-[200px] md:w-[240px] aspect-square left-0 top-6 bg-white p-3 border border-[var(--primary-blue)]/5 shadow-md rounded-none group z-10"
             >
               <div className="w-full h-full overflow-hidden bg-[var(--silver-bg)] rounded-none">
                 <img 
@@ -115,7 +115,7 @@ const MakeInIndia = () => {
               whileInView={{ opacity: 1, y: 0, rotate: 3 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="absolute w-[240px] aspect-square right-2 bottom-6 bg-white p-3 border border-[var(--primary-blue)]/10 shadow-2xl rounded-none group z-20"
+              className="absolute w-[200px] md:w-[240px] aspect-square right-2 bottom-6 bg-white p-3 border border-[var(--primary-blue)]/10 shadow-2xl rounded-none group z-20"
             >
               <div className="w-full h-full overflow-hidden bg-[var(--silver-bg)] rounded-none">
                 <img 

@@ -129,12 +129,12 @@ const Header = () => {
                 : 'bg-transparent'}`}>
             
             {/* LEFT: LOGO */}
-            <div className="flex-shrink-0 flex items-center mr-8 lg:mr-16 xl:mr-24">
+            <div className="flex-shrink-0 flex items-center mr-4 md:mr-8 lg:mr-16 xl:mr-24">
               <a href="/" className="group block">
                 <img 
                   src={logo} 
                   alt="House of Shah Logo" 
-                  className="h-12 md:h-16 w-auto object-contain scale-[2.8] md:scale-[2.9] lg:scale-[2.5] xl:scale-[3.0] origin-left transition-transform duration-500"
+                  className="h-10 md:h-16 w-auto object-contain scale-[2.0] md:scale-[2.9] lg:scale-[2.5] xl:scale-[3.0] origin-left transition-transform duration-500"
                 />
               </a>
             </div>
@@ -150,7 +150,7 @@ const Header = () => {
             </div>
 
             {/* RIGHT: E-COMMERCE ACTIONS */}
-            <div className="flex items-center gap-5 md:gap-6 lg:gap-5 xl:gap-7 flex-shrink-0">
+            <div className="flex items-center gap-4 md:gap-6 lg:gap-5 xl:gap-7 flex-shrink-0">
               {/* INLINE EXPANDING SEARCH CONTROLLER */}
               {isSearchOpen ? (
                 <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 pl-3 pr-2 py-1.5 transition-all w-48 sm:w-64 relative font-outfit">
@@ -474,7 +474,7 @@ const Header = () => {
                   transition={{ delay: i * 0.1 }}
                   key={link.name}
                   href={link.href}
-                  className="text-2xl font-bold uppercase tracking-[0.3em] text-[var(--white)]/70 hover:text-[var(--white)] transition-colors"
+                  className="text-base sm:text-xl md:text-2xl font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em] text-[var(--white)]/70 hover:text-[var(--white)] transition-colors text-center whitespace-nowrap"
                   onClick={() => setIsOpen(false)}
                 >
                   {link.name}

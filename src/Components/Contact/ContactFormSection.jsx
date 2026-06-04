@@ -121,7 +121,7 @@ const ContactFormSection = () => {
   };
 
   return (
-    <section className="py-24 bg-white font-outfit relative">
+    <section className="py-16 md:py-24 bg-white font-outfit relative">
       <div className="absolute right-0 top-0 w-1/3 h-full bg-[var(--silver-bg)]/30 hidden lg:block" />
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
@@ -152,11 +152,11 @@ const ContactFormSection = () => {
               </p> */}
             </div>
 
-            <div className="relative w-full overflow-hidden scale-[1.4] group h-90 ">
+            <div className="relative w-full overflow-hidden group h-80 md:h-96 lg:h-[400px]">
               <img 
                 src={hosLogo3} 
                 alt="House of Shah Logo" 
-                className="w-full h-full object-cover   ease-out"
+                className="w-full h-full object-cover ease-out"
               />
             </div>
           </motion.div>
@@ -167,7 +167,7 @@ const ContactFormSection = () => {
             whileInView={{ opacity: 1, x: 0 }} 
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="bg-white p-8 md:p-12 border border-gray-100 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] relative overflow-hidden min-h-[580px] flex flex-col justify-center"
+            className="bg-white p-6 md:p-12 border border-gray-100 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] relative overflow-hidden min-h-[580px] flex flex-col justify-center"
           >
             <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-[var(--primary-blue)]/30" />
             <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-[var(--primary-blue)]/30" />
@@ -195,6 +195,10 @@ const ContactFormSection = () => {
                         value={formData.name}
                         onChange={handleInputChange}
                         required
+                        minLength={2}
+                        maxLength={50}
+                        pattern="^[A-Za-z\s]+$"
+                        title="Name should only contain letters and spaces"
                         className="w-full bg-transparent px-2 py-2 outline-none text-sm font-medium text-[var(--primary-blue)] border-b border-gray-200 focus:border-[var(--primary-blue)] transition-colors rounded-none placeholder-gray-300" 
                         placeholder="Rahul Shah" 
                       />
@@ -208,6 +212,7 @@ const ContactFormSection = () => {
                         name="company"
                         value={formData.company}
                         onChange={handleInputChange}
+                        maxLength={100}
                         className="w-full bg-transparent px-2 py-2 outline-none text-sm font-medium text-[var(--primary-blue)] border-b border-gray-200 focus:border-[var(--primary-blue)] transition-colors rounded-none placeholder-gray-300" 
                         placeholder="Shah Jewels Ltd. (Optional)" 
                       />
@@ -222,6 +227,10 @@ const ContactFormSection = () => {
                         value={formData.contact}
                         onChange={handleInputChange}
                         required
+                        minLength={10}
+                        maxLength={15}
+                        pattern="^[0-9\+\-\s]+$"
+                        title="Contact number should only contain numbers, spaces, +, or -"
                         className="w-full bg-transparent px-2 py-2 outline-none text-sm font-medium text-[var(--primary-blue)] border-b border-gray-200 focus:border-[var(--primary-blue)] transition-colors rounded-none placeholder-gray-300" 
                         placeholder="+91 98765 43210" 
                       />
@@ -331,6 +340,7 @@ const ContactFormSection = () => {
                         value={formData.remarks}
                         onChange={handleInputChange}
                         rows="3" 
+                        maxLength={500}
                         className="w-full bg-transparent px-2 py-2 outline-none text-sm resize-none text-[var(--primary-blue)] border-b border-gray-200 focus:border-[var(--primary-blue)] transition-colors rounded-none placeholder-gray-300" 
                         placeholder="Tell us more about your specific inquiry..." 
                       />

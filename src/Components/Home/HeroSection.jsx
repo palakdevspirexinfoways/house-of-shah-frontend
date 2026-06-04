@@ -8,23 +8,26 @@ const defaultSlides = [
     title: "India's Journey to",
     subtitle: "Global Manufacturing Leadership",
     tagline: "CRAFTING SILVER SYMPHONY",
-    bg: "",
+    bg: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?q=80&w=1920&auto=format&fit=crop",
   },
   {
     id: 2,
     title: "Exquisite Artistry",
     subtitle: "Premium Silver Collection",
     tagline: "HOUSE OF SHAH EXCLUSIVES",
-    bg: "",
+    bg: "https://images.unsplash.com/photo-1610014763116-3e82717906d4?q=80&w=1920&auto=format&fit=crop",
   },
 ];
 
 const HeroSlider = () => {
   const [current, setCurrent] = useState(0);
-  const [slides, setSlides] = useState([]);
+  const [slides, setSlides] = useState(defaultSlides);
+  const [heroMode, setHeroMode] = useState('slider');
+  const [heroVideoUrl, setHeroVideoUrl] = useState('');
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_BASE_URL}/slides`)
+    // Fetch Slides
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/slides?page=home`)
       .then((res) => res.json())
       .then((data) => {
         if (data.success && data.data && data.data.length > 0) {
@@ -36,9 +39,21 @@ const HeroSlider = () => {
             bg: item.image,
           }));
           setSlides(mapped);
+          setCurrent(0); // Reset current to avoid out-of-bounds
         }
       })
       .catch((err) => console.error('[Hero Slider Connection Error]', err));
+
+    // Fetch Settings
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/settings`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.data) {
+          if (data.data.hero_mode) setHeroMode(data.data.hero_mode);
+          if (data.data.hero_video_url) setHeroVideoUrl(data.data.hero_video_url);
+        }
+      })
+      .catch((err) => console.error('[Hero Settings Connection Error]', err));
   }, []);
 
   useEffect(() => {
@@ -52,78 +67,114 @@ const HeroSlider = () => {
   const nextSlide = () => setCurrent(current === slides.length - 1 ? 0 : current + 1);
   const prevSlide = () => setCurrent(current === 0 ? slides.length - 1 : current - 1);
 
-  if (slides.length === 0) {
+  const textVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, delay: 0.2 } }
+  };
+
+  if (heroMode === 'video' && heroVideoUrl) {
     return (
-      <section className="relative h-screen w-full bg-[#080b11] flex items-center justify-center text-center font-outfit">
-        <div className="text-white space-y-4">
-          <span className="text-[10px] uppercase tracking-[0.4em] text-gray-500 font-bold block">HOUSE OF SHAH EXCLUSIVES</span>
-          <h1 className="text-3xl font-light uppercase tracking-widest text-gray-300">Exquisite Artistry</h1>
+      <section className="relative h-screen w-full overflow-hidden bg-black font-outfit">
+        <video 
+          src={heroVideoUrl} 
+          autoPlay 
+          loop 
+          muted 
+          playsInline 
+          className="absolute inset-0 w-full h-full object-cover opacity-80"
+        />
+        {/* Subtle radial overlay for center text focus */}
+        <div className="absolute inset-0 bg-black/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+        
+        <div className="relative h-full flex flex-col items-center justify-center text-center px-4 z-10">
+          <motion.p
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.8 }}
+            className="text-white drop-shadow-md tracking-[0.6em] uppercase text-[10px] md:text-xs mb-6 font-bold"
+          >
+            HOUSE OF SHAH EXCLUSIVES
+          </motion.p>
+          <motion.h1
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.8, duration: 1 }}
+            className="text-white drop-shadow-2xl text-4xl sm:text-5xl md:text-6xl lg:text-[7.5rem] font-bold mb-4 tracking-tighter leading-[0.9] uppercase"
+          >
+            Exquisite Artistry
+          </motion.h1>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.3, duration: 0.8 }}
+            className="mt-12"
+          >
+            <a href="#collection">
+              <button className="px-12 py-5 bg-white text-black font-bold uppercase text-[10px] tracking-[0.4em] hover:bg-[var(--primary-blue)] hover:text-white transition-all duration-500 shadow-2xl">
+                Explore Collection
+              </button>
+            </a>
+          </motion.div>
         </div>
       </section>
     );
   }
 
+  const currentSlideData = slides[current] || defaultSlides[0];
+
   return (
-    <section className="relative h-screen w-full overflow-hidden bg-white font-outfit">
+    <section className="relative h-screen w-full overflow-hidden bg-black font-outfit">
       
       <div className="relative h-full w-full">
         <AnimatePresence initial={false}>
           <motion.div
             key={current}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1.5, ease: "easeInOut" }}
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
             className="absolute inset-0 h-full w-full"
           >
-            {/* Background Image Container */}
-            <motion.div
-              initial={{ scale: 1.1 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 7, ease: "easeOut" }}
-              className="absolute inset-0 w-full h-full"
-            >
+            <div className="absolute inset-0 w-full h-full">
               <img 
-                src={slides[current].bg} 
+                src={currentSlideData.bg} 
                 className="w-full h-full object-cover" 
                 alt="Slide Background" 
               />
-              {/* --- MINOR DARK OVERLAY: Adjusted for clarity --- */}
-              {/* Bottom se light dark aur top se bilkul transparent rakha hai */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
-              
-              {/* Subtle radial overlay for center text focus */}
               <div className="absolute inset-0 bg-black/5" />
-            </motion.div>
+            </div>
 
-            {/* Content Container */}
             <div className="relative h-full flex flex-col items-center justify-center text-center px-4 z-10">
               <motion.p
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.6, duration: 0.8 }}
-                className="text-white drop-shadow-md tracking-[0.6em] uppercase text-[10px] md:text-xs mb-6 font-bold"
+                variants={textVariants}
+                initial="hidden"
+                animate="visible"
+                className="text-white drop-shadow-md tracking-[0.6em] uppercase text-[10px] md:text-xs mb-6 font-bold flex items-center justify-center gap-4"
               >
-                {slides[current].tagline}
+                <div className="w-6 h-[1px] bg-white/40" />
+                {currentSlideData.tagline}
+                <div className="w-6 h-[1px] bg-white/40" />
               </motion.p>
 
               <motion.h1
-                initial={{ y: 30, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.8, duration: 1 }}
-                className="text-white drop-shadow-2xl text-5xl md:text-6xl lg:text-[7.5rem] font-bold mb-4 tracking-tighter leading-[0.9]"
+                variants={textVariants}
+                initial="hidden"
+                animate="visible"
+                className="text-white drop-shadow-2xl text-4xl sm:text-5xl md:text-6xl lg:text-[7.5rem] font-bold mb-4 tracking-tighter leading-[0.9] uppercase"
               >
-                {slides[current].title}
+                {currentSlideData.title}
               </motion.h1>
 
-              <motion.h2
-                initial={{ y: 30, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 1, duration: 1 }}
-                className="text-white/90 drop-shadow-lg text-2xl md:text-4xl lg:text-5xl font-light italic mb-12"
+              <motion.p
+                variants={textVariants}
+                initial="hidden"
+                animate="visible"
+                className="text-gray-100 text-sm sm:text-base md:text-xl font-light italic max-w-2xl mb-12"
               >
-                {slides[current].subtitle}
-              </motion.h2>
+                {currentSlideData.subtitle}
+              </motion.p>
 
               <motion.div
                 initial={{ opacity: 0 }}
@@ -142,7 +193,7 @@ const HeroSlider = () => {
       </div>
 
       {/* Navigation Arrows */}
-      <div className="absolute bottom-25 right-12 flex gap-4 z-30">
+      <div className="absolute bottom-[100px] right-4 md:right-12 flex gap-4 z-30">
         <button 
           onClick={prevSlide}
           className="w-14 h-14 flex items-center justify-center border border-white/40 text-white hover:bg-white hover:text-black transition-all duration-500 rounded-full backdrop-blur-sm"

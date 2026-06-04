@@ -24,7 +24,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="relative bg-[var(--primary-blue)] text-[var(--white)] pt-24 pb-12 overflow-hidden font-outfit">
+    <footer className="relative bg-[var(--primary-blue)] text-[var(--white)] pt-16 md:pt-24 pb-12 overflow-hidden font-outfit">
 
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
 
@@ -46,7 +46,7 @@ const Footer = () => {
                   <img 
                     src={logo} 
                     alt="House of Shah Logo" 
-                    className="h-12 md:h-16 w-auto object-contain scale-[1.5] md:scale-[2.0] transition-transform duration-500"
+                    className="h-12 md:h-16 w-auto object-contain transition-transform duration-500"
                   />
                 </div>
               </div>
@@ -117,7 +117,7 @@ const Footer = () => {
             </div>
             <div>
               <p className="text-[9px] uppercase tracking-[0.3em] text-[var(--white)]/30 font-bold">Manufacturing HQ</p>
-              <p className="text-xs font-bold tracking-widest uppercase">Rajkot, Gujarat, India</p>
+              <p className="text-xs font-bold tracking-widest uppercase"> House Of Shah, Jalganga Chowk,<br/> Rajkot 360003</p>
             </div>
           </div>
 

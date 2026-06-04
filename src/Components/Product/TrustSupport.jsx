@@ -25,7 +25,7 @@ const TrustSupport = () => {
   ];
 
   return (
-    <section className="bg-[#fcfcfc] border-t border-gray-100 py-32 px-6 md:px-12 lg:px-24 font-outfit text-[#001f3f] overflow-hidden relative">
+    <section className="bg-[#fcfcfc] border-t border-gray-100 py-16 md:py-32 px-6 md:px-12 lg:px-24 font-outfit text-[#001f3f] overflow-hidden relative">
       {/* Background decorative element */}
       <div className="absolute -top-24 -left-24 w-96 h-96 bg-[var(--primary-blue)]/5 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-[var(--primary-blue)]/5 rounded-full blur-[120px] pointer-events-none" />
@@ -95,7 +95,7 @@ const TrustSupport = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1 }}
               viewport={{ once: true }}
-              className="bg-white border border-gray-100 p-10 md:p-14 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.05)] relative overflow-hidden"
+              className="bg-white border border-gray-100 p-6 md:p-14 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.05)] relative overflow-hidden"
             >
               {/* Luxury gold accent line */}
               <div className="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-transparent via-[var(--primary-blue)]/20 to-transparent" />
@@ -105,7 +105,7 @@ const TrustSupport = () => {
                   <span className="text-[9px] font-bold uppercase tracking-[0.4em] text-gray-400 block mb-3">
                     Exclusive Service
                   </span>
-                  <h3 className="text-3xl font-bold tracking-tight uppercase leading-none">
+                  <h3 className="text-2xl md:text-3xl font-bold tracking-tight uppercase leading-none">
                     SHAH <br /> <span className="font-light text-[var(--primary-blue)]/40">Concierge</span>
                   </h3>
                   <p className="text-sm text-gray-400 font-light mt-6 leading-relaxed">

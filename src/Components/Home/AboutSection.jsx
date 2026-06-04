@@ -13,7 +13,7 @@ const AboutSection = () => {
   ];
 
   return (
-    <section id="about" className="py-24 bg-[var(--white)] overflow-hidden font-outfit relative">
+    <section id="about" className="py-16 md:py-24 bg-[var(--white)] overflow-hidden font-outfit relative">
 
 
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
@@ -57,7 +57,7 @@ const AboutSection = () => {
                 </span>
               </div>
 
-              <h2 className="text-5xl md:text-7xl font-bold text-[var(--primary-blue)] leading-[0.95] mb-10 tracking-tighter">
+              <h2 className="text-4xl md:text-7xl font-bold text-[var(--primary-blue)] leading-[0.95] mb-10 tracking-tighter">
                 Built On Legacy Crafted<br />
                 <span className="font-light italic text-[var(--primary-blue)]/40">  With Purpose.
 </span>

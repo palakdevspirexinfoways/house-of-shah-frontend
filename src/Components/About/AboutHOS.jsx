@@ -21,7 +21,7 @@ const AboutHOS = () => {
                 <div className="w-8 h-[1px] bg-[#1a4173]/30" />
                 <span className="text-[10px] font-bold uppercase tracking-[0.4em] opacity-60">The Brand</span>
               </div>
-              <h2 className="text-5xl lg:text-7xl font-black uppercase tracking-tighter mb-4 leading-[0.9]">
+              <h2 className="text-4xl lg:text-7xl font-black uppercase tracking-tighter mb-4 leading-[0.9]">
                 About <br/><span className="text-[#1a4173]/30 font-light italic">H.O.S</span>
               </h2>
               <div className="w-24 h-1 bg-[#1a4173] mt-8 mb-8" />

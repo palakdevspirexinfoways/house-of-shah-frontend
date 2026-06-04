@@ -25,7 +25,7 @@ const SkillDevelopment = () => {
   ];
 
   return (
-    <section className="py-24 bg-white text-[var(--primary-blue)] font-outfit overflow-hidden relative">
+    <section className="py-16 md:py-24 bg-white text-[var(--primary-blue)] font-outfit overflow-hidden relative">
       
       {/* Background Decor */}
       {/* <div className="absolute inset-0 opacity-[0.02] pointer-events-none">
@@ -73,7 +73,7 @@ const SkillDevelopment = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: idx * 0.15 }}
-              className="group relative p-8 md:p-10 bg-white border border-[var(--primary-blue)]/5 rounded-none hover:border-[var(--primary-blue)]/20 hover:shadow-[0_30px_60px_-15px_rgba(26,65,115,0.06)] transition-all duration-500 flex flex-col justify-between"
+              className="group relative p-6 md:p-10 bg-white border border-[var(--primary-blue)]/5 rounded-none hover:border-[var(--primary-blue)]/20 hover:shadow-[0_30px_60px_-15px_rgba(26,65,115,0.06)] transition-all duration-500 flex flex-col justify-between"
             >
               <div>
                 {/* Icon Box with Sharp Borders */}

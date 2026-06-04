@@ -1,16 +1,50 @@
-import React from 'react';
-import { Plus, Edit2, Trash2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { Plus, Edit2, Trash2, Filter } from 'lucide-react';
 
 const SliderManage = ({ slides, onAddClick, onEditClick, onDeleteClick }) => {
+  const [filterPage, setFilterPage] = useState('all');
+
+  const filteredSlides = filterPage === 'all' 
+    ? slides 
+    : slides.filter(slide => slide.page === filterPage);
+
+  const getPageDisplayName = (pageCode) => {
+    switch (pageCode) {
+      case 'home': return 'Home';
+      case 'product': return 'Jewellery';
+      case 'gallery': return 'Digital Magazine';
+      case 'about': return 'About Us';
+      case 'beyond': return 'Beyond Jewellery';
+      case 'contact': return 'Contact';
+      default: return pageCode?.toUpperCase() || 'HOME';
+    }
+  };
+
   return (
     <div className="space-y-6 font-outfit">
       
       {/* Header Controls */}
       <div className="flex justify-between items-center">
         <div>
-          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-            {slides.length} Hero Banners Registered
+          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-2">
+            {filteredSlides.length} Hero Banners Registered
           </span>
+          <div className="relative inline-block">
+            <select
+              value={filterPage}
+              onChange={(e) => setFilterPage(e.target.value)}
+              className="appearance-none bg-white border border-[rgba(26,65,115,0.18)] text-[#1a4173] text-[10px] font-bold uppercase tracking-widest py-2 pl-3 pr-8 rounded-lg outline-none focus:border-[#1a4173] transition-colors cursor-pointer"
+            >
+              <option value="all">Filter: All Pages</option>
+              <option value="home">Home</option>
+              <option value="product">Jewellery</option>
+              <option value="gallery">Digital Magazine</option>
+              <option value="about">About Us</option>
+              <option value="beyond">Beyond Jewellery</option>
+              <option value="contact">Contact</option>
+            </select>
+            <Filter size={12} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+          </div>
         </div>
         <button 
           onClick={onAddClick}
@@ -32,7 +66,7 @@ const SliderManage = ({ slides, onAddClick, onEditClick, onDeleteClick }) => {
       </div>
 
       {/* Empty State */}
-      {slides.length === 0 && (
+      {filteredSlides.length === 0 && (
         <div className="text-center py-20" style={{
           background: 'white',
           border: '2px dashed rgba(26,65,115,0.15)',
@@ -48,7 +82,7 @@ const SliderManage = ({ slides, onAddClick, onEditClick, onDeleteClick }) => {
 
       {/* Banners Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {slides.map((slide) => (
+        {filteredSlides.map((slide) => (
           <div 
             key={slide.id} 
             className="group overflow-hidden"
@@ -74,9 +108,14 @@ const SliderManage = ({ slides, onAddClick, onEditClick, onDeleteClick }) => {
             <div className="p-5">
               {/* Content */}
               <div className="space-y-1 mb-5">
-                <span className="text-[9px] font-black tracking-widest uppercase" style={{ color: '#1a4173' }}>
-                  {slide.tagline || '—'}
-                </span>
+                <div className="flex justify-between items-center">
+                  <span className="text-[9px] font-black tracking-widest uppercase" style={{ color: '#1a4173' }}>
+                    {slide.tagline || '—'}
+                  </span>
+                  <span className="text-[9px] font-black tracking-widest uppercase px-2 py-1 rounded" style={{ background: '#1a4173', color: 'white' }}>
+                    {getPageDisplayName(slide.page)}
+                  </span>
+                </div>
                 <h3 className="text-base font-black uppercase tracking-tight" style={{ color: '#1a4173' }}>{slide.title}</h3>
                 <p className="text-xs text-gray-400 font-light leading-relaxed line-clamp-2">{slide.desc}</p>
               </div>

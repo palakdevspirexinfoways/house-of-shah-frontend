@@ -69,6 +69,7 @@ const Login = ({ email, setEmail, password, setPassword, onSubmit, error }) => {
               className="w-full px-4 py-3.5 outline-none text-sm placeholder-white/25 transition-all focus:border-white/30 focus:bg-white/10"
               placeholder="admin@houseofshah.com" 
               required
+              maxLength={100}
             />
           </div>
 
@@ -87,6 +88,8 @@ const Login = ({ email, setEmail, password, setPassword, onSubmit, error }) => {
               className="w-full px-4 py-3.5 outline-none text-sm placeholder-white/25 transition-all focus:border-white/30 focus:bg-white/10"
               placeholder="••••••••" 
               required
+              minLength={6}
+              maxLength={50}
             />
           </div>
 

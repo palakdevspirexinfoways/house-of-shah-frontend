@@ -31,7 +31,7 @@ const CounterItem = ({ value, title, suffix = "", index }) => {
       
       <div className="relative z-10 flex flex-col items-center">
         <div className="flex items-baseline gap-1">
-          <motion.span className="text-6xl md:text-7xl font-bold text-[var(--primary-blue)] tracking-tighter leading-none">
+          <motion.span className="text-5xl md:text-7xl font-bold text-[var(--primary-blue)] tracking-tighter leading-none">
             {displayValue}
           </motion.span>
           <span className="text-2xl md:text-3xl font-light text-[var(--primary-blue)]/30 italic">
@@ -62,7 +62,7 @@ const StatsSection = () => {
   ];
 
   return (
-    <section className="py-32 bg-[var(--white)] relative overflow-hidden font-outfit">
+    <section className="py-16 md:py-32 bg-[var(--white)] relative overflow-hidden font-outfit">
       
     
 
@@ -85,7 +85,7 @@ const StatsSection = () => {
         </div>
         
         {/* Quality Commitment Footer - Rich Styling */}
-        <div className="mt-24 flex flex-col items-center">
+        <div className="mt-16 md:mt-24 flex flex-col items-center">
           <motion.div 
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -101,7 +101,7 @@ const StatsSection = () => {
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            className="text-[var(--primary-blue)]/60 font-light italic text-2xl md:text-4xl tracking-tighter text-center max-w-3xl leading-tight"
+            className="text-[var(--primary-blue)]/60 font-light italic text-xl md:text-4xl tracking-tighter text-center max-w-3xl leading-tight"
           >
             "Engineering <span className="text-[var(--primary-blue)] font-normal not-italic">precision</span> into every gram, weaving <span className="text-[var(--primary-blue)] font-normal not-italic">trust</span> into every design."
           </motion.p>

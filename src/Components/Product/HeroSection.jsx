@@ -4,34 +4,39 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const slidesData = [
   {
-    tagline: "HOS Exclusive",
-    title: "Products",
-    desc: "HOS Exclusive",
+    title: "HOS Exclusive",
     image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=1920&auto=format&fit=crop"
   },
   {
-    tagline: "HOS Exclusive",
-    title: "Artistry",
-    desc: "HOS Exclusive",
+    title: "HOS Exclusive",
     image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=1920&auto=format&fit=crop"
   },
   {
-    tagline: "HOS Exclusive",
-    title: "Purity",
-    desc: "",
+    title: "HOS Exclusive",
     image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=1920&auto=format&fit=crop"
   },
   {
-    tagline: "HOS Exclusive",
-    title: "Legacy",
-    desc: "HOS Exclusive",
+    title: "HOS Exclusive",
     image: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?q=80&w=1920&auto=format&fit=crop"
   }
 ];
 
 const ProductHero = () => {
+  const [slides, setSlides] = useState(slidesData);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [direction, setDirection] = useState(0); // -1 for left, 1 for right
+
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/slides?page=product`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.data && data.data.length > 0) {
+          setSlides(data.data);
+          setCurrentSlide(0);
+        }
+      })
+      .catch(err => console.error('[Product Hero Fetch Error]', err));
+  }, []);
 
   // Auto-play interval
   useEffect(() => {
@@ -39,16 +44,16 @@ const ProductHero = () => {
       handleNext();
     }, 6000);
     return () => clearInterval(timer);
-  }, [currentSlide]);
+  }, [currentSlide, slides.length]);
 
   const handleNext = () => {
     setDirection(1);
-    setCurrentSlide((prev) => (prev + 1) % slidesData.length);
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
   };
 
   const handlePrev = () => {
     setDirection(-1);
-    setCurrentSlide((prev) => (prev - 1 + slidesData.length) % slidesData.length);
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
   const handleDotClick = (idx) => {
@@ -115,8 +120,8 @@ const ProductHero = () => {
             className="absolute inset-0 w-full h-full"
           >
             <img
-              src={slidesData[currentSlide].image}
-              alt="Premium Silver Craft"
+              src={slides[currentSlide]?.image || slides[0].image}
+              alt={slides[currentSlide]?.title || "Premium Silver Craft"}
               className="w-full h-full object-cover"
             />
             {/* Elegant dark overlay */}
@@ -133,37 +138,37 @@ const ProductHero = () => {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="max-w-4xl flex flex-col items-center"
+            className=" flex flex-col items-center"
           >
             {/* Tagline */}
-            <motion.div variants={contentVariants} className="mb-6 md:mb-8">
+            {/* <motion.div variants={contentVariants} className="mb-6 md:mb-8">
               <span className="text-white/40 tracking-[0.8em] uppercase text-[9px] md:text-xs font-bold flex items-center gap-4">
                 <div className="w-8 h-[1px] bg-white/20" />
                 {slidesData[currentSlide].tagline}
                 <div className="w-8 h-[1px] bg-white/20" />
               </span>
-            </motion.div>
+            </motion.div> */}
 
             {/* Title */}
             <motion.div variants={contentVariants} className="relative mb-6">
-              <h1 className="text-white text-5xl md:text-8xl lg:text-[9rem] uppercase font-bold tracking-tighter leading-none mix-blend-difference">
-                {slidesData[currentSlide].title}
+              <h1 className="text-white text-4xl md:text-8xl lg:text-[9rem] uppercase font-bold tracking-tighter leading-none mix-blend-difference">
+                {slides[currentSlide]?.title || slides[0].title}
               </h1>
               {/* Luxury Floating Element */}
               <div className="absolute -top-10 -right-8 md:-top-16 md:-right-16">
-                <span className="text-[8px] md:text-[10px] text-white/20 font-light italic tracking-widest vertical-text uppercase">
+                {/* <span className="text-[8px] md:text-[10px] text-white/20 font-light italic tracking-widest vertical-text uppercase">
                   HOS • EST. 2023
-                </span>
+                </span> */}
               </div>
             </motion.div>
 
             {/* Description */}
-            <motion.p 
+            {/* <motion.p 
               variants={contentVariants} 
               className="text-white/70 text-base md:text-2xl font-light leading-relaxed tracking-wide px-4 max-w-3xl mb-10"
             >
               {slidesData[currentSlide].desc}
-            </motion.p>
+            </motion.p> */}
             
             {/* Button */}
             <motion.div 
@@ -180,42 +185,48 @@ const ProductHero = () => {
       </div>
 
       {/* --- Manual Slider Controls --- */}
-      <button 
-        onClick={handlePrev}
-        className="absolute left-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full border border-white/10 bg-black/20 text-white flex items-center justify-center hover:bg-white hover:text-black transition-all"
-        aria-label="Previous slide"
-      >
-        <ChevronLeft size={20} />
-      </button>
-      <button 
-        onClick={handleNext}
-        className="absolute right-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full border border-white/10 bg-black/20 text-white flex items-center justify-center hover:bg-white hover:text-black transition-all"
-        aria-label="Next slide"
-      >
-        <ChevronRight size={20} />
-      </button>
+      {slides.length > 1 && (
+        <>
+          <button 
+            onClick={handlePrev}
+            className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full border border-white/10 bg-black/20 text-white flex items-center justify-center hover:bg-white hover:text-black transition-all"
+            aria-label="Previous slide"
+          >
+            <ChevronLeft size={20} />
+          </button>
+          <button 
+            onClick={handleNext}
+            className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full border border-white/10 bg-black/20 text-white flex items-center justify-center hover:bg-white hover:text-black transition-all"
+            aria-label="Next slide"
+          >
+            <ChevronRight size={20} />
+          </button>
+        </>
+      )}
 
       {/* --- Paginated Dots (Bottom Right) --- */}
-      <div className="absolute bottom-12 right-12 z-20 flex items-center gap-4">
-        {slidesData.map((_, idx) => (
-          <button
-            key={idx}
-            onClick={() => handleDotClick(idx)}
-            className="group relative flex items-center justify-center p-2"
-            aria-label={`Go to slide ${idx + 1}`}
-          >
-            {/* Inner Dot */}
-            <div className={`h-[2px] transition-all duration-500 bg-white ${
-              currentSlide === idx ? 'w-8' : 'w-4 opacity-30 group-hover:opacity-60'
-            }`} />
-            
-            {/* Number tool-tip on hover */}
-            <span className="absolute -top-6 text-[9px] text-white/50 opacity-0 group-hover:opacity-100 transition-opacity tracking-widest font-bold">
-              0{idx + 1}
-            </span>
-          </button>
-        ))}
-      </div>
+      {slides.length > 1 && (
+        <div className="absolute bottom-8 right-6 md:bottom-12 md:right-12 z-20 flex items-center gap-4">
+          {slides.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => handleDotClick(idx)}
+              className="group relative flex items-center justify-center p-2"
+              aria-label={`Go to slide ${idx + 1}`}
+            >
+              {/* Inner Dot */}
+              <div className={`h-[2px] transition-all duration-500 bg-white ${
+                currentSlide === idx ? 'w-8' : 'w-4 opacity-30 group-hover:opacity-60'
+              }`} />
+              
+              {/* Number tool-tip on hover */}
+              <span className="absolute -top-6 text-[9px] text-white/50 opacity-0 group-hover:opacity-100 transition-opacity tracking-widest font-bold">
+                0{idx + 1}
+              </span>
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* --- Corner Embellishments --- */}
       <div className="absolute top-12 left-12 w-32 h-[1px] bg-white/5 hidden lg:block" />

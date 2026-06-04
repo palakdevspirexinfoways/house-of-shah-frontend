@@ -41,7 +41,7 @@ const HeroSection = () => {
           transition={{ delay: 0.3, duration: 1 }}
           className="relative"
         >
-          <h1 className="text-white text-5xl md:text-7xl lg:text-[9rem] font-bold tracking-tighter leading-none mb-4 uppercase">
+          <h1 className="text-white text-4xl md:text-7xl lg:text-[9rem] font-bold tracking-tighter leading-none mb-4 uppercase">
             Beyound Jewellery
           </h1>
           <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-24 h-[1px] bg-white/40" />
@@ -54,8 +54,6 @@ const HeroSection = () => {
           transition={{ delay: 0.6, duration: 0.8 }}
           className="text-white/70 text-base md:text-2xl font-light italic max-w-2xl mt-8 leading-relaxed"
         >
-          "Nurturing ancestral craftsmanship, certifying unmatched skill, and <br className="hidden md:block" /> 
-          empowering communities to shape a self-reliant nation."
         </motion.p>
       </div>
 

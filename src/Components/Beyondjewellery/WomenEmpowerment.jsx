@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 const WomenEmpowerment = () => {
   return (
-    <section className="py-24 bg-[var(--silver-bg)] text-[var(--primary-blue)] font-outfit overflow-hidden relative">
+    <section className="py-16 md:py-24 bg-[var(--silver-bg)] text-[var(--primary-blue)] font-outfit overflow-hidden relative">
       
       {/* Subtle Background Watermark */}
       <div className="absolute bottom-10 right-10 text-[110px] font-black opacity-[0.02] select-none tracking-tighter leading-none pointer-events-none hidden lg:block">

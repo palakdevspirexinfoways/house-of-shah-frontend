@@ -1,7 +1,20 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 const AboutHeroCenter = () => {
+  const [slide, setSlide] = useState(null);
+
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/slides?page=about`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.data && data.data.length > 0) {
+          setSlide(data.data[0]);
+        }
+      })
+      .catch(err => console.error('[About Hero Fetch Error]', err));
+  }, []);
+
   return (
     <section className="relative h-screen w-full overflow-hidden bg-black font-outfit">
       
@@ -13,8 +26,8 @@ const AboutHeroCenter = () => {
         className="absolute inset-0 w-full h-full"
       >
         <img 
-          src="https://png.pngtree.com/thumb_back/fw800/background/20251123/pngtree-minimalist-triangle-silver-necklace-on-gray-surface-image_20550704.webp" 
-          alt="Premium Silver Craft" 
+          src={slide?.image || "https://png.pngtree.com/thumb_back/fw800/background/20251123/pngtree-minimalist-triangle-silver-necklace-on-gray-surface-image_20550704.webp"} 
+          alt={slide?.title || "Premium Silver Craft"} 
           className="w-full h-full object-cover"
         />
         {/* Minor Dark Overlay for Text Visibility */}
@@ -32,7 +45,7 @@ const AboutHeroCenter = () => {
           className="mb-6"
         >
           <span className="text-white/60 tracking-[0.6em] uppercase text-[10px] md:text-xs font-bold border-b border-white/20 pb-2">
-            A Legacy of Precision
+            {slide?.tagline || "A Legacy of Precision"}
           </span>
         </motion.div>
 
@@ -43,8 +56,8 @@ const AboutHeroCenter = () => {
           transition={{ delay: 0.3, duration: 1 }}
           className="relative"
         >
-          <h1 className="text-white text-6xl md:text-8xl lg:text-[11rem] font-bold tracking-tighter leading-none mb-4">
-            ABOUT US
+          <h1 className="text-white text-5xl md:text-8xl lg:text-[11rem] font-bold tracking-tighter leading-none mb-4">
+            {slide?.title || "ABOUT US"}
           </h1>
           {/* Subtle architectural line under title */}
           <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-24 h-[1px] bg-white/40" />
@@ -57,8 +70,7 @@ const AboutHeroCenter = () => {
           transition={{ delay: 0.6, duration: 0.8 }}
           className="text-white/70 text-lg md:text-2xl font-light italic max-w-2xl mt-8 leading-relaxed"
         >
-          "Blending a 15-year legacy of Rajkot's finest artistry with <br className="hidden md:block" /> 
-          modern architectural engineering."
+          {slide?.desc || ""}
         </motion.p>
 
  

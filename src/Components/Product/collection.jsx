@@ -155,6 +155,7 @@ const SignatureCollections = ({
           </div>
 
           {/* 2. Trending Searches tags */}
+          {/* 
           <div className="flex flex-wrap gap-2 items-center pl-2">
             <span className="text-[9px] uppercase font-bold tracking-[0.2em] text-[#1a4173]/35 mr-1 flex items-center gap-1">
               <TrendingUp size={10} /> Trending:
@@ -172,6 +173,7 @@ const SignatureCollections = ({
               </button>
             ))}
           </div>
+          */}
 
           {/* 3. Collection Filter Row */}
           <div className="pt-4">
@@ -197,7 +199,7 @@ const SignatureCollections = ({
           {/* 4. Sub-category Filter Row */}
           <div className="pt-4">
             <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#1a4173]/40 block mb-3">Filter By category:</span>
-            <div className="flex flex-row justify-between items-center">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 md:gap-0">
               <div className="flex flex-wrap gap-2 items-center">
                 {categories.map((cat) => (
                   <button
@@ -251,7 +253,7 @@ const SignatureCollections = ({
         <div className="relative z-10">
           <div
             ref={scrollContainerRef}
-            className="flex overflow-x-auto gap-6 scrollbar-hide py-4 px-2 snap-x snap-mandatory touch-pan-x"
+            className="flex overflow-x-auto gap-6 scrollbar-hide py-4 px-2 snap-x snap-mandatory"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             <AnimatePresence mode="popLayout">

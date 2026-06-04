@@ -115,7 +115,7 @@ const BestSellerSection = () => {
               <div className="w-10 h-[1px] bg-[var(--primary-blue)]" />
               <span className="text-[var(--primary-blue)] font-bold tracking-[0.4em] uppercase text-[10px]">House of Shah Exclusives</span>
             </motion.div>
-            <h2 className="text-5xl md:text-7xl font-bold text-[var(--primary-blue)] tracking-tighter leading-none">
+            <h2 className="text-4xl md:text-7xl font-bold text-[var(--primary-blue)] tracking-tighter leading-none">
               Jewellery <br />
               <span className="font-light italic text-[var(--primary-blue)]/40 lowercase tracking-normal">Designs</span>
             </h2>

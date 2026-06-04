@@ -31,7 +31,7 @@ const QualityAssurancePremium = () => {
   ];
 
   return (
-    <section className="py-24 bg-[var(--silver-bg)] text-[var(--primary-blue)] font-outfit overflow-hidden relative">
+    <section className="py-16 md:py-24 bg-[var(--silver-bg)] text-[var(--primary-blue)] font-outfit overflow-hidden relative">
       
       {/* Background Decor (Subtle Geometric Pattern) */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
@@ -56,7 +56,7 @@ const QualityAssurancePremium = () => {
               <div className="w-8 h-[1.5px] bg-[var(--primary-blue)] opacity-30" />
               <span className="text-[10px] font-black uppercase tracking-[0.4em] opacity-60">The HOS Protocol</span>
             </motion.div>
-            <h2 className="text-5xl md:text-6xl font-bold tracking-tighter leading-none">
+            <h2 className="text-4xl md:text-6xl font-bold tracking-tighter leading-none">
               Clinical Precision <br />
               <span className="opacity-20 font-light italic">as a Standard.</span>
             </h2>
@@ -120,7 +120,7 @@ const QualityAssurancePremium = () => {
             </div>
           </div>
 
-          <div className="flex gap-4 relative z-10">
+          <div className="flex flex-col sm:flex-row gap-4 relative z-10">
             <div className="px-7 py-3.5 rounded-full border border-[var(--white)]/10 text-[10px] font-black uppercase tracking-widest hover:bg-[var(--white)] hover:text-[var(--primary-blue)] transition-all cursor-default">
               ISO Certified
             </div>

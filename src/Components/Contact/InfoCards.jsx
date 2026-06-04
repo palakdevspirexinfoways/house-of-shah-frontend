@@ -22,7 +22,7 @@ const InfoCards = () => {
   ];
 
   return (
-    <section className="py-20 bg-white font-outfit relative z-20 ">
+    <section className="py-10 md:py-20 bg-white font-outfit relative z-20 ">
       <div className="container mx-auto px-6 lg:px-12 ">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {cards.map((card, index) => (

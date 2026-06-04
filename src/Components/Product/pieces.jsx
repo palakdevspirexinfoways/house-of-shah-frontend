@@ -143,7 +143,7 @@ const SignaturePieces = () => {
         <div className="relative">
           <div 
             ref={scrollContainerRef}
-            className="flex overflow-x-auto gap-6 scrollbar-hide py-4 px-2 snap-x snap-mandatory touch-pan-x"
+            className="flex overflow-x-auto gap-6 scrollbar-hide py-4 px-2 snap-x snap-mandatory"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             <AnimatePresence mode="popLayout">

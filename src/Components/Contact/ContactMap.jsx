@@ -12,7 +12,7 @@ const ContactMap = () => {
         className="w-full h-[50vh] md:h-[60vh] transition-all duration-1000"
       >
         <iframe 
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d118106.70010221669!2d70.73003058882897!3d22.30516629995574!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3959c98ac71cbd81%3A0x41ed57a097367453!2sRajkot%2C%20Gujarat!5e0!3m2!1sen!2sin!4v1716301321046!5m2!1sen!2sin" 
+          src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3691.8677524395!2d70.7853983!3d22.2829989!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjLCsDE2JzU4LjgiTiA3MMKwNDcnMDcuNCJF!5e0!3m2!1sen!2sin!4v1780464368161!5m2!1sen!2sin" 
           width="100%" 
           height="100%" 
           style={{ border: 0 }} 

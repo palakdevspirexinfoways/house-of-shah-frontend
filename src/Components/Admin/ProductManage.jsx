@@ -124,12 +124,14 @@ const ProductManage = ({
   onAddClick, 
   onEditClick, 
   onDeleteClick, 
-  onAssignHighlight 
+  onAssignHighlight,
+  onReorder
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCollection, setFilterCollection] = useState('All');
   const [filterCategory, setFilterCategory] = useState('All');
   const [filterHighlight, setFilterHighlight] = useState('All');
+  const [draggedItemIndex, setDraggedItemIndex] = useState(null);
 
   const filteredProducts = products.filter((p) => {
     const matchesSearch = p.title.toLowerCase().includes(searchTerm.toLowerCase());
@@ -143,6 +145,44 @@ const ProductManage = ({
           : p.homepageHighlight === filterHighlight;
     return matchesSearch && matchesCollection && matchesCategory && matchesHighlight;
   });
+
+  const handleDragStart = (index) => {
+    setDraggedItemIndex(index);
+  };
+
+  const handleDragOver = (e, index) => {
+    e.preventDefault();
+    if (draggedItemIndex === null) return;
+    if (draggedItemIndex === index) return;
+    
+    // Check if we are currently filtering; if so, maybe disable reorder to avoid confusion, 
+    // but assuming dragging happens when list is mostly unfiltered. Let's allow it but warn.
+  };
+
+  const handleDrop = (e, targetIndex) => {
+    e.preventDefault();
+    if (draggedItemIndex === null || draggedItemIndex === targetIndex) {
+      setDraggedItemIndex(null);
+      return;
+    }
+
+    const draggedProduct = filteredProducts[draggedItemIndex];
+    const targetProduct = filteredProducts[targetIndex];
+
+    const originalDraggedIndex = products.findIndex(p => p.id === draggedProduct.id);
+    const originalTargetIndex = products.findIndex(p => p.id === targetProduct.id);
+
+    const newProductsList = [...products];
+    newProductsList.splice(originalDraggedIndex, 1);
+    newProductsList.splice(originalTargetIndex, 0, draggedProduct);
+    
+    setDraggedItemIndex(null);
+    
+    if (onReorder) {
+      onReorder(newProductsList.map(p => p.id));
+    }
+  };
+
 
   return (
     <div className="space-y-6 font-outfit">
@@ -269,9 +309,14 @@ const ProductManage = ({
                 {filteredProducts.map((product, i) => (
                   <tr 
                     key={product.id} 
-                    className="transition-colors"
+                    draggable
+                    onDragStart={() => handleDragStart(i)}
+                    onDragOver={(e) => handleDragOver(e, i)}
+                    onDrop={(e) => handleDrop(e, i)}
+                    className="transition-colors cursor-move"
                     style={{ 
-                      borderBottom: i < filteredProducts.length - 1 ? '1px solid rgba(26,65,115,0.05)' : 'none'
+                      borderBottom: i < filteredProducts.length - 1 ? '1px solid rgba(26,65,115,0.05)' : 'none',
+                      opacity: draggedItemIndex === i ? 0.5 : 1
                     }}
                     onMouseOver={e => { e.currentTarget.style.background = 'rgba(26,65,115,0.02)'; }}
                     onMouseOut={e => { e.currentTarget.style.background = 'transparent'; }}

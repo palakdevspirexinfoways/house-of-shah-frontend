@@ -63,7 +63,7 @@ const SignaturePieces = ({
                 House of Shah Exclusives
               </span>
             </motion.div>
-            <h2 className="text-5xl md:text-7xl font-bold text-[var(--primary-blue)] tracking-tighter leading-none">
+            <h2 className="text-4xl md:text-7xl font-bold text-[var(--primary-blue)] tracking-tighter leading-none">
               Signature <br />
               <span className="font-light italic text-[var(--primary-blue)]/40 lowercase tracking-normal">Pieces</span>
             </h2>
@@ -75,7 +75,7 @@ const SignaturePieces = ({
         {/* ── Category Names for Filtering (Rendered directly in Signature Pieces section) ── */}
         <div className="mb-10">
           <span className="text-[10px] uppercase font-bold tracking-widest text-[#1a4173]/40 block mb-3">Filter By Category:</span>
-          <div className='flex flex-row justify-between items-center'>
+          <div className='flex flex-col md:flex-row justify-between items-start md:items-center gap-4 md:gap-0'>
             <div className="flex flex-wrap gap-2.5 items-center">
           {categories.map((cat) => (
             <button
@@ -121,7 +121,7 @@ const SignaturePieces = ({
         {products.length > 0 ? (
           <div
             ref={scrollRef}
-            className="flex overflow-x-auto gap-6 scrollbar-hide py-4 px-2 snap-x snap-mandatory touch-pan-x"
+            className="flex overflow-x-auto gap-6 scrollbar-hide py-4 px-2 snap-x snap-mandatory"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {products.map((product) => (

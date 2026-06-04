@@ -4,7 +4,7 @@ import { FaLinkedinIn, FaTwitter, FaInstagram, FaCheckCircle } from 'react-icons
 
 const Founders = () => {
   return (
-    <section className="bg-white py-24 font-outfit overflow-hidden text-[#1a4173]">
+    <section className="bg-white py-16 md:py-24 font-outfit overflow-hidden text-[#1a4173]">
       <div className="container mx-auto px-6 lg:px-12 max-w-6xl">
         
         {/* Header Section */}

@@ -4,7 +4,7 @@ import { MapPin, Phone, Mail, Clock, ArrowUpRight } from 'lucide-react';
 
 const ContactDetails = () => {
   return (
-    <section className="bg-[var(--white)] py-24 md:py-32 font-outfit relative">
+    <section className="bg-[var(--white)] py-16 md:py-32 font-outfit relative">
       <div className="container mx-auto px-6 lg:px-12 ">
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
@@ -67,7 +67,7 @@ const ContactDetails = () => {
           </div>
 
           {/* Right Column: Form */}
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="bg-gray-50 p-8 md:p-12 border border-gray-100 shadow-2xl relative">
+          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="bg-gray-50 p-6 md:p-12 border border-gray-100 shadow-2xl relative">
             {/* Aesthetic Corner Elements */}
             <div className="absolute top-0 left-0 w-8 h-8 border-t border-l border-[var(--primary-blue)]/20" />
             <div className="absolute bottom-0 right-0 w-8 h-8 border-b border-r border-[var(--primary-blue)]/20" />
