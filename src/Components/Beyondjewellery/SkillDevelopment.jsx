@@ -57,9 +57,9 @@ const SkillDevelopment = () => {
               <span className="opacity-30 font-light italic">Program</span>
             </h2>
           </div>
-          <div className="max-w-xs md:text-right">
-            <p className="text-sm opacity-60 font-light leading-relaxed">
-              We actively train, support, and secure standard credentials for our local artisans to bridge the gap between age-old traditions and contemporary luxury.
+          <div className="max-w-lg md:text-right">
+            <p className="text-sm opacity-60 font-light leading-relaxed md:text-justify md:text-right">
+              At House of Shah, we believe that exceptional craftsmanship begins with skilled hands. As part of our commitment to strengthening Indian manufacturing, we actively invest in training and upskilling local talent, equipping artisans with modern jewellery production techniques, precision manufacturing skills, and evolving industry knowledge. By nurturing talent within our own communities, we aim to preserve craftsmanship, create sustainable employment opportunities, and contribute to the growth of a stronger, more self-reliant jewellery manufacturing ecosystem.
             </p>
           </div>
         </div>

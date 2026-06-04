@@ -44,12 +44,14 @@ const ContactHero = () => {
                 style={{ y: y1, scale }}
                 className="absolute inset-0 w-full h-full"
             >
-                <motion.img
-                    style={{ x: springMouseX, y: springMouseY }}
-                    src={slide?.image || "https://www.ross-simons.com/dw/image/v2/BKHT_PRD/on/demandware.static/-/Sites-RossSimons-Library/default/dwea3c75da/graphics/education/education-top-images/000160_EDU_D_RingMetals.jpg?sw=1920&q=70"}
-                    alt={slide?.title || "Premium Silver Craft"}
-                    className="w-full h-full object-cover scale-110"
-                />
+                {slide?.image && (
+                  <motion.img
+                      style={{ x: springMouseX, y: springMouseY }}
+                      src={slide.image}
+                      alt={slide?.title || "Premium Silver Craft"}
+                      className="w-full h-full object-cover scale-110"
+                  />
+                )}
                 {/* Sophisticated Gradient Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/20 to-[#0a0a0a]" />
             </motion.div>
@@ -61,18 +63,20 @@ const ContactHero = () => {
             >
 
                 {/* Tagline */}
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1, ease: "circOut" }}
-                    className="mb-8"
-                >
-                    <span className="text-white/40 tracking-[0.2em] md:tracking-[0.8em] uppercase text-[9px] md:text-xs font-bold flex items-center gap-4">
-                        <div className="w-8 h-[1px] bg-white/20" />
-                        {slide?.tagline || "A 15-Year Legacy of Precision"}
-                        <div className="w-8 h-[1px] bg-white/20" />
-                    </span>
-                </motion.div>
+                {slide?.tagline && (
+                  <motion.div
+                      initial={{ opacity: 0, y: 30 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 1, ease: "circOut" }}
+                      className="mb-8"
+                  >
+                      <span className="text-white/40 tracking-[0.2em] md:tracking-[0.8em] uppercase text-[9px] md:text-xs font-bold flex items-center gap-4">
+                          <div className="w-8 h-[1px] bg-white/20" />
+                          {slide.tagline}
+                          <div className="w-8 h-[1px] bg-white/20" />
+                      </span>
+                  </motion.div>
+                )}
 
                 {/* Main Title: PRODUCTS */}
                 <motion.div

@@ -95,16 +95,16 @@ const MakeInIndia = () => {
             {/* Back Card: Raw Crafting Process */}
             <motion.div
               initial={{ opacity: 0, y: 30, rotate: -2 }}
-              whileInView={{ opacity: 0.85, y: 0, rotate: -3 }}
+              whileInView={{ opacity: 1, y:0, rotate: -3 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="absolute w-[200px] md:w-[240px] aspect-square left-0 top-6 bg-white p-3 border border-[var(--primary-blue)]/5 shadow-md rounded-none group z-10"
+              className="absolute w-[300px] md:w-[240px] aspect-square left-0 top-6 p-3 bg-white border border-[var(--primary-blue)]/5 shadow-md rounded-none group z-10 "
             >
               <div className="w-full h-full overflow-hidden bg-[var(--silver-bg)] rounded-none">
                 <img 
-                  src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?q=80&w=500&auto=format&fit=crop" 
+                  src="https://res.cloudinary.com/de64mp51k/image/upload/v1780577848/Make_In_India_ajqpfp.png" 
                   alt="Raw silver hand forging" 
-                  className="w-full h-full object-cover grayscale opacity-90 transition-transform duration-700 hover:scale-105"
+                  className="w-full h-full object-contain grayscale opacity-90 transition-transform duration-700 hover:scale-105"
                 />
               </div>
             </motion.div>
@@ -119,7 +119,7 @@ const MakeInIndia = () => {
             >
               <div className="w-full h-full overflow-hidden bg-[var(--silver-bg)] rounded-none">
                 <img 
-                  src="https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&q=80" 
+                  src="https://res.cloudinary.com/de64mp51k/image/upload/v1780577861/Screenshot_2026-05-20_at_12.00.33_AM_i2fjxn.png" 
                   alt="Finished luxury silver silverware" 
                   className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                 />

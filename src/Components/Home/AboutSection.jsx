@@ -31,7 +31,7 @@ const AboutSection = () => {
 
 
               <img
-                src="https://i.pinimg.com/736x/bf/32/74/bf32740c33ecc88ab52afc6817b72064.jpg"
+                src="https://res.cloudinary.com/de64mp51k/image/upload/v1780576814/Built_On_Legacy_Section_sda1pk.jpg"
                 className="w-full h-full object-cover"
                 alt="Main Silver Piece"
               />

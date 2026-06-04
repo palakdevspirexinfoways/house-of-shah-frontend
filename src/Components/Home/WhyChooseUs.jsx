@@ -48,7 +48,7 @@ const WhyUs = () => {
 
                 <div className="relative w-full h-[30vh] lg:h-[35vh] rounded-[2rem] overflow-hidden shadow-sm border border-[var(--primary-blue)]/5 mb-8">
                   <img 
-                    src="https://plus.unsplash.com/premium_photo-1678834778658-9862d9987dd3?auto=format&fit=crop&q=80" 
+                    src="https://res.cloudinary.com/de64mp51k/image/upload/v1780576813/Jewellery_Manufacturing_Section_ifctrg.png" 
                     alt="Silver Craftsmanship" 
                     className="w-full h-full object-cover"
                   />

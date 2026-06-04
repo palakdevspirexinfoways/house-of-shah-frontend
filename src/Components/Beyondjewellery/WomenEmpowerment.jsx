@@ -27,7 +27,7 @@ const WomenEmpowerment = () => {
             <div className="relative w-full h-full bg-white p-3 border border-[var(--primary-blue)]/5 rounded-none shadow-sm overflow-hidden group">
               <div className="w-full h-full overflow-hidden rounded-none bg-[var(--silver-bg)]">
                 <img 
-                  src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80" 
+                  src="https://res.cloudinary.com/de64mp51k/image/upload/v1780577887/Screenshot_2026-05-20_at_12.03.32_AM_eolhz0.png" 
                   alt="Women Empowerment Crafting"
                   className="w-full h-full object-cover rounded-none transition-transform duration-700 group-hover:scale-105"
                 />
@@ -68,7 +68,7 @@ const WomenEmpowerment = () => {
              To support this vision, HOS launched a dedicated initiative, training women from nearby villages and small towns in jewellery manufacturing processes. Beyond vocational training, the program also supports continued education, offering opportunities for women to pursue further studies through evening schooling if they choose.
 
 <br/><br/>
-             Today, 85+ women are part of the HOS workforce, contributing their skills, dedication, and craftsmanship to the brand's journey. Their growth and success remain an important part of our purpose beyond jewellery
+             Today, 85+ women are part of the HOS workforce, contributing their skills, dedication, and craftsmanship to the brand's journey. Their growth and success remain an important part of our purpose beyond jewellery.
             </p>
 
             {/* Custom High-Contrast Stats Block */}

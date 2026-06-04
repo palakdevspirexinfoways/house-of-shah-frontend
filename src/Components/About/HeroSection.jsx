@@ -25,11 +25,13 @@ const AboutHeroCenter = () => {
         transition={{ duration: 10, ease: "linear" }}
         className="absolute inset-0 w-full h-full"
       >
-        <img 
-          src={slide?.image || "https://png.pngtree.com/thumb_back/fw800/background/20251123/pngtree-minimalist-triangle-silver-necklace-on-gray-surface-image_20550704.webp"} 
-          alt={slide?.title || "Premium Silver Craft"} 
-          className="w-full h-full object-cover"
-        />
+        {slide?.image && (
+          <img 
+            src={slide.image} 
+            alt={slide?.title || "Premium Silver Craft"} 
+            className="w-full h-full object-cover"
+          />
+        )}
         {/* Minor Dark Overlay for Text Visibility */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/70" />
       </motion.div>
@@ -38,16 +40,18 @@ const AboutHeroCenter = () => {
       <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
         
         {/* Tagline */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="mb-6"
-        >
-          <span className="text-white/60 tracking-[0.6em] uppercase text-[10px] md:text-xs font-bold border-b border-white/20 pb-2">
-            {slide?.tagline || "A Legacy of Precision"}
-          </span>
-        </motion.div>
+        {slide?.tagline && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="mb-6"
+          >
+            <span className="text-white/60 tracking-[0.6em] uppercase text-[10px] md:text-xs font-bold border-b border-white/20 pb-2">
+              {slide.tagline}
+            </span>
+          </motion.div>
+        )}
 
         {/* Main Title: ABOUT US */}
         <motion.div
@@ -59,8 +63,6 @@ const AboutHeroCenter = () => {
           <h1 className="text-white text-5xl md:text-8xl lg:text-[11rem] font-bold tracking-tighter leading-none mb-4">
             {slide?.title || "ABOUT US"}
           </h1>
-          {/* Subtle architectural line under title */}
-          <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-24 h-[1px] bg-white/40" />
         </motion.div>
 
         {/* Subtitle / Description */}

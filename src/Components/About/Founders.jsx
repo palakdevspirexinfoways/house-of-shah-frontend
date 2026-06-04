@@ -1,11 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { FaLinkedinIn, FaTwitter, FaInstagram, FaCheckCircle } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const Founders = () => {
   return (
     <section className="bg-white py-16 md:py-24 font-outfit overflow-hidden text-[#1a4173]">
-      <div className="container mx-auto px-6 lg:px-12 max-w-6xl">
+      <div className="container mx-auto px-6 lg:px-12 ">
         
         {/* Header Section */}
         <div className="text-center mb-20">
@@ -41,7 +42,7 @@ const Founders = () => {
                 Co-Founder
               </div>
               <img 
-                src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=800&auto=format&fit=crop" 
+                src="https://res.cloudinary.com/de64mp51k/image/upload/v1780578756/Hitanshu_Shah_ojwah1.png" 
                 alt="Hitanshu Shah"
                 className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
               />
@@ -60,11 +61,27 @@ const Founders = () => {
               Hitanshu Shah
             </h3>
             
-            <p className="text-[#1a4173]/70 leading-relaxed font-light mb-8 text-sm lg:text-base">
-              Founded in 2023 by siblings Hitanshu and Heer Shah, House Of Shah was born from a shared vision to create high-finish 925 sterling silver jewellery that could stand alongside imported designs in both quality and craftsmanship.
+            <p className="text-[#1a4173]/70 leading-relaxed font-light mb-4 text-sm lg:text-base">
+              A fourth-generation jeweller and Director of House Of Shah, Hitanshu brings together tradition, technology, and modern design thinking through his creations. 
             </p>
 
-            <div className="flex gap-4 text-[#1a4173]/50 mb-12 border-b border-gray-100 pb-8">
+            <p className="text-[#1a4173]/70 leading-relaxed font-light mb-4 text-sm lg:text-base">
+              With a strong inclination toward innovation and structured growth, he pursued Management Studies at NMIMS, Mumbai to better contribute to the evolution of his family business, Shah Raichand Premchand & Co.
+            </p>
+
+            <p className="text-[#1a4173]/70 leading-relaxed font-light mb-4 text-sm lg:text-base">
+              In 2018, he entered the industry by launching SLG, a 68% purity silver jewellery brand, gaining hands-on business and manufacturing experience at an early stage. As his interest in jewellery design and production deepened, he went on to study Jewellery Designing and Manufacturing at Lorenzo de’ Medici in Florence, Italy, one of the world’s renowned institutes for jewellery design and craftsmanship. 
+            </p>
+
+            <p className="text-[#1a4173]/70 leading-relaxed font-light mb-4 text-sm lg:text-base">
+              In 2023, Hitanshu co-founded House Of Shah alongside Heer, with a shared vision of creating import-quality 925 sterling silver jewellery reimagined for a new generation. Deeply inspired by patterns, modern architecture, geometrical forms, and contemporary art, his design philosophy reflects a balance between precision and creativity. 
+            </p>
+
+            <p className="text-[#1a4173]/70 leading-relaxed font-light mb-8 text-sm lg:text-base">
+              At HOS, Hitanshu spearheads production, machinery, and concept development, bringing together technical expertise, innovation, and a deep understanding of modern manufacturing.
+            </p>
+
+            <div className="flex gap-4 text-[#1a4173]/50 border-t border-gray-100 pt-8 mt-auto">
               <a href="#" className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-[#1a4173] hover:text-white transition-all duration-300">
                 <FaLinkedinIn size={14} />
               </a>
@@ -75,35 +92,6 @@ const Founders = () => {
                 <FaInstagram size={14} />
               </a>
             </div>
-
-            <h4 className="text-2xl font-bold tracking-tight mb-6">
-              Our Legacy
-            </h4>
-            
-            <p className="text-[#1a4173]/70 leading-relaxed font-light mb-8 text-sm lg:text-base">
-              The roots of House Of Shah trace back to 1944, when Shah Raichand Premchand & Co. was founded by Raichand Premchand Shah in Rajkot with a vision centered around silver craftsmanship.
-            </p>
-
-            <ul className="space-y-4">
-              <li className="flex items-start gap-4">
-                <FaCheckCircle className="text-[#1a4173] mt-1 flex-shrink-0" size={16} />
-                <span className="text-[#1a4173]/80 font-light text-sm lg:text-base leading-relaxed">
-                  Over the decades, the business evolved through generations, each contributing new ideas and innovations to the industry.
-                </span>
-              </li>
-              <li className="flex items-start gap-4">
-                <FaCheckCircle className="text-[#1a4173] mt-1 flex-shrink-0" size={16} />
-                <span className="text-[#1a4173]/80 font-light text-sm lg:text-base leading-relaxed">
-                  With the entry of Hitesh Arvind Shah, focus on capital expansion and semi in-house production helped the company scale steadily.
-                </span>
-              </li>
-              <li className="flex items-start gap-4">
-                <FaCheckCircle className="text-[#1a4173] mt-1 flex-shrink-0" size={16} />
-                <span className="text-[#1a4173]/80 font-light text-sm lg:text-base leading-relaxed">
-                  Today, that same spirit of innovation continues through the fourth generation to carry the legacy forward.
-                </span>
-              </li>
-            </ul>
           </motion.div>
         </div>
 
@@ -126,7 +114,7 @@ const Founders = () => {
                 Co-Founder
               </div>
               <img 
-                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800&auto=format&fit=crop" 
+                src="https://res.cloudinary.com/de64mp51k/image/upload/v1780578751/Heer_Shah_k9jbbe.jpg" 
                 alt="Heer Shah"
                 className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
               />
@@ -145,11 +133,29 @@ const Founders = () => {
               Heer Shah
             </h3>
             
-            <p className="text-[#1a4173]/70 leading-relaxed font-light mb-8 text-sm lg:text-base">
-              Specialising in lightweight silver jewellery, HOS focuses on creating fashion-forward collections designed for contemporary wearers while also catering to customised designs for domestic retailers, online brands, and boutiques. Today, the brand also works with corporate clients such as GIVA.
+            <p className="text-[#1a4173]/70 leading-relaxed font-light mb-4 text-sm lg:text-base">
+              A fourth-generation jeweller and Director of House Of Shah, Heer grew up surrounded by the language of gems, diamonds, craftsmanship, and design. What began as a childhood fascination soon evolved into a desire to carry forward her family’s legacy.
             </p>
 
-            <div className="flex gap-4 text-[#1a4173]/50 mb-12 border-b border-gray-100 pb-8">
+            <p className="text-[#1a4173]/70 leading-relaxed font-light mb-4 text-sm lg:text-base">
+              Heer pursued Entrepreneurship at the University of Delaware before earning her Bachelor’s degree from the Indian Institute of Gems and Jewellery, Mumbai. Her education, along with her internship experience at Kiran Diamonds - Surat, gave her a deep understanding of the jewellery-making journey, from manual designing and sourcing to production and final merchandising.
+            </p>
+
+            <p className="text-[#1a4173]/70 leading-relaxed font-light mb-4 text-sm lg:text-base">
+              After returning to Rajkot, Heer realized that while traditional jewellery carried a rich legacy, there was room for jewellery that felt more aligned with the tastes of modern wearers like herself. For her, this idea eventually became the foundation of House Of Shah.
+            </p>
+
+            <p className="text-[#1a4173]/70 leading-relaxed font-light mb-4 text-sm lg:text-base">
+              As she built the brand alongside her brother, Heer also became increasingly aware of the gender imbalance within the jewellery manufacturing industry. In a space where the end consumers were largely women, female representation behind the scenes remained limited. This realization inspired HOS’s larger purpose beyond jewellery itself, leading to initiatives focused on women empowerment and skill development.
+            </p>
+
+            <div className="mb-4 mt-2">
+              <Link to="/womenempowerment" className="inline-flex items-center gap-2 text-[#1a4173] font-medium text-sm lg:text-base hover:opacity-80 transition-opacity">
+                Explore Beyond Jewellery <span className="text-lg">→</span>
+              </Link>
+            </div>
+
+            <div className="flex gap-4 text-[#1a4173]/50 border-t border-gray-100 pt-8 mt-auto">
               <a href="#" className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-[#1a4173] hover:text-white transition-all duration-300">
                 <FaLinkedinIn size={14} />
               </a>
@@ -160,35 +166,6 @@ const Founders = () => {
                 <FaInstagram size={14} />
               </a>
             </div>
-
-            <h4 className="text-2xl font-bold tracking-tight mb-6">
-              Vision & Craftsmanship
-            </h4>
-            
-            <p className="text-[#1a4173]/70 leading-relaxed font-light mb-8 text-sm lg:text-base">
-              With complete in-house control over designing, manufacturing, plating, and quality checks, the brand offers a wide range of finishing options including rhodium, gold, and rose gold plating.
-            </p>
-
-            <ul className="space-y-4">
-              <li className="flex items-start gap-4">
-                <FaCheckCircle className="text-[#1a4173] mt-1 flex-shrink-0" size={16} />
-                <span className="text-[#1a4173]/80 font-light text-sm lg:text-base leading-relaxed">
-                  Every piece is crafted using premium-quality stones and undergoes multiple stages of stringent quality control.
-                </span>
-              </li>
-              <li className="flex items-start gap-4">
-                <FaCheckCircle className="text-[#1a4173] mt-1 flex-shrink-0" size={16} />
-                <span className="text-[#1a4173]/80 font-light text-sm lg:text-base leading-relaxed">
-                  The brand actively trains and upskills local Gujarati workers, transforming raw talent into skilled artisans.
-                </span>
-              </li>
-              <li className="flex items-start gap-4">
-                <FaCheckCircle className="text-[#1a4173] mt-1 flex-shrink-0" size={16} />
-                <span className="text-[#1a4173]/80 font-light text-sm lg:text-base leading-relaxed">
-                  Having participated in leading industry exhibitions including SSI and IIJS, HOS continues to grow its global vision.
-                </span>
-              </li>
-            </ul>
           </motion.div>
         </div>
 

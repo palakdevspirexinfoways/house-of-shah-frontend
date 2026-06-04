@@ -1,7 +1,20 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 const HeroSection = () => {
+  const [slide, setSlide] = useState(null);
+
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/slides?page=beyond`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.data && data.data.length > 0) {
+          setSlide(data.data[0]);
+        }
+      })
+      .catch(err => console.error('[Beyond Hero Fetch Error]', err));
+  }, []);
+
   return (
     <section className="relative h-[80vh] md:h-screen w-full overflow-hidden bg-black font-outfit">
       {/* Background Image with Slow Zoom & Overlay */}
@@ -11,11 +24,13 @@ const HeroSection = () => {
         transition={{ duration: 10, ease: "linear" }}
         className="absolute inset-0 w-full h-full"
       >
-        <img 
-          src="https://images.unsplash.com/photo-1573408301185-9146fe634ad0?auto=format&fit=crop&q=80" 
-          alt="Silver Raw Crafting" 
-          className="w-full h-full object-cover grayscale opacity-75"
-        />
+        {slide?.image && (
+          <img 
+            src={slide.image} 
+            alt={slide?.title || "Beyond Jewellery"} 
+            className="w-full h-full object-cover grayscale opacity-75"
+          />
+        )}
         {/* Elegant dark overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/30 to-black/75" />
       </motion.div>
@@ -23,16 +38,18 @@ const HeroSection = () => {
       {/* Centered Hero Content */}
       <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
         {/* Tagline */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="mb-6"
-        >
-          <span className="text-white/60 tracking-[0.6em] uppercase text-[10px] md:text-xs font-bold border-b border-white/20 pb-2">
-            Beyond Jewellery
-          </span>
-        </motion.div>
+        {slide?.tagline && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="mb-6"
+          >
+            <span className="text-white/60 tracking-[0.6em] uppercase text-[10px] md:text-xs font-bold border-b border-white/20 pb-2">
+              {slide.tagline}
+            </span>
+          </motion.div>
+        )}
 
         {/* Title */}
         <motion.div
@@ -42,9 +59,8 @@ const HeroSection = () => {
           className="relative"
         >
           <h1 className="text-white text-4xl md:text-7xl lg:text-[9rem] font-bold tracking-tighter leading-none mb-4 uppercase">
-            Beyound Jewellery
+            {slide?.title || "Beyond Jewellery"}
           </h1>
-          <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-24 h-[1px] bg-white/40" />
         </motion.div>
 
         {/* Subtitle */}
@@ -54,6 +70,7 @@ const HeroSection = () => {
           transition={{ delay: 0.6, duration: 0.8 }}
           className="text-white/70 text-base md:text-2xl font-light italic max-w-2xl mt-8 leading-relaxed"
         >
+          {slide?.desc || ""}
         </motion.p>
       </div>
 
