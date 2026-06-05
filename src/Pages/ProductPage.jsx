@@ -15,14 +15,15 @@ const ProductPage = () => {
   const [activeCategory, setActiveCategory] = useState('All');
   const [selectedDetailProduct, setSelectedDetailProduct] = useState(null);
 
-  // Fetch all products from database once
+  // Fetch metadata (categories and collections) once
   useEffect(() => {
     setIsLoading(true);
-    fetch(`${import.meta.env.VITE_API_BASE_URL}/products`)
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/products/metadata`)
       .then(res => res.json())
       .then(data => {
         if (data.success && data.data) {
-          setProducts(data.data);
+          setCollections(['All', ...data.data.collections]);
+          setCategories(['All', ...data.data.categories]);
         }
         setIsLoading(false);
       })
@@ -32,47 +33,28 @@ const ProductPage = () => {
       });
   }, []);
 
-  // Dynamically extract collections and categories from the products list
-  const collections = useMemo(() => {
-    const cols = products.map(p => p.collection).filter(Boolean);
-    return ['All', ...new Set(cols)];
-  }, [products]);
+  const [collections, setCollections] = useState(['All']);
+  const [categories, setCategories] = useState(['All']);
 
-  const categories = useMemo(() => {
-    const cats = products.map(p => p.category).filter(Boolean);
-    return ['All', ...new Set(cats)];
-  }, [products]);
+  const [suggestions, setSuggestions] = useState([]);
 
-  // Handle Search Suggestions list (matches title, collection, or category)
-  const suggestions = useMemo(() => {
-    if (searchQuery.trim() === '') return [];
-    return products.filter(p =>
-      p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (p.collection || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (p.category || '').toLowerCase().includes(searchQuery.toLowerCase())
-    ).slice(0, 5);
-  }, [products, searchQuery]);
-
-  // Derived filtered products list for Collections (uses search, collection and collectionsCategory filter)
-  const filteredCollections = useMemo(() => {
-    return products.filter(p => {
-      const matchesSearch = searchQuery.trim() === '' ||
-        p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (p.collection || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (p.category || '').toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesCollection = activeCollection === 'All' || p.collection === activeCollection;
-      const matchesCategory = collectionsCategory === 'All' || p.category === collectionsCategory;
-      return matchesSearch && matchesCollection && matchesCategory;
-    });
-  }, [products, searchQuery, activeCollection, collectionsCategory]);
-
-  // Derived filtered products list for Pieces (uses category filter only, completely decoupled)
-  const filteredPieces = useMemo(() => {
-    return products.filter(p => {
-      const matchesCategory = activeCategory === 'All' || p.category === activeCategory;
-      return matchesCategory;
-    });
-  }, [products, activeCategory]);
+  useEffect(() => {
+    if (searchQuery.trim() === '') {
+      setSuggestions([]);
+      return;
+    }
+    const timer = setTimeout(() => {
+      fetch(`${import.meta.env.VITE_API_BASE_URL}/products?search=${encodeURIComponent(searchQuery)}&limit=5`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.success && data.data) {
+            setSuggestions(data.data);
+          }
+        })
+        .catch(console.error);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
 
   return (
     <div className="bg-white min-h-screen font-outfit">
@@ -80,8 +62,6 @@ const ProductPage = () => {
 
       {/* Sliders rendering with passed states and filters */}
       <SignatureCollections 
-        products={filteredCollections} 
-        isLoadingData={isLoading} 
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         showSuggestions={showSuggestions}
@@ -97,8 +77,6 @@ const ProductPage = () => {
       />
 
       <SignaturePieces 
-        products={filteredPieces} 
-        isLoadingData={isLoading} 
         activeCategory={activeCategory}
         setActiveCategory={setActiveCategory}
         categories={categories}

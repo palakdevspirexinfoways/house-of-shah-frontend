@@ -46,6 +46,9 @@ const Header = () => {
       const active = localStorage.getItem('hos_user_session') === 'active';
       setUserSessionActive(active);
       setUserName(localStorage.getItem('hos_user_name') || '');
+      if (active) {
+        setIsAuthOpen(false);
+      }
     };
     checkSession();
 
@@ -362,7 +365,7 @@ const Header = () => {
       </AnimatePresence>
 
       <LoginSignupModal isOpen={isAuthOpen} onClose={() => {
-        if (!exhibitionMode) setIsAuthOpen(false);
+        setIsAuthOpen(false);
       }} isExhibitionMode={exhibitionMode} />
 
       {/* Visual Search Masterpiece Detail Modal */}

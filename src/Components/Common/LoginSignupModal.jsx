@@ -20,8 +20,8 @@ const LoginSignupModal = ({ isOpen, onClose, isExhibitionMode = false }) => {
   // Expanded fields for client user registration
   const [companyName, setCompanyName] = useState('');
   const [contactNumber, setContactNumber] = useState('');
-  const [interestedProduct, setInterestedProduct] = useState([]);
-  const [natureOfBusiness, setNatureOfBusiness] = useState([]);
+  const [interestedProduct, setInterestedProduct] = useState('');
+
   const [additionalRemarks, setAdditionalRemarks] = useState('');
 
   // Smooth animation variants
@@ -49,8 +49,8 @@ const LoginSignupModal = ({ isOpen, onClose, isExhibitionMode = false }) => {
     setPassword('');
     setCompanyName('');
     setContactNumber('');
-    setInterestedProduct([]);
-    setNatureOfBusiness([]);
+    setInterestedProduct('');
+
     setAdditionalRemarks('');
   };
 
@@ -134,11 +134,11 @@ const LoginSignupModal = ({ isOpen, onClose, isExhibitionMode = false }) => {
           setPassword('');
           setCompanyName('');
           setContactNumber('');
-          setInterestedProduct([]);
-          setNatureOfBusiness([]);
+          setInterestedProduct('');
+
           setAdditionalRemarks('');
           setSuccess('');
-        }, 1200);
+        }, 800);
       } else {
         setError(data.message || 'Password reset failed.');
       }
@@ -150,53 +150,8 @@ const LoginSignupModal = ({ isOpen, onClose, isExhibitionMode = false }) => {
     }
   };
 
-  const handleToggleProduct = (prod) => {
-    if (prod === 'All') {
-      if (interestedProduct.includes('All')) {
-        setInterestedProduct([]);
-      } else {
-        setInterestedProduct(['All', 'Necklaces', 'Earrings', 'Rings', 'Bracelets', 'Silverware']);
-      }
-      return;
-    }
 
-    let next = [...interestedProduct];
-    if (next.includes(prod)) {
-      next = next.filter(item => item !== prod && item !== 'All');
-    } else {
-      next.push(prod);
-      const items = ['Necklaces', 'Earrings', 'Rings', 'Bracelets', 'Silverware'];
-      const hasAllItems = items.every(i => next.includes(i));
-      if (hasAllItems) {
-        next.push('All');
-      }
-    }
-    setInterestedProduct(next);
-  };
 
-  const handleToggleBusiness = (bus) => {
-    if (bus === 'All') {
-      if (natureOfBusiness.includes('All')) {
-        setNatureOfBusiness([]);
-      } else {
-        setNatureOfBusiness(['All', 'Wholesale', 'Retail', 'Online']);
-      }
-      return;
-    }
-
-    let next = [...natureOfBusiness];
-    if (next.includes(bus)) {
-      next = next.filter(item => item !== bus && item !== 'All');
-    } else {
-      next.push(bus);
-      const items = ['Wholesale', 'Retail', 'Online'];
-      const hasAllItems = items.every(i => next.includes(i));
-      if (hasAllItems) {
-        next.push('All');
-      }
-    }
-    setNatureOfBusiness(next);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -223,7 +178,7 @@ const LoginSignupModal = ({ isOpen, onClose, isExhibitionMode = false }) => {
         password,
         companyName,
         contactNumber,
-        interestedProduct: ['All'],
+        interestedProduct: interestedProduct.length > 0 ? interestedProduct : ['All'],
         natureOfBusiness: ['All'],
         additionalRemarks: ''
       };
@@ -255,11 +210,11 @@ const LoginSignupModal = ({ isOpen, onClose, isExhibitionMode = false }) => {
           setPassword('');
           setCompanyName('');
           setContactNumber('');
-          setInterestedProduct([]);
-          setNatureOfBusiness([]);
+          setInterestedProduct('');
+
           setAdditionalRemarks('');
           setSuccess('');
-        }, 1200);
+        }, 800);
       } else {
         setError(data.message || 'Authentication failed.');
       }
@@ -581,6 +536,19 @@ const LoginSignupModal = ({ isOpen, onClose, isExhibitionMode = false }) => {
                               placeholder="••••••••"
                             />
                           </motion.div>
+
+                          {/* Interested Products Input */}
+                          <motion.div variants={itemVariants} className="relative border-b border-gray-200 focus-within:border-black transition-colors duration-500 pb-2 col-span-1 sm:col-span-2 pt-2">
+                            <label className="text-[9px] uppercase tracking-[0.2em] font-bold text-gray-400 block mb-1">Interested Products</label>
+                            <input
+                              type="text"
+                              value={interestedProduct}
+                              onChange={(e) => setInterestedProduct(e.target.value)}
+                              className="w-full bg-transparent outline-none text-xs font-medium text-black placeholder-gray-300"
+                              placeholder="e.g. Necklaces, Silverware, Custom Designs"
+                            />
+                          </motion.div>
+                          
                         </div>
 
 
