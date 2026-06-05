@@ -11,10 +11,12 @@ const Footer = () => {
 
   const footerLinks = {
     navigation: [
-      { name: 'Collections', href: '#collection' },
-      { name: 'Our Heritage', href: '#about' },
-      { name: 'Manufacturing', href: '#why' },
-      { name: 'Curation', href: '#gallery' }
+      { name: 'Home', href: '/' },
+      { name: 'Jewellery', href: '/product' },
+      { name: 'Digital Magazine', href: '/gallery' },
+      { name: 'About Us', href: '/about' },
+      { name: 'Beyond Jewellery', href: '/womenempowerment' },
+      { name: 'Contact', href: '/contact' }
     ],
     legal: [
       { name: 'Privacy Policy', href: '/privacy' },

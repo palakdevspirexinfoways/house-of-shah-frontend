@@ -336,6 +336,8 @@ const AdminPage = () => {
   // Hero Display Configuration
   const [heroMode, setHeroMode] = useState('slider');
   const [heroVideoUrl, setHeroVideoUrl] = useState('');
+  const [heroVideoTagline, setHeroVideoTagline] = useState('HOUSE OF SHAH EXCLUSIVES');
+  const [heroVideoTitle, setHeroVideoTitle] = useState('Exquisite Artistry');
   const [isHeroSettingsOpen, setIsHeroSettingsOpen] = useState(true);
 
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -361,6 +363,8 @@ const AdminPage = () => {
         setExhibitionMode(dataSettings.data.exhibitionMode === true);
         if (dataSettings.data.hero_mode) setHeroMode(dataSettings.data.hero_mode);
         if (dataSettings.data.hero_video_url) setHeroVideoUrl(dataSettings.data.hero_video_url);
+        if (dataSettings.data.hero_video_tagline) setHeroVideoTagline(dataSettings.data.hero_video_tagline);
+        if (dataSettings.data.hero_video_title) setHeroVideoTitle(dataSettings.data.hero_video_title);
       }
 
       const token = localStorage.getItem('hos_admin_token');
@@ -473,6 +477,20 @@ const AdminPage = () => {
       triggerToast('Hero settings saved.', 'success');
     } catch (error) {
       triggerToast('Failed to save hero settings.', 'error');
+    }
+  };
+
+  const saveHeroSettingsText = async (key, value) => {
+    const token = localStorage.getItem('hos_admin_token');
+    try {
+      await fetch(`${API_BASE_URL}/settings`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ key, value })
+      });
+      triggerToast('Hero video text saved.', 'success');
+    } catch (error) {
+      triggerToast('Failed to save hero text settings.', 'error');
     }
   };
 
@@ -1388,6 +1406,28 @@ const AdminPage = () => {
                                 </div>
                               )}
                             </div>
+                            
+                            {heroMode === 'video' && (
+                              <div className="mt-4 p-4 rounded-xl bg-white border border-gray-100 flex flex-col gap-3">
+                                <label className="text-[10px] font-bold uppercase tracking-widest text-[#1a4173] block">Video Overlay Text</label>
+                                <input 
+                                  type="text" 
+                                  value={heroVideoTagline} 
+                                  onChange={(e) => setHeroVideoTagline(e.target.value)} 
+                                  onBlur={(e) => saveHeroSettingsText('hero_video_tagline', e.target.value)}
+                                  placeholder="Tagline (e.g. HOUSE OF SHAH EXCLUSIVES)"
+                                  className="w-full text-sm outline-none bg-transparent font-outfit border border-[rgba(26,65,115,0.18)] rounded-lg p-2 text-[#1a4173]"
+                                />
+                                <input 
+                                  type="text" 
+                                  value={heroVideoTitle} 
+                                  onChange={(e) => setHeroVideoTitle(e.target.value)} 
+                                  onBlur={(e) => saveHeroSettingsText('hero_video_title', e.target.value)}
+                                  placeholder="Title (e.g. Exquisite Artistry)"
+                                  className="w-full text-sm outline-none bg-transparent font-outfit border border-[rgba(26,65,115,0.18)] rounded-lg p-2 text-[#1a4173]"
+                                />
+                              </div>
+                            )}
                           </div>
                         </div>
                       </motion.div>

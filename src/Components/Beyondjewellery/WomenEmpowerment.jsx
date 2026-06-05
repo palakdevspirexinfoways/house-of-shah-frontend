@@ -72,7 +72,7 @@ const WomenEmpowerment = () => {
             </p>
 
             {/* Custom High-Contrast Stats Block */}
-            <div className="grid grid-cols-2 gap-8 pt-8 border-t border-[var(--primary-blue)]/10">
+            {/* <div className="grid grid-cols-2 gap-8 pt-8 border-t border-[var(--primary-blue)]/10">
               <div className="relative">
                 <div className="absolute top-0 left-0 w-[1px] h-10 bg-[var(--primary-blue)]/20" />
                 <div className="pl-4">
@@ -87,7 +87,7 @@ const WomenEmpowerment = () => {
                   <span className="text-[9px] uppercase font-bold tracking-widest opacity-50 block mt-1">Women Certified</span>
                 </div>
               </div>
-            </div>
+            </div> */}
           </motion.div>
 
         </div>

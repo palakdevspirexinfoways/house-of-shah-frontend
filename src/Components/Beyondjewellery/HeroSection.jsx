@@ -16,8 +16,9 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <section className="relative h-[80vh] md:h-screen w-full overflow-hidden bg-black font-outfit">
-      {/* Background Image with Slow Zoom & Overlay */}
+    <section className="relative h-screen w-full overflow-hidden bg-black font-outfit">
+      
+      {/* --- Background Image with Slow Zoom & Minor Overlay --- */}
       <motion.div 
         initial={{ scale: 1.1 }}
         animate={{ scale: 1 }}
@@ -28,15 +29,16 @@ const HeroSection = () => {
           <img 
             src={slide.image} 
             alt={slide?.title || "Beyond Jewellery"} 
-            className="w-full h-full object-cover grayscale opacity-75"
+            className="w-full h-full object-cover"
           />
         )}
-        {/* Elegant dark overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/30 to-black/75" />
+        {/* Minor Dark Overlay for Text Visibility */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/70" />
       </motion.div>
 
-      {/* Centered Hero Content */}
+      {/* --- CENTERED CONTENT --- */}
       <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
+        
         {/* Tagline */}
         {slide?.tagline && (
           <motion.div
@@ -51,7 +53,7 @@ const HeroSection = () => {
           </motion.div>
         )}
 
-        {/* Title */}
+        {/* Main Title */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -59,34 +61,35 @@ const HeroSection = () => {
           className="relative"
         >
           <h1 className="text-white text-4xl md:text-7xl lg:text-[9rem] font-bold tracking-tighter leading-none mb-4 uppercase">
-            {slide?.title || "Beyond Jewellery"}
+            {slide?.title || "BEYOND JEWELLERY"}
           </h1>
         </motion.div>
 
-        {/* Subtitle */}
+        {/* Subtitle / Description */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.8 }}
-          className="text-white/70 text-base md:text-2xl font-light italic max-w-2xl mt-8 leading-relaxed"
+          className="text-white/70 text-lg md:text-2xl font-light italic max-w-2xl mt-8 leading-relaxed"
         >
           {slide?.desc || ""}
         </motion.p>
       </div>
 
-      {/* Aesthetic Corner Accents */}
+      {/* --- Aesthetic Corner Elements (Architectural Look) --- */}
       <div className="absolute top-10 left-10 w-20 h-20 border-l border-t border-white/10 hidden md:block" />
       <div className="absolute bottom-10 right-10 w-20 h-20 border-r border-b border-white/10 hidden md:block" />
 
-      {/* Scroll Indicator */}
+      {/* --- Vertical Indicator Line --- */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex flex-col items-center">
-        <span className="text-[8px] text-white/30 tracking-widest uppercase mb-4">Scroll</span>
+        <span className="text-[9px] text-white/30 tracking-widest uppercase mb-4">Scroll</span>
         <motion.div 
           animate={{ y: [0, 15, 0] }}
           transition={{ repeat: Infinity, duration: 2 }}
           className="w-[1px] h-12 bg-gradient-to-b from-white/60 to-transparent"
         />
       </div>
+
     </section>
   );
 };

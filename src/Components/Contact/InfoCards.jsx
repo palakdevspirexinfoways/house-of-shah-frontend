@@ -7,12 +7,12 @@ const InfoCards = () => {
     {
       icon: <Phone size={32} strokeWidth={1} />,
       title: "Contact Info",
-      details: ["+91 95108 06869", "inquiries@houseofshah.com"]
+      details: ["+91 95108 06869", "houseofshah.info@gmail.com"]
     },
     {
       icon: <MapPin size={32} strokeWidth={1} />,
       title: "Our Atelier",
-      details: ["123, Silver Craft Avenue,", "Rajkot, Gujarat 360001, India"]
+      details: ["House Of Shah, Jalganga Chowk", "Rajkot, Gujarat 360003, India"]
     },
     {
       icon: <Clock size={32} strokeWidth={1} />,

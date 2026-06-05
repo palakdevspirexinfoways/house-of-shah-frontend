@@ -22,8 +22,10 @@ const defaultSlides = [
 const HeroSlider = () => {
   const [current, setCurrent] = useState(0);
   const [slides, setSlides] = useState(defaultSlides);
-  const [heroMode, setHeroMode] = useState('slider');
+  const [heroMode, setHeroMode] = useState('video');
   const [heroVideoUrl, setHeroVideoUrl] = useState('');
+  const [heroVideoTagline, setHeroVideoTagline] = useState('HOUSE OF SHAH EXCLUSIVES');
+  const [heroVideoTitle, setHeroVideoTitle] = useState('Exquisite Artistry');
 
   useEffect(() => {
     // Fetch Slides
@@ -51,6 +53,8 @@ const HeroSlider = () => {
         if (data.success && data.data) {
           if (data.data.hero_mode) setHeroMode(data.data.hero_mode);
           if (data.data.hero_video_url) setHeroVideoUrl(data.data.hero_video_url);
+          if (data.data.hero_video_tagline) setHeroVideoTagline(data.data.hero_video_tagline);
+          if (data.data.hero_video_title) setHeroVideoTitle(data.data.hero_video_title);
         }
       })
       .catch((err) => console.error('[Hero Settings Connection Error]', err));
@@ -72,17 +76,19 @@ const HeroSlider = () => {
     visible: { opacity: 1, y: 0, transition: { duration: 0.8, delay: 0.2 } }
   };
 
-  if (heroMode === 'video' && heroVideoUrl) {
+  if (heroMode === 'video') {
     return (
       <section className="relative h-screen w-full overflow-hidden bg-black font-outfit">
-        <video 
-          src={heroVideoUrl} 
-          autoPlay 
-          loop 
-          muted 
-          playsInline 
-          className="absolute inset-0 w-full h-full object-cover opacity-80"
-        />
+        {heroVideoUrl && (
+          <video 
+            src={heroVideoUrl} 
+            autoPlay 
+            loop 
+            muted 
+            playsInline 
+            className="absolute inset-0 w-full h-full object-cover opacity-80"
+          />
+        )}
         {/* Subtle radial overlay for center text focus */}
         <div className="absolute inset-0 bg-black/30" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
@@ -94,7 +100,7 @@ const HeroSlider = () => {
             transition={{ delay: 0.6, duration: 0.8 }}
             className="text-white drop-shadow-md tracking-[0.6em] uppercase text-[10px] md:text-xs mb-6 font-bold"
           >
-            HOUSE OF SHAH EXCLUSIVES
+            {heroVideoTagline || 'HOUSE OF SHAH EXCLUSIVES'}
           </motion.p>
           <motion.h1
             initial={{ y: 30, opacity: 0 }}
@@ -102,7 +108,7 @@ const HeroSlider = () => {
             transition={{ delay: 0.8, duration: 1 }}
             className="text-white drop-shadow-2xl text-4xl sm:text-5xl md:text-6xl lg:text-[7.5rem] font-bold mb-4 tracking-tighter leading-[0.9] uppercase"
           >
-            Exquisite Artistry
+            {heroVideoTitle || 'Exquisite Artistry'}
           </motion.h1>
           <motion.div
             initial={{ opacity: 0 }}

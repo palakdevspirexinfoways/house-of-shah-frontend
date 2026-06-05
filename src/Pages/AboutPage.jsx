@@ -1,8 +1,8 @@
 import React from 'react'
 import HeroSection from '../Components/About/HeroSection'
 import AboutHOS from '../Components/About/AboutHOS'
-import OurCraftsmanship from '../Components/About/OurCraftsmanship'
-import Achievement from '../Components/About/Achievement'
+// import OurCraftsmanship from '../Components/About/OurCraftsmanship'
+// import Achievement from '../Components/About/Achievement'
 import Founders from '../Components/About/Founders'
 
 const AboutPage = () => {
@@ -11,8 +11,8 @@ const AboutPage = () => {
       <HeroSection />
       <AboutHOS />
     
-      <OurCraftsmanship />
-      <Achievement />
+      {/* <OurCraftsmanship /> */}
+      {/* <Achievement /> */}
       <Founders />
     </div>
   )

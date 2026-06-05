@@ -51,7 +51,7 @@ const MakeInIndia = () => {
               
               <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase leading-none">
                 Make In India <br />
-                <span className="opacity-20 font-light italic text-3xl md:text-5xl">Clinical Atelier</span>
+                {/* <span className="opacity-20 font-light italic text-3xl md:text-5xl">Clinical Atelier</span> */}
               </h2>
             </div>
 
@@ -104,7 +104,7 @@ const MakeInIndia = () => {
                 <img 
                   src="https://res.cloudinary.com/de64mp51k/image/upload/v1780577848/Make_In_India_ajqpfp.png" 
                   alt="Raw silver hand forging" 
-                  className="w-full h-full object-contain grayscale opacity-90 transition-transform duration-700 hover:scale-105"
+                  className="w-full h-full object-contain opacity-90 transition-transform duration-700 hover:scale-105"
                 />
               </div>
             </motion.div>
@@ -139,7 +139,7 @@ const MakeInIndia = () => {
                   <span>BLUEPRINT ORIGIN</span>
                   <Compass size={8} className="animate-spin-slow" />
                 </div>
-                <span className="text-xs font-black tracking-tight block">RAJKOT, GUJ</span>
+                <span className="text-xs font-black tracking-tight block">HOS</span>
               </div>
               <div className="w-full h-[1px] bg-white/20 my-2.5" />
               <div className="flex justify-between items-center">

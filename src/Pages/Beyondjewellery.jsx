@@ -13,9 +13,9 @@ const BeyondJewellery = () => {
   return (
     <div className="bg-white">
       <HeroSection />
-      <MakeInIndia />
-      <SkillDevelopment />
       <WomenEmpowerment />
+      <SkillDevelopment />
+      <MakeInIndia />
     </div>
   );
 };
