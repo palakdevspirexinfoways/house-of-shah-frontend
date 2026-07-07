@@ -150,17 +150,19 @@ const ProductHero = () => {
             </motion.div> */}
 
             {/* Title */}
-            <motion.div variants={contentVariants} className="relative mb-6">
-              <h1 className="text-white text-4xl md:text-8xl lg:text-[9rem] uppercase font-bold tracking-tighter leading-none mix-blend-difference">
-                {slides[currentSlide]?.title || slides[0].title}
-              </h1>
-              {/* Luxury Floating Element */}
-              <div className="absolute -top-10 -right-8 md:-top-16 md:-right-16">
-                {/* <span className="text-[8px] md:text-[10px] text-white/20 font-light italic tracking-widest vertical-text uppercase">
-                  HOS • EST. 2023
-                </span> */}
-              </div>
-            </motion.div>
+            {(slides[currentSlide]?.title !== undefined ? slides[currentSlide].title : slides[0].title) && (
+              <motion.div variants={contentVariants} className="relative mb-6">
+                <h1 className="text-white text-4xl md:text-8xl lg:text-[9rem] uppercase font-bold tracking-tighter leading-none mix-blend-difference">
+                  {slides[currentSlide]?.title !== undefined ? slides[currentSlide].title : slides[0].title}
+                </h1>
+                {/* Luxury Floating Element */}
+                <div className="absolute -top-10 -right-8 md:-top-16 md:-right-16">
+                  {/* <span className="text-[8px] md:text-[10px] text-white/20 font-light italic tracking-widest vertical-text uppercase">
+                    HOS • EST. 2023
+                  </span> */}
+                </div>
+              </motion.div>
+            )}
 
             {/* Description */}
             {/* <motion.p 
@@ -171,15 +173,17 @@ const ProductHero = () => {
             </motion.p> */}
             
             {/* Button */}
-            <motion.div 
-              variants={contentVariants}
-              whileHover={{ scale: 1.05 }}
-              className="inline-flex items-center gap-6 px-10 py-5 bg-white/5 backdrop-blur-xl border border-white/10 text-white cursor-pointer group transition-all"
-              onClick={() => document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' })}
-            >
-              <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Explore Collection</span>
-              <div className="w-12 h-[1px] bg-white/30 group-hover:w-16 transition-all" />
-            </motion.div>
+            {(slides[currentSlide]?.title !== undefined ? slides[currentSlide].title : slides[0].title) && (
+              <motion.div 
+                variants={contentVariants}
+                whileHover={{ scale: 1.05 }}
+                className="inline-flex items-center gap-6 px-10 py-5 bg-white/5 backdrop-blur-xl border border-white/10 text-white cursor-pointer group transition-all"
+                onClick={() => document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' })}
+              >
+                <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Explore Collection</span>
+                <div className="w-12 h-[1px] bg-white/30 group-hover:w-16 transition-all" />
+              </motion.div>
+            )}
           </motion.div>
         </AnimatePresence>
       </div>

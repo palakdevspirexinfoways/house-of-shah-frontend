@@ -79,24 +79,26 @@ const ProductHero = () => {
                 )}
 
                 {/* Main Title: PRODUCTS */}
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.2, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                    className="relative"
-                >
-                    <h1 className="text-white text-4xl md:text-9xl lg:text-[10rem] uppercase font-bold tracking-tighter leading-none mb-4 mix-blend-difference">
-                        {slide?.title || "Digital magazine"}
-                    </h1>
-                    {/* Luxury Floating Element */}
-                    <motion.div
-                        animate={{ y: [0, -10, 0] }}
-                        transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-                        className="absolute -top-12 -right-8 md:-top-20 md:-right-20"
-                    >
-                       
-                    </motion.div>
-                </motion.div>
+                {(slide?.title !== undefined ? slide.title : "Digital magazine") && (
+                  <motion.div
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.2, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                      className="relative"
+                  >
+                      <h1 className="text-white text-4xl md:text-9xl lg:text-[10rem] uppercase font-bold tracking-tighter leading-none mb-4 mix-blend-difference">
+                          {slide?.title !== undefined ? slide.title : "Digital magazine"}
+                      </h1>
+                      {/* Luxury Floating Element */}
+                      <motion.div
+                          animate={{ y: [0, -10, 0] }}
+                          transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+                          className="absolute -top-12 -right-8 md:-top-20 md:-right-20"
+                      >
+                         
+                      </motion.div>
+                  </motion.div>
+                )}
 
                 {/* Subtitle / Description */}
                 <motion.div

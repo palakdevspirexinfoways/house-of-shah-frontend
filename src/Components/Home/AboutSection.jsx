@@ -2,6 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Award, ShieldCheck, Gem, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import aboutImage from '../../aasets/11 Final.jpg.jpeg';
+
 
 const AboutSection = () => {
   // Stats removed, Core Values reverted as per previous premium version
@@ -13,7 +15,7 @@ const AboutSection = () => {
   ];
 
   return (
-    <section id="about" className="py-16 md:py-24 bg-[var(--white)] overflow-hidden font-outfit relative">
+    <section id="about" className="py-10 md:py-14 bg-[var(--white)] overflow-hidden font-outfit relative">
 
 
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
@@ -31,7 +33,7 @@ const AboutSection = () => {
 
 
               <img
-                src="https://res.cloudinary.com/de64mp51k/image/upload/v1780576814/Built_On_Legacy_Section_sda1pk.jpg"
+                src={aboutImage}
                 className="w-full h-full object-cover"
                 alt="Main Silver Piece"
               />
@@ -58,13 +60,13 @@ const AboutSection = () => {
               </div>
 
               <h2 className="text-4xl md:text-7xl font-bold text-[var(--primary-blue)] leading-[0.95] mb-10 tracking-tighter">
-                Built On Legacy Crafted<br />
-                <span className="font-light italic text-[var(--primary-blue)]/40">  With Purpose.
+                Built On Legacy,<br />
+                <span className="font-light italic text-[var(--primary-blue)]/40">  Crafted With Purpose.
 </span>
               </h2>
 
               <p className="text-[var(--primary-blue)]/70 leading-relaxed mb-12 text-lg font-light max-w-xl">
-                <span className="font-semibold text-[var(--primary-blue)]">House of Shah</span>  is a new-age 925 sterling silver jewellery manufacturing house rooted in generations of expertise. Combining contemporary design sensibilities with advanced production techniques, we create refined collections tailored for evolving  <span className="text-[var(--primary-blue)] italic">retail brands and modern consumers.</span>
+                <span className="font-semibold text-[var(--primary-blue)]">House of Shah</span>  is a new-age 925 sterling silver jewellery manufacturing house rooted in generations of expertise. Combining contemporary design sensibilities with advanced production techniques like CNC machining, 3D printing, and laser cutting, we create refined collections tailored for evolving  <span className="text-[var(--primary-blue)] italic">retail brands and modern consumers.</span>
               </p>
 
               {/* Core Values Grid (Instead of numeric stats) */}

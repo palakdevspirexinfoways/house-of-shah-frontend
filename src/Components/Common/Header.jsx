@@ -16,30 +16,10 @@ const Header = () => {
   const [userSessionActive, setUserSessionActive] = useState(false);
   const [userName, setUserName] = useState('');
   const [showUserDropdown, setShowUserDropdown] = useState(false);
-
-  // Search state variables
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [allProducts, setAllProducts] = useState([]);
-  const [selectedSearchProduct, setSelectedSearchProduct] = useState(null);
-
-  useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_BASE_URL}/products`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          setAllProducts(data.data || []);
-        }
-      })
-      .catch((err) => console.error('[Header Search Products Fetch Error]', err));
-  }, []);
-
-  const filteredSuggestions = searchQuery.trim() === ''
-    ? []
-    : allProducts.filter(p => 
-        p.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-        p.category.toLowerCase().includes(searchQuery.toLowerCase())
-      ).slice(0, 5);
+  const [popupSettingEnabled, setPopupSettingEnabled] = useState(false);
+  const [hasOpenedOnce, setHasOpenedOnce] = useState(() => {
+    return sessionStorage.getItem('hos_popup_opened_once') === 'true';
+  });
 
   useEffect(() => {
     const checkSession = () => {
@@ -65,14 +45,24 @@ const Header = () => {
     setUserSessionActive(false);
     setUserName('');
     setShowUserDropdown(false);
+    setHasOpenedOnce(false);
+    sessionStorage.removeItem('hos_popup_opened_once');
+    sessionStorage.removeItem('hos_popup_last_closed');
+    sessionStorage.removeItem('hos_exhibition_session_start');
     window.dispatchEvent(new Event('userSessionChange'));
   };
 
+  // Scroll handler
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
-    
-    let timer;
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  // Settings loader
+  useEffect(() => {
     fetch(`${import.meta.env.VITE_API_BASE_URL}/settings`)
       .then((res) => res.json())
       .then((data) => {
@@ -80,36 +70,62 @@ const Header = () => {
           const popupEnabled = data.data.popupEnabled !== false;
           const isExhibit = data.data.exhibitionMode === true;
           setExhibitionMode(isExhibit);
-          const userSession = localStorage.getItem('hos_user_session');
-          
-          if (userSession !== 'active') {
-            if (isExhibit) {
-              setIsAuthOpen(true); // Open immediately
-            } else if (popupEnabled) {
-              timer = setTimeout(() => {
-                setIsAuthOpen(true);
-              }, 5000);
-            }
-          }
+          setPopupSettingEnabled(popupEnabled);
         }
       })
       .catch((err) => {
         console.error('[Header Settings Connection Error]', err);
-        // Graceful fallback to localStorage state
         const popupEnabled = localStorage.getItem('hos_popup_enabled') !== 'false';
-        const userSession = localStorage.getItem('hos_user_session');
-        if (popupEnabled && userSession !== 'active') {
-          timer = setTimeout(() => {
-            setIsAuthOpen(true);
-          }, 5000);
-        }
+        setPopupSettingEnabled(popupEnabled);
       });
+  }, []);
+
+  // Popup Timer Trigger
+  useEffect(() => {
+    if (userSessionActive) return;
+    if (!popupSettingEnabled && !exhibitionMode) return;
+
+    let timer;
+    if (!isAuthOpen) {
+      let delay = 5000;
+
+      if (exhibitionMode) {
+        const sessionStart = sessionStorage.getItem('hos_exhibition_session_start');
+        if (!sessionStart) {
+          const nowStr = Date.now().toString();
+          sessionStorage.setItem('hos_exhibition_session_start', nowStr);
+          delay = 90000;
+        } else {
+          const elapsed = Date.now() - parseInt(sessionStart, 10);
+          delay = Math.max(0, 90000 - elapsed);
+        }
+      } else {
+        const lastClosed = sessionStorage.getItem('hos_popup_last_closed');
+        const openedOnce = sessionStorage.getItem('hos_popup_opened_once') === 'true';
+        
+        if (openedOnce) {
+          if (lastClosed) {
+            const elapsed = Date.now() - parseInt(lastClosed, 10);
+            delay = Math.max(0, 90000 - elapsed);
+          } else {
+            delay = 90000;
+          }
+        }
+      }
+
+      timer = setTimeout(() => {
+        setIsAuthOpen(true);
+        if (!exhibitionMode) {
+          sessionStorage.setItem('hos_popup_opened_once', 'true');
+          setHasOpenedOnce(true);
+        }
+      }, delay);
+    }
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
       if (timer) clearTimeout(timer);
     };
-  }, []);
+  }, [isAuthOpen, userSessionActive, popupSettingEnabled, exhibitionMode, hasOpenedOnce]);
 
   const navLinks = [
     { name: 'Home', href: '/' },
@@ -137,7 +153,7 @@ const Header = () => {
                 <img 
                   src={logo} 
                   alt="House of Shah Logo" 
-                  className="h-10 md:h-16 w-auto object-contain scale-[2.0] md:scale-[2.9] lg:scale-[2.5] xl:scale-[3.0] origin-left transition-transform duration-500"
+                  className="h-16 w-auto object-contain scale-[2.5] md:scale-[3.2] lg:scale-[2.5] xl:scale-[3.0] origin-left transition-transform duration-800"
                 />
               </a>
             </div>
@@ -154,75 +170,7 @@ const Header = () => {
 
             {/* RIGHT: E-COMMERCE ACTIONS */}
             <div className="flex items-center gap-4 md:gap-6 lg:gap-5 xl:gap-7 flex-shrink-0">
-              {/* INLINE EXPANDING SEARCH CONTROLLER */}
-              {isSearchOpen ? (
-                <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 pl-3 pr-2 py-1.5 transition-all w-48 sm:w-64 relative font-outfit">
-                  <Search size={14} className="text-white/50" />
-                  <input 
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search..."
-                    className="bg-transparent outline-none text-[10px] font-bold uppercase tracking-wider text-white placeholder-white/30 w-full"
-                    autoFocus
-                  />
-                  <button 
-                    onClick={() => { setIsSearchOpen(false); setSearchQuery(''); }} 
-                    className="text-white/50 hover:text-white transition-colors"
-                  >
-                    <X size={12} />
-                  </button>
-                  
-                  {/* Suggestions Dropdown Card anchored to the inline input */}
-                  <AnimatePresence>
-                    {searchQuery.trim() !== '' && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 10 }}
-                        className="absolute right-0 top-full mt-2 w-64 sm:w-80 bg-black/95 border border-white/10 shadow-2xl p-3 z-50 font-outfit backdrop-blur-xl"
-                      >
-                        <div className="space-y-1.5 max-h-60 overflow-y-auto no-scrollbar">
-                          {filteredSuggestions.length > 0 ? (
-                            filteredSuggestions.map((prod) => (
-                              <div 
-                                key={prod.id || prod._id}
-                                onClick={() => {
-                                  setSelectedSearchProduct(prod);
-                                  setIsSearchOpen(false);
-                                  setSearchQuery('');
-                                }}
-                                className="flex items-center gap-2 p-1.5 bg-white/[0.02] border border-white/5 hover:border-[var(--primary-blue)]/30 hover:bg-white/[0.05] cursor-pointer transition-all duration-300 group"
-                              >
-                                <div className="w-6 h-8 bg-gray-900 border border-white/5 overflow-hidden shrink-0">
-                                  <img src={prod.image} className="w-full h-full object-cover" alt={prod.title} />
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                  <span className="text-[9px] font-bold text-white uppercase tracking-wider block truncate group-hover:text-[var(--primary-blue)] transition-colors">{prod.title}</span>
-                                  <span className="text-[7px] font-mono text-gray-500 uppercase mt-0.5 block">{prod.category}</span>
-                                </div>
-                                <ArrowUpRight size={10} className="text-gray-500 group-hover:text-white transition-colors" />
-                              </div>
-                            ))
-                          ) : (
-                            <div className="py-2 text-center text-[8px] text-gray-500 uppercase tracking-widest font-bold">
-                              No creations found.
-                            </div>
-                          )}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              ) : (
-                <button 
-                  onClick={() => setIsSearchOpen(true)}
-                  className="text-[var(--white)] hover:opacity-60 transition-opacity flex items-center justify-center"
-                  aria-label="Toggle Search Panel"
-                >
-                  <Search size={18} strokeWidth={1.5} />
-                </button>
-              )}
+              {/* INLINE EXPANDING SEARCH CONTROLLER REMOVED */}
               <div className="hidden lg:block"><LanguageSelector /></div>
 
               {/* USER PROFILE ICON */}
@@ -366,92 +314,10 @@ const Header = () => {
 
       <LoginSignupModal isOpen={isAuthOpen} onClose={() => {
         setIsAuthOpen(false);
+        sessionStorage.setItem('hos_popup_last_closed', Date.now().toString());
       }} isExhibitionMode={exhibitionMode} />
 
-      {/* Visual Search Masterpiece Detail Modal */}
-      <AnimatePresence>
-        {selectedSearchProduct && (
-          <div className="fixed inset-0 z-[3000] flex items-center justify-center p-4 md:p-12 overflow-y-auto">
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setSelectedSearchProduct(null)}
-              className="absolute inset-0 bg-black/90 backdrop-blur-md fixed"
-            />
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="relative bg-white w-full max-w-4xl shadow-2xl flex flex-col md:flex-row font-outfit z-10"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button 
-                onClick={() => setSelectedSearchProduct(null)}
-                className="absolute top-6 right-6 z-50 p-2.5 bg-black/5 hover:bg-black hover:text-white transition-all text-black"
-              >
-                <X size={20} />
-              </button>
 
-              {/* Product Image */}
-              <div className="w-full md:w-1/2 bg-[var(--silver-bg)] relative aspect-[4/5] md:aspect-auto overflow-hidden shrink-0">
-                <img 
-                  src={selectedSearchProduct.image} 
-                  alt={selectedSearchProduct.title} 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-
-              {/* Product Details */}
-              <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center bg-white text-[var(--primary-blue)]">
-                <div className="mb-8">
-                  <span className="text-[9px] font-bold uppercase tracking-[0.4em] text-[var(--primary-blue)]/50 block mb-3">
-                    {selectedSearchProduct.category}
-                  </span>
-                  <h2 className="text-3xl font-extrabold tracking-tighter uppercase text-[var(--primary-blue)] mb-4">
-                    {selectedSearchProduct.title}
-                  </h2>
-                  <div className="w-8 h-[1px] bg-[var(--primary-blue)]/20 mb-6" />
-                  
-                  <div className="space-y-3.5">
-                    {selectedSearchProduct.weight && (
-                      <div className="flex justify-between text-xs border-b border-gray-100 pb-2">
-                        <span className="text-gray-400 uppercase tracking-wider">Net Weight</span>
-                        <span className="font-bold">{selectedSearchProduct.weight}</span>
-                      </div>
-                    )}
-                    <div className="flex justify-between text-xs border-b border-gray-100 pb-2">
-                      <span className="text-gray-400 uppercase tracking-wider">Composition</span>
-                      <span className="font-bold">99.9% Pure Silver Guaranteed</span>
-                    </div>
-                    <div className="flex justify-between text-xs border-b border-gray-100 pb-2">
-                      <span className="text-gray-400 uppercase tracking-wider">Certification</span>
-                      <span className="font-bold">BIS Hallmarked</span>
-                    </div>
-                  </div>
-                </div>
-
-                <button 
-                  onClick={() => {
-                    const phoneNumber = "919510806869"; // WhatsApp Number
-                    const message = encodeURIComponent(
-                      `Hi House of Shah, I would like to inquire about this masterpiece discovered through the search gallery:\n\n` +
-                      `• Category: ${selectedSearchProduct.category}\n` +
-                      `• Name: ${selectedSearchProduct.title}\n` +
-                      `• Weight: ${selectedSearchProduct.weight || 'N/A'}\n\nPlease share more details and pricing.`
-                    );
-                    window.open(`https://wa.me/${phoneNumber}?text=${message}`, "_blank");
-                  }}
-                  className="w-full bg-[var(--primary-blue)] text-white py-4 text-[10px] font-bold uppercase tracking-[0.3em] flex items-center justify-center gap-3 hover:bg-black transition-colors"
-                >
-                  Send WhatsApp Inquiry <ArrowUpRight size={14} />
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
 
       {/* MOBILE NAV */}
       <AnimatePresence>

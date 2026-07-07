@@ -1,10 +1,12 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import cncImage from '../../aasets/CNC Machine.png';
+
 
 const reasons = [
   { id: "01", title: " Plating Options", desc: "Nickel-free plating options available in gold, rose gold, silver, and rhodium finishes for enhanced durability, comfort, and refined aesthetics." },
   { id: "02", title: "Screw Options", desc: "Custom jewellery screw options include Bombay screw, push screw, and south screw fittings designed to meet diverse market and customer preferences." },
-  { id: "03", title: "Meticulous QC", desc: "Strict quality control checks are conducted after every step of the manufacturing process, including wax modelling and cleaning, casting, filling, buffing, and plating. A final visual audit then ensures a pore-free mirror finish with exceptional detailing and consistency." },
+  { id: "03", title: "Meticulous QC", desc: "Strict quality control checks are conducted after every step of the manufacturing process, including wax modelling and cleaning, casting, filing, buffing, and plating. A final visual audit then ensures a pore-free mirror finish with exceptional detailing and consistency." },
   { id: "04", title: " CAD-CAM Development ", desc: "Advanced CAD-CAM development enables precise product visualization, accurate prototyping, and seamless translation of concepts into production-ready jewellery designs." },
   { id: "05", title: "Laser & CNC Machining", desc: "Precision laser cutting and CNC machining technology allow for intricate detailing, sharp finishes, lightweight construction, and superior accuracy across every jewellery piece." }
 ];
@@ -18,13 +20,13 @@ const WhyUs = () => {
   });
 
   // Hum direct transform use karenge, mobile par iska impact CSS handles karegi
-  const yTranslate = useTransform(scrollYProgress, [0, 1], ["0%", "-70%"]);
+  const yTranslate = useTransform(scrollYProgress, [0, 1], ["0%", "-55%"]);
 
   return (
-    <section ref={containerRef} id="why" className="relative h-auto lg:h-[300vh] bg-white font-outfit">
+    <section ref={containerRef} id="why" className="relative h-auto lg:h-[240vh] bg-white font-outfit">
       
       {/* Container: Desktop par sticky, mobile par simple relative block */}
-      <div className="relative lg:sticky lg:top-0 lg:h-screen w-full overflow-hidden pt-12 lg:pt-0">
+      <div className="relative lg:sticky lg:top-0 lg:h-screen w-full overflow-hidden pt-6 lg:pt-0">
         <div className="container mx-auto h-full px-6 lg:px-12">
           <div className="flex flex-col lg:flex-row h-full items-start lg:items-center gap-10 lg:gap-0">
             
@@ -48,7 +50,7 @@ const WhyUs = () => {
 
                 <div className="relative w-full h-[30vh] lg:h-[35vh] rounded-[2rem] overflow-hidden shadow-sm border border-[var(--primary-blue)]/5 mb-8">
                   <img 
-                    src="https://res.cloudinary.com/de64mp51k/image/upload/v1780576813/Jewellery_Manufacturing_Section_ifctrg.png" 
+                    src={cncImage} 
                     alt="Silver Craftsmanship" 
                     className="w-full h-full object-cover"
                   />
@@ -62,7 +64,7 @@ const WhyUs = () => {
             </div>
 
             {/* RIGHT SIDE: List */}
-            <div className="w-full lg:w-1/2 h-auto lg:h-screen relative flex flex-col justify-start lg:pt-[20vh] lg:pl-20 pb-20 lg:pb-0">
+            <div className="w-full lg:w-1/2 h-auto lg:h-screen relative flex flex-col justify-start lg:pt-[20vh] lg:pl-20 pb-10 lg:pb-0">
               {/* Desktop par transform work karega, mobile par disable karne ke liye simple div use karenge agar window width kam hai */}
               <motion.div 
                 style={{ y: typeof window !== 'undefined' && window.innerWidth > 1024 ? yTranslate : 0 }} 

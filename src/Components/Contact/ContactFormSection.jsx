@@ -8,27 +8,22 @@ const ContactFormSection = () => {
     name: '',
     company: '',
     contact: '',
-    remarks: ''
+    remarks: '',
+    interestedProduct: ''
   });
 
-  const [selectedProducts, setSelectedProducts] = useState([]);
   const [selectedBusiness, setSelectedBusiness] = useState([]);
   
-  const [isOpenProducts, setIsOpenProducts] = useState(false);
   const [isOpenBusiness, setIsOpenBusiness] = useState(false);
   
   const [submitted, setSubmitted] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
-  const productDropdownRef = useRef(null);
   const businessDropdownRef = useRef(null);
 
   // Close dropdowns on click outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (productDropdownRef.current && !productDropdownRef.current.contains(event.target)) {
-        setIsOpenProducts(false);
-      }
       if (businessDropdownRef.current && !businessDropdownRef.current.contains(event.target)) {
         setIsOpenBusiness(false);
       }
@@ -37,27 +32,7 @@ const ContactFormSection = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const productsList = ["All", "Necklaces", "Earrings", "Rings", "Bracelets", "Pendants", "Silverware"];
   const businessList = ["All", "Wholesale", "Retail", "Online"];
-
-  const handleProductToggle = (option) => {
-    setErrorMsg('');
-    if (option === "All") {
-      if (selectedProducts.includes("All")) {
-        setSelectedProducts([]);
-      } else {
-        setSelectedProducts(["All"]);
-      }
-    } else {
-      let updated = [...selectedProducts].filter(item => item !== "All");
-      if (updated.includes(option)) {
-        updated = updated.filter(item => item !== option);
-      } else {
-        updated.push(option);
-      }
-      setSelectedProducts(updated);
-    }
-  };
 
   const handleBusinessToggle = (option) => {
     setErrorMsg('');
@@ -99,8 +74,8 @@ const ContactFormSection = () => {
       setErrorMsg('Please enter your contact number.');
       return;
     }
-    if (selectedProducts.length === 0) {
-      setErrorMsg('Please select at least one Interested Product.');
+    if (!formData.interestedProduct.trim()) {
+      setErrorMsg('Please enter your Interested Product.');
       return;
     }
     if (selectedBusiness.length === 0) {
@@ -113,8 +88,7 @@ const ContactFormSection = () => {
   };
 
   const resetForm = () => {
-    setFormData({ name: '', company: '', contact: '', remarks: '' });
-    setSelectedProducts([]);
+    setFormData({ name: '', company: '', contact: '', remarks: '', interestedProduct: '' });
     setSelectedBusiness([]);
     setSubmitted(false);
     setErrorMsg('');
@@ -236,52 +210,18 @@ const ContactFormSection = () => {
                       />
                     </div>
 
-                    {/* Custom Multi-select Dropdown: Interested Product */}
-                    <div className="space-y-1 relative" ref={productDropdownRef}>
+                    {/* Interested Product */}
+                    <div className="space-y-1">
                       <label className="text-[9px] font-bold uppercase tracking-widest text-[var(--primary-blue)]/40">Interested Product *</label>
-                      <div 
-                        onClick={() => setIsOpenProducts(!isOpenProducts)}
-                        className="w-full bg-transparent px-2 py-2.5 border-b border-gray-200 hover:border-[var(--primary-blue)] cursor-pointer flex justify-between items-center transition-colors text-sm text-[var(--primary-blue)] font-medium"
-                      >
-                        <span className={selectedProducts.length === 0 ? "text-gray-300" : ""}>
-                          {selectedProducts.length === 0 
-                            ? "Select Interested Products" 
-                            : selectedProducts.join(", ")}
-                        </span>
-                        <ChevronDown size={14} className={`transition-transform duration-300 ${isOpenProducts ? 'rotate-180' : ''}`} />
-                      </div>
-
-                      {/* Dropdown Options */}
-                      <AnimatePresence>
-                        {isOpenProducts && (
-                          <motion.div 
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: 10 }}
-                            className="absolute z-20 top-full left-0 w-full bg-white border border-gray-100 shadow-2xl p-4 space-y-2 mt-1 rounded-none max-h-56 overflow-y-auto"
-                          >
-                            {productsList.map((product) => {
-                              const isChecked = selectedProducts.includes(product);
-                              return (
-                                <div 
-                                  key={product}
-                                  onClick={() => handleProductToggle(product)}
-                                  className="flex items-center gap-3 py-1.5 px-2 hover:bg-[var(--silver-bg)] cursor-pointer text-xs transition-colors font-medium"
-                                >
-                                  <div className={`w-3.5 h-3.5 border flex items-center justify-center rounded-none transition-all ${
-                                    isChecked 
-                                      ? 'bg-[var(--primary-blue)] border-[var(--primary-blue)] text-white' 
-                                      : 'border-gray-300 bg-white'
-                                  }`}>
-                                    {isChecked && <Check size={10} strokeWidth={3} />}
-                                  </div>
-                                  <span className={isChecked ? "font-bold" : "opacity-75"}>{product}</span>
-                                </div>
-                              );
-                            })}
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
+                      <input 
+                        type="text" 
+                        name="interestedProduct"
+                        value={formData.interestedProduct}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full bg-transparent px-2 py-2 outline-none text-sm font-medium text-[var(--primary-blue)] border-b border-gray-200 focus:border-[var(--primary-blue)] transition-colors rounded-none placeholder-gray-300" 
+                        placeholder="e.g. Necklaces, Rings" 
+                      />
                     </div>
 
                     {/* Custom Multi-select Dropdown: Nature of Business */}
@@ -387,7 +327,7 @@ const ContactFormSection = () => {
                   </div>
 
                   <p className="text-sm opacity-60 font-light leading-relaxed max-w-sm mx-auto">
-                    Thank you, <span className="font-bold text-[var(--primary-blue)]">{formData.name}</span>. Your inquiry regarding our <span className="font-bold">{selectedProducts.join(", ")}</span> collection is logged successfully under our client protocols. A specialist will contact you on <span className="font-bold">{formData.contact}</span> within 24 hours.
+                    Thank you, <span className="font-bold text-[var(--primary-blue)]">{formData.name}</span>. Your inquiry regarding our <span className="font-bold">{formData.interestedProduct}</span> collection is logged successfully under our client protocols. A specialist will contact you on <span className="font-bold">{formData.contact}</span> within 24 hours.
                   </p>
 
                   <button 

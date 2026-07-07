@@ -1,9 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import empowerImg from '../../aasets/Women Empowerment.png';
 
 const WomenEmpowerment = () => {
   return (
-    <section className="py-16 md:py-24 bg-[var(--silver-bg)] text-[var(--primary-blue)] font-outfit overflow-hidden relative">
+    <section className="py-10 md:py-14 bg-[var(--silver-bg)] text-[var(--primary-blue)] font-outfit overflow-hidden relative">
       
       {/* Subtle Background Watermark */}
       <div className="absolute bottom-10 right-10 text-[110px] font-black opacity-[0.02] select-none tracking-tighter leading-none pointer-events-none hidden lg:block">
@@ -13,32 +14,25 @@ const WomenEmpowerment = () => {
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
-          {/* Left Column: Premium Layered Image Frame (5 cols - Rendered first on desktop for alternate layout) */}
+          {/* Left Column: Premium Image Frame (5 cols - Rendered first on desktop for alternate layout) */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="lg:col-span-5 relative w-full aspect-square order-2 lg:order-1"
+            className="lg:col-span-5 relative w-full order-2 lg:order-1 overflow-hidden shadow-md rounded-none"
           >
-            {/* Architectural Grid Line Overlays */}
-            <div className="absolute -inset-3 border border-[var(--primary-blue)]/10 rounded-none pointer-events-none hidden sm:block" />
+            <img 
+              src={empowerImg} 
+              alt="Women Empowerment Crafting"
+              className="w-full h-auto block transition-transform duration-700 hover:scale-105"
+            />
             
-            <div className="relative w-full h-full bg-white p-3 border border-[var(--primary-blue)]/5 rounded-none shadow-sm overflow-hidden group">
-              <div className="w-full h-full overflow-hidden rounded-none bg-[var(--silver-bg)]">
-                <img 
-                  src="https://res.cloudinary.com/de64mp51k/image/upload/v1780577887/Screenshot_2026-05-20_at_12.03.32_AM_eolhz0.png" 
-                  alt="Women Empowerment Crafting"
-                  className="w-full h-full object-cover rounded-none transition-transform duration-700 group-hover:scale-105"
-                />
-              </div>
-              
-              {/* Corner Badge */}
-              <div className="absolute top-6 right-6 bg-[var(--primary-blue)] text-white p-4 shadow-lg rounded-none">
-                <span className="text-[8px] font-bold tracking-widest uppercase block mb-1">Grassroots</span>
-                <span className="text-sm font-bold tracking-tighter block leading-none">Social Change</span>
-              </div>
-            </div>
+            {/* Corner Badge */}
+            {/* <div className="absolute top-6 right-6 bg-[var(--primary-blue)] text-white p-4 shadow-lg rounded-none">
+              <span className="text-[8px] font-bold tracking-widest uppercase block mb-1">Grassroots</span>
+              <span className="text-sm font-bold tracking-tighter block leading-none">Social Change</span>
+            </div> */}
           </motion.div>
 
           {/* Right Column: Text Content & Stats (7 cols) */}
@@ -51,7 +45,7 @@ const WomenEmpowerment = () => {
           >
             <div className="flex items-center gap-3">
               <div className="w-8 h-[1px] bg-[var(--primary-blue)]/30" />
-              <span className="text-[10px] font-bold uppercase tracking-[0.4em] opacity-60">03 / SOCIAL UPLIFTMENT</span>
+              <span className="text-[10px] font-bold uppercase tracking-[0.4em] opacity-60">01 / SOCIAL UPLIFTMENT</span>
             </div>
             
             <h2 className="text-4xl md:text-5xl font-extrabold tracking-tighter uppercase leading-tight">
@@ -65,7 +59,7 @@ const WomenEmpowerment = () => {
              While women form a significant part of the jewellery industry's consumer base, their representation within jewellery manufacturing remains limited. At House of Shah, we are committed to helping bridge this gap.
 
 <br/><br/>
-             To support this vision, HOS launched a dedicated initiative, training women from nearby villages and small towns in jewellery manufacturing processes. Beyond vocational training, the program also supports continued education, offering opportunities for women to pursue further studies through evening schooling if they choose.
+             To support this vision, HOS launched a dedicated initiative, training women from nearby villages and small towns in jewellery manufacturing processes. Beyond vocational training, the program also supports continued education, offering opportunities for women to pursue further education through evening schooling if they choose.
 
 <br/><br/>
              Today, 85+ women are part of the HOS workforce, contributing their skills, dedication, and craftsmanship to the brand's journey. Their growth and success remain an important part of our purpose beyond jewellery.

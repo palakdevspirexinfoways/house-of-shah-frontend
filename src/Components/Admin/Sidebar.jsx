@@ -14,6 +14,7 @@ const Sidebar = ({ activeTab, setActiveTab, onLogout }) => {
    const tabs = [
      { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={16} /> },
      { id: 'slider', label: 'Slider Manage', icon: <Sliders size={16} /> },
+     { id: 'collections', label: 'Collections', icon: <LayoutDashboard size={16} /> },
      { id: 'products', label: 'Product Manage', icon: <ShoppingBag size={16} /> },
      { id: 'gallery', label: 'Gallery Manage', icon: <ImageIcon size={16} /> },
      { id: 'popup', label: 'Form Popup', icon: <ToggleLeft size={16} /> },

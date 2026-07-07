@@ -7,17 +7,17 @@ const InfoCards = () => {
     {
       icon: <Phone size={32} strokeWidth={1} />,
       title: "Contact Info",
-      details: ["+91 95108 06869", "houseofshah.info@gmail.com"]
+      details: ["+91 95108 06869", "houseofshahexports@gmail.com"]
     },
     {
       icon: <MapPin size={32} strokeWidth={1} />,
-      title: "Our Atelier",
+      title: "Visit Us",
       details: ["House Of Shah, Jalganga Chowk", "Rajkot, Gujarat 360003, India"]
     },
     {
       icon: <Clock size={32} strokeWidth={1} />,
       title: "Working Hours",
-      details: ["Mon - Sat: 8:30 AM - 6:30 PM", "Sunday: Closed"]
+      details: ["Monday - Saturday", "8:30 AM - 6:30 PM", "Sunday: Closed"]
     }
   ];
 
@@ -40,11 +40,13 @@ const InfoCards = () => {
               <h3 className="text-sm font-bold uppercase tracking-[0.2em] mb-4 text-[var(--primary-blue)] group-hover:text-white transition-colors duration-500">
                 {card.title}
               </h3>
-              <div className="space-y-2 text-gray-500 group-hover:text-white/80 transition-colors duration-500">
+              <a href="https://maps.app.goo.gl/jcryDF3kYoxPe5sq9" target='blank'>
+                 <div className="space-y-1 text-gray-500 group-hover:text-white/80 transition-colors duration-500">
                 {card.details.map((detail, idx) => (
-                  <p key={idx} className="text-sm">{detail}</p>
+                  <p key={idx} className="text-sm" style={{ lineHeight: '1.2' }}>{detail}</p>
                 ))}
-              </div>
+              </div></a>
+           
             </motion.div>
           ))}
         </div>

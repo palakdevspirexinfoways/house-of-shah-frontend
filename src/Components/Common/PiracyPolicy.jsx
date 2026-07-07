@@ -99,10 +99,11 @@ const PiracyPolicy = () => {
                 <p className="font-bold text-[var(--primary-blue)] mb-1">House of Shah</p>
                 <p>Rajkot, Gujarat, India</p>
                 <p className="mt-2 text-gray-700">
-                  <span className="font-semibold">Email:</span> 
+                  <span className="font-semibold">Email : houseofshahexports@gmail.com
+</span> 
                 </p>
                 <p className="mt-1 text-gray-700">
-                  <span className="font-semibold">Phone:</span> 
+                  <span className="font-semibold">Phone : +91 9510806869</span> 
                 </p>
               </div>
             </section>

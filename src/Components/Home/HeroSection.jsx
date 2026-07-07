@@ -5,16 +5,16 @@ import { ChevronRight, ChevronLeft } from 'lucide-react';
 const defaultSlides = [
   {
     id: 1,
-    title: "India's Journey to",
-    subtitle: "Global Manufacturing Leadership",
-    tagline: "CRAFTING SILVER SYMPHONY",
+    title: "",
+    subtitle: "",
+    tagline: "",
     bg: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?q=80&w=1920&auto=format&fit=crop",
   },
   {
     id: 2,
-    title: "Exquisite Artistry",
-    subtitle: "Premium Silver Collection",
-    tagline: "HOUSE OF SHAH EXCLUSIVES",
+    title: "",
+    subtitle: "",
+    tagline: "",
     bg: "https://images.unsplash.com/photo-1610014763116-3e82717906d4?q=80&w=1920&auto=format&fit=crop",
   },
 ];
@@ -24,8 +24,8 @@ const HeroSlider = () => {
   const [slides, setSlides] = useState(defaultSlides);
   const [heroMode, setHeroMode] = useState('video');
   const [heroVideoUrl, setHeroVideoUrl] = useState('');
-  const [heroVideoTagline, setHeroVideoTagline] = useState('HOUSE OF SHAH EXCLUSIVES');
-  const [heroVideoTitle, setHeroVideoTitle] = useState('Exquisite Artistry');
+  const [heroVideoTagline, setHeroVideoTagline] = useState('');
+  const [heroVideoTitle, setHeroVideoTitle] = useState('');
 
   useEffect(() => {
     // Fetch Slides
@@ -51,10 +51,10 @@ const HeroSlider = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data.success && data.data) {
-          if (data.data.hero_mode) setHeroMode(data.data.hero_mode);
-          if (data.data.hero_video_url) setHeroVideoUrl(data.data.hero_video_url);
-          if (data.data.hero_video_tagline) setHeroVideoTagline(data.data.hero_video_tagline);
-          if (data.data.hero_video_title) setHeroVideoTitle(data.data.hero_video_title);
+          if (data.data.hero_mode !== undefined) setHeroMode(data.data.hero_mode);
+          if (data.data.hero_video_url !== undefined) setHeroVideoUrl(data.data.hero_video_url);
+          if (data.data.hero_video_tagline !== undefined) setHeroVideoTagline(data.data.hero_video_tagline);
+          if (data.data.hero_video_title !== undefined) setHeroVideoTitle(data.data.hero_video_title);
         }
       })
       .catch((err) => console.error('[Hero Settings Connection Error]', err));
@@ -94,34 +94,40 @@ const HeroSlider = () => {
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
         
         <div className="relative h-full flex flex-col items-center justify-center text-center px-4 z-10">
-          <motion.p
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
-            className="text-white drop-shadow-md tracking-[0.6em] uppercase text-[10px] md:text-xs mb-6 font-bold"
-          >
-            {heroVideoTagline || 'HOUSE OF SHAH EXCLUSIVES'}
-          </motion.p>
-          <motion.h1
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.8, duration: 1 }}
-            className="text-white drop-shadow-2xl text-4xl sm:text-5xl md:text-6xl lg:text-[7.5rem] font-bold mb-4 tracking-tighter leading-[0.9] uppercase"
-          >
-            {heroVideoTitle || 'Exquisite Artistry'}
-          </motion.h1>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.3, duration: 0.8 }}
-            className="mt-12"
-          >
-            <a href="#collection">
-              <button className="px-12 py-5 bg-white text-black font-bold uppercase text-[10px] tracking-[0.4em] hover:bg-[var(--primary-blue)] hover:text-white transition-all duration-500 shadow-2xl">
-                Explore Collection
-              </button>
-            </a>
-          </motion.div>
+          {heroVideoTitle && (
+            <>
+              {heroVideoTagline && (
+                <motion.p
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.6, duration: 0.8 }}
+                  className="text-white drop-shadow-md tracking-[0.6em] uppercase text-[10px] md:text-xs mb-6 font-bold"
+                >
+                  {heroVideoTagline}
+                </motion.p>
+              )}
+              <motion.h1
+                initial={{ y: 30, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.8, duration: 1 }}
+                className="text-white drop-shadow-2xl text-4xl sm:text-5xl md:text-6xl lg:text-[7.5rem] font-bold mb-4 tracking-tighter leading-[0.9] uppercase"
+              >
+                {heroVideoTitle}
+              </motion.h1>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.3, duration: 0.8 }}
+                className="mt-12"
+              >
+                <a href="#collection">
+                  <button className="px-12 py-5 bg-white text-black font-bold uppercase text-[10px] tracking-[0.4em] hover:bg-[var(--primary-blue)] hover:text-white transition-all duration-500 shadow-2xl">
+                    Explore Collections
+                  </button>
+                </a>
+              </motion.div>
+            </>
+          )}
         </div>
       </section>
     );
@@ -153,46 +159,54 @@ const HeroSlider = () => {
             </div>
 
             <div className="relative h-full flex flex-col items-center justify-center text-center px-4 z-10">
-              <motion.p
-                variants={textVariants}
-                initial="hidden"
-                animate="visible"
-                className="text-white drop-shadow-md tracking-[0.6em] uppercase text-[10px] md:text-xs mb-6 font-bold flex items-center justify-center gap-4"
-              >
-                <div className="w-6 h-[1px] bg-white/40" />
-                {currentSlideData.tagline}
-                <div className="w-6 h-[1px] bg-white/40" />
-              </motion.p>
+              {currentSlideData.title && (
+                <>
+                  {currentSlideData.tagline && (
+                    <motion.p
+                      variants={textVariants}
+                      initial="hidden"
+                      animate="visible"
+                      className="text-white drop-shadow-md tracking-[0.6em] uppercase text-[10px] md:text-xs mb-6 font-bold flex items-center justify-center gap-4"
+                    >
+                      <div className="w-6 h-[1px] bg-white/40" />
+                      {currentSlideData.tagline}
+                      <div className="w-6 h-[1px] bg-white/40" />
+                    </motion.p>
+                  )}
 
-              <motion.h1
-                variants={textVariants}
-                initial="hidden"
-                animate="visible"
-                className="text-white drop-shadow-2xl text-4xl sm:text-5xl md:text-6xl lg:text-[7.5rem] font-bold mb-4 tracking-tighter leading-[0.9] uppercase"
-              >
-                {currentSlideData.title}
-              </motion.h1>
+                  <motion.h1
+                    variants={textVariants}
+                    initial="hidden"
+                    animate="visible"
+                    className="text-white drop-shadow-2xl text-4xl sm:text-5xl md:text-6xl lg:text-[7.5rem] font-bold mb-4 tracking-tighter leading-[0.9] uppercase"
+                  >
+                    {currentSlideData.title}
+                  </motion.h1>
 
-              <motion.p
-                variants={textVariants}
-                initial="hidden"
-                animate="visible"
-                className="text-gray-100 text-sm sm:text-base md:text-xl font-light italic max-w-2xl mb-12"
-              >
-                {currentSlideData.subtitle}
-              </motion.p>
+                  {currentSlideData.subtitle && (
+                    <motion.p
+                      variants={textVariants}
+                      initial="hidden"
+                      animate="visible"
+                      className="text-gray-100 text-sm sm:text-base md:text-xl font-light italic max-w-2xl mb-12"
+                    >
+                      {currentSlideData.subtitle}
+                    </motion.p>
+                  )}
 
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1.3, duration: 0.8 }}
-              >
-                <a href="#collection">
-                  <button className="px-12 py-5 bg-white text-black font-bold uppercase text-[10px] tracking-[0.4em] hover:bg-[var(--primary-blue)] hover:text-white transition-all duration-500 shadow-2xl">
-                    Explore Collection
-                  </button>
-                </a>
-              </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 1.3, duration: 0.8 }}
+                  >
+                    <a href="#collection">
+                      <button className="px-12 py-5 bg-white text-black font-bold uppercase text-[10px] tracking-[0.4em] hover:bg-[var(--primary-blue)] hover:text-white transition-all duration-500 shadow-2xl">
+                        Explore Collections
+                      </button>
+                    </a>
+                  </motion.div>
+                </>
+              )}
             </div>
           </motion.div>
         </AnimatePresence>

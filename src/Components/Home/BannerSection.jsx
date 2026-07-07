@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const HeroBanner = () => {
   return (
-    <section className="relative h-auto pt-24 pb-32 lg:py-0 lg:h-[80vh] w-full overflow-hidden bg-[var(--white)] font-outfit flex items-center">
+    <section className="relative py-10 md:py-14 w-full overflow-hidden bg-[var(--white)] font-outfit flex items-center">
 
       {/* --- BACKGROUND LAYER: Clean & Premium --- */}
       <div className="absolute inset-0 z-0 bg-[var(--white)]">

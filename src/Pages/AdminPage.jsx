@@ -10,6 +10,7 @@ import {
   ChevronDown,
   Search
 } from 'lucide-react';
+import * as XLSX from 'xlsx';
 
 // Import Separated Modular Admin Components
 import Sidebar from '../Components/Admin/Sidebar';
@@ -18,6 +19,8 @@ import Dashboard from '../Components/Admin/Dashboard';
 import SliderManage from '../Components/Admin/SliderManage';
 import ProductManage from '../Components/Admin/ProductManage';
 import GalleryManage from '../Components/Admin/GalleryManage';
+import CollectionManage from '../Components/Admin/CollectionManage';
+import ImageCropperModal from '../Components/Admin/ImageCropperModal';
 
 // ─── Shared Luxury Input Styles ───────────────────────────────────────────────
 const inputStyle = {
@@ -288,9 +291,12 @@ const AdminPage = () => {
   // Datastore States
   const [slides, setSlides] = useState([]);
   const [products, setProducts] = useState([]);
+  const [collections, setCollections] = useState([]);
   const [gallery, setGallery] = useState([]);
   const [popupEnabled, setPopupEnabled] = useState(true);
   const [exhibitionMode, setExhibitionMode] = useState(false);
+  const [cropImageSrc, setCropImageSrc] = useState(null);
+  const [cropTargetType, setCropTargetType] = useState('product');
   // Form / Modal States
   const [showAddModal, setShowAddModal] = useState(false);
   const [editItem, setEditItem] = useState(null);
@@ -302,6 +308,8 @@ const AdminPage = () => {
   const [productForm, setProductForm] = useState({ id: '', title: '', collection: '', category: '', homepageHighlight: '', weight: '', image: '', dynamicText: '' });
   // Gallery Form Fields
   const [galleryForm, setGalleryForm] = useState({ id: '', title: '', category: '', image: '' });
+  // Collection Form Fields
+  const [collectionForm, setCollectionForm] = useState({ id: '', name: '', image: '' });
 
   // Users Registry
   const [users, setUsers] = useState([]);
@@ -311,21 +319,20 @@ const AdminPage = () => {
     interestedProduct: [], natureOfBusiness: [], additionalRemarks: '', password: ''
   });
 
-  // Dynamic Collections & Categories
-  const [availableCollections, setAvailableCollections] = useState(() => {
-    const saved = localStorage.getItem('hos_available_collections');
-    return saved ? JSON.parse(saved) : ['Heritage', 'Imperial', 'Bridal', 'Minimalist'];
-  });
+  // Date Filter States
+  const [filterFromDate, setFilterFromDate] = useState('');
+  const [filterToDate, setFilterToDate] = useState('');
+  const [appliedFromDate, setAppliedFromDate] = useState('');
+  const [appliedToDate, setAppliedToDate] = useState('');
 
+  // Dynamic Categories
   const [availableCategories, setAvailableCategories] = useState(() => {
     const saved = localStorage.getItem('hos_available_categories');
     return saved ? JSON.parse(saved) : ['Necklaces', 'Earrings', 'Rings', 'Bracelets', 'Silverware'];
   });
 
   // Inline new input states
-  const [showNewCollectionInput, setShowNewCollectionInput] = useState(false);
   const [showNewCategoryInput, setShowNewCategoryInput] = useState(false);
-  const [newCollectionName, setNewCollectionName] = useState('');
   const [newCategoryName, setNewCategoryName] = useState('');
 
   // Notifications
@@ -351,6 +358,10 @@ const AdminPage = () => {
       const resProducts = await fetch(`${API_BASE_URL}/products`);
       const dataProducts = await resProducts.json();
       if (dataProducts.success) setProducts(dataProducts.data);
+
+      const resCollections = await fetch(`${API_BASE_URL}/collections`);
+      const dataCollections = await resCollections.json();
+      if (dataCollections.success) setCollections(dataCollections.data);
 
       const resGallery = await fetch(`${API_BASE_URL}/gallery`);
       const dataGallery = await resGallery.json();
@@ -390,13 +401,8 @@ const AdminPage = () => {
     }
   };
 
-  const handleImageFileChange = async (e, type) => {
-    const file = e.target.files[0];
+  const uploadProcessedFile = async (file, type) => {
     if (!file) return;
-    if (!file.type.startsWith('image/')) {
-      alert('Please upload a valid image file.');
-      return;
-    }
     if (file.size > 3 * 1024 * 1024) { alert('File size exceeds the 3MB limit.'); return; }
 
     const token = localStorage.getItem('hos_admin_token');
@@ -416,6 +422,7 @@ const AdminPage = () => {
         if (type === 'slide') setSlideForm(prev => ({ ...prev, image: data.imageUrl }));
         else if (type === 'product') setProductForm(prev => ({ ...prev, image: data.imageUrl }));
         else if (type === 'gallery') setGalleryForm(prev => ({ ...prev, image: data.imageUrl }));
+        else if (type === 'collection') setCollectionForm(prev => ({ ...prev, image: data.imageUrl }));
         triggerToast('Image uploaded successfully!', 'success');
       } else { alert(data.message || 'Image upload failed.'); }
     } catch (error) {
@@ -423,6 +430,27 @@ const AdminPage = () => {
       alert('Upload failed. Server error.');
     } finally {
       setIsUploading(false);
+    }
+  };
+
+  const handleImageFileChange = async (e, type) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      alert('Please upload a valid image file.');
+      return;
+    }
+
+    if (type === 'product' || type === 'collection') {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setCropTargetType(type);
+        setCropImageSrc(reader.result);
+      };
+      reader.readAsDataURL(file);
+      e.target.value = null;
+    } else {
+      uploadProcessedFile(file, type);
     }
   };
 
@@ -727,6 +755,7 @@ const AdminPage = () => {
     if (type === 'slide') setSlideForm({ id: '', tagline: '', title: '', desc: '', image: '', page: 'home' });
     else if (type === 'product') setProductForm({ title: '', collection: '', category: '', homepageHighlight: '', weight: '', image: '', dynamicText: '' });
     else if (type === 'gallery') setGalleryForm({ title: '', category: 'Magazine Issue #44', image: '' });
+    else if (type === 'collection') setCollectionForm({ name: '', image: '' });
     setShowAddModal(true);
   };
 
@@ -741,7 +770,7 @@ const AdminPage = () => {
 
   const handleDeleteItem = async (type, id) => {
     const token = localStorage.getItem('hos_admin_token');
-    const map = { slide: ['slides', 'Hero Slide removed.'], product: ['products', 'Product removed.'], gallery: ['gallery', 'Gallery item removed.'] };
+    const map = { slide: ['slides', 'Hero Slide removed.'], product: ['products', 'Product removed.'], gallery: ['gallery', 'Gallery item removed.'], collection: ['collections', 'Collection removed.'] };
     const [endpoint, toastName] = map[type];
     try {
       const response = await fetch(`${API_BASE_URL}/${endpoint}/${id}`, {
@@ -836,18 +865,94 @@ const AdminPage = () => {
     } catch (error) { triggerToast('Server connection failed.'); }
   };
 
+  const handleApplyFilter = () => {
+    setAppliedFromDate(filterFromDate);
+    setAppliedToDate(filterToDate);
+  };
+
+  const handleResetFilter = () => {
+    setFilterFromDate('');
+    setFilterToDate('');
+    setAppliedFromDate('');
+    setAppliedToDate('');
+  };
+
+  const filteredUsers = users.filter(user => {
+    if (!appliedFromDate && !appliedToDate) return true;
+    const userDate = new Date(user.createdAt);
+    if (isNaN(userDate.getTime())) return true;
+    
+    const from = appliedFromDate ? new Date(appliedFromDate) : null;
+    const to = appliedToDate ? new Date(appliedToDate) : null;
+    
+    if (from) from.setHours(0, 0, 0, 0);
+    if (to) to.setHours(23, 59, 59, 999);
+
+    if (from && to) return userDate >= from && userDate <= to;
+    if (from) return userDate >= from;
+    if (to) return userDate <= to;
+    return true;
+  });
+
+  const handleExportExcel = () => {
+    const exportData = filteredUsers.map(user => ({
+      'Full Name': user.name || '',
+      'Company Name': user.companyName || '',
+      'Email Address': user.email || '',
+      'Contact Number': user.contactNumber || '',
+      'Interested Products': (user.interestedProduct || []).join(', '),
+      'Nature of Business': (user.natureOfBusiness || []).join(', '),
+      'Remarks': user.additionalRemarks || '',
+      'Registration Date': user.createdAt ? new Date(user.createdAt).toLocaleDateString('en-GB') : '',
+      'Last Login': user.lastLogin ? new Date(user.lastLogin).toLocaleDateString('en-GB') : 'N/A',
+      'Status': 'Active'
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(exportData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Registered Users');
+
+    const colWidths = [
+      { wch: 20 }, { wch: 20 }, { wch: 25 }, { wch: 15 }, 
+      { wch: 30 }, { wch: 25 }, { wch: 30 }, { wch: 15 }, 
+      { wch: 15 }, { wch: 10 }
+    ];
+    worksheet['!cols'] = colWidths;
+
+    let filename = 'Registered_Users.xlsx';
+    if (appliedFromDate && appliedToDate) {
+      filename = `Registered_Users_From_${appliedFromDate}_To_${appliedToDate}.xlsx`;
+    } else if (appliedFromDate) {
+      filename = `Registered_Users_From_${appliedFromDate}.xlsx`;
+    } else if (appliedToDate) {
+      filename = `Registered_Users_To_${appliedToDate}.xlsx`;
+    }
+
+    XLSX.writeFile(workbook, filename);
+  };
+
   const handleSaveForm = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('hos_admin_token');
     
     if (formType === 'slide') {
-      if (!slideForm.title.trim() || !slideForm.image.trim()) { alert('Title and Image are required.'); return; }
+      if (!slideForm.image.trim()) { alert('Image is required.'); return; }
       try {
         const response = editItem
           ? await fetch(`${API_BASE_URL}/slides/${editItem.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify(slideForm) })
           : await fetch(`${API_BASE_URL}/slides`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify(slideForm) });
         const data = await response.json();
         if (response.ok && data.success) { triggerToast(editItem ? 'Slide updated.' : 'New slide added.'); fetchData(); setShowAddModal(false); }
+        else { alert(data.message || 'Save failed.'); }
+      } catch (error) { alert('Server connection failed.'); }
+    } else if (formType === 'collection') {
+      if (!collectionForm.name.trim() || !collectionForm.image.trim()) { alert('Name and Image are required.'); return; }
+      try {
+        const response = editItem
+          ? await fetch(`${API_BASE_URL}/collections/${editItem.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify(collectionForm) })
+          : await fetch(`${API_BASE_URL}/collections`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify(collectionForm) });
+        const data = await response.json();
+        if (response.ok && data.success) { triggerToast(editItem ? 'Collection updated.' : 'New collection added.'); fetchData(); setShowAddModal(false); }
         else { alert(data.message || 'Save failed.'); }
       } catch (error) { alert('Server connection failed.'); }
     } else if (formType === 'product') {
@@ -861,11 +966,12 @@ const AdminPage = () => {
         else { alert(data.message || 'Save failed.'); }
       } catch (error) { alert('Server connection failed.'); }
     } else if (formType === 'gallery') {
-      if (!galleryForm.title.trim() || !galleryForm.image.trim()) { alert('Gallery Title and Image are required.'); return; }
+      if (!galleryForm.image.trim()) { alert('Gallery Image is required.'); return; }
       try {
+        const payload = { ...galleryForm, title: '', category: '' };
         const response = editItem
-          ? await fetch(`${API_BASE_URL}/gallery/${editItem.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify(galleryForm) })
-          : await fetch(`${API_BASE_URL}/gallery`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify(galleryForm) });
+          ? await fetch(`${API_BASE_URL}/gallery/${editItem.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify(payload) })
+          : await fetch(`${API_BASE_URL}/gallery`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify(payload) });
         const data = await response.json();
         if (response.ok && data.success) { triggerToast(editItem ? 'Gallery updated.' : 'Gallery item added.'); fetchData(); setShowAddModal(false); }
         else { alert(data.message || 'Save failed.'); }
@@ -950,8 +1056,8 @@ const AdminPage = () => {
               <Field label="Banner Tagline">
                 <LuxInput value={slideForm.tagline} onChange={e => setSlideForm({ ...slideForm, tagline: e.target.value })} placeholder="e.g. A 15-Year Legacy of Purity" maxLength={100} />
               </Field>
-              <Field label="Main Slide Title *">
-                <LuxInput value={slideForm.title} onChange={e => setSlideForm({ ...slideForm, title: e.target.value })} placeholder="e.g. Artistry" required minLength={2} maxLength={50} />
+              <Field label="Main Slide Title">
+                <LuxInput value={slideForm.title} onChange={e => setSlideForm({ ...slideForm, title: e.target.value })} placeholder="e.g. Artistry" maxLength={50} />
               </Field>
               <Field label="Banner Description">
                 <LuxInput textarea value={slideForm.desc} onChange={e => setSlideForm({ ...slideForm, desc: e.target.value })} placeholder="e.g. Curating bespoke silver collections..." maxLength={300} />
@@ -1001,55 +1107,19 @@ const AdminPage = () => {
                 <div className="space-y-1.5">
                   <div className="flex justify-between items-center">
                     <label className="text-[10px] font-black uppercase tracking-widest" style={{ color: '#9ca3af' }}>Collection</label>
-                    <button 
-                      type="button" 
-                      onClick={() => setShowNewCollectionInput(!showNewCollectionInput)}
-                      className="text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 transition-colors"
-                      style={{ color: '#1a4173' }}
-                    >
-                      <Plus size={11} /> Add New
-                    </button>
                   </div>
                   <CustomDropdown 
                     value={productForm.collection}
                     onChange={v => setProductForm({ ...productForm, collection: v })}
-                    options={availableCollections}
+                    options={collections.map(c => c.name)}
                     placeholder="Select Collection"
-                    onDeleteOption={handleDeleteCollection}
                   />
-                  {/* Inline new collection input */}
-                  <AnimatePresence>
-                    {showNewCollectionInput && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="overflow-hidden"
-                      >
-                        <div className="flex gap-2 mt-2 p-3 rounded-xl" style={{ background: 'rgba(26,65,115,0.04)', border: '1px solid rgba(26,65,115,0.1)' }}>
-                          <input 
-                            type="text" value={newCollectionName}
-                            onChange={e => setNewCollectionName(e.target.value)}
-                            placeholder="Collection name..."
-                            onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); handleSaveNewCollection(); } }}
-                            style={{ ...inputStyle, padding: '8px 12px', fontSize: '12px', flex: 1 }}
-                          />
-                          <button type="button" onClick={handleSaveNewCollection}
-                            className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest rounded-lg text-white"
-                            style={{ background: '#1a4173' }}>Save</button>
-                          <button type="button" onClick={() => { setShowNewCollectionInput(false); setNewCollectionName(''); }}
-                            className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest rounded-lg"
-                            style={{ background: 'rgba(26,65,115,0.08)', color: '#6b7280' }}>Cancel</button>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
                 </div>
 
                 {/* Category Field with custom dropdown */}
                 <div className="space-y-1.5">
                   <div className="flex justify-between items-center">
-                    <label className="text-[10px] font-black uppercase tracking-widest" style={{ color: '#9ca3af' }}>Category *</label>
+                    <label className="text-[10px] font-black uppercase tracking-widest" style={{ color: '#9ca3af' }}>Category {productForm.collection ? '' : '*'}</label>
                     <button 
                       type="button"
                       onClick={() => setShowNewCategoryInput(!showNewCategoryInput)}
@@ -1140,15 +1210,33 @@ const AdminPage = () => {
             </>
           )}
 
+          {/* ── COLLECTION FORM ── */}
+          {formType === 'collection' && (
+            <>
+              <Field label="Collection Name *">
+                <LuxInput value={collectionForm.name} onChange={e => setCollectionForm({ ...collectionForm, name: e.target.value })} placeholder="e.g. Signature Collection" maxLength={100} />
+              </Field>
+              <Field label="Upload Collection Image *">
+                <ImageUploadDropzone onFileSelect={e => handleImageFileChange(e, 'collection')} isUploading={isUploading} required={!collectionForm.image} id="collection-img-upload" />
+                {collectionForm.image && (
+                  <div className="mt-3 p-3 rounded-xl inline-block relative group" style={{ background: 'rgba(26,65,115,0.04)', border: '1px solid rgba(26,65,115,0.1)' }}>
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-[9px] font-bold uppercase tracking-wider text-gray-400">Preview</span>
+                      <button type="button" onClick={() => setCollectionForm({ ...collectionForm, image: '' })}
+                        className="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-1 rounded-md transition-colors" title="Remove image">
+                        <Trash2 size={12} />
+                      </button>
+                    </div>
+                    <img src={collectionForm.image} alt="Preview" className="max-h-28 rounded-lg object-contain" />
+                  </div>
+                )}
+              </Field>
+            </>
+          )}
+
           {/* ── GALLERY FORM ── */}
           {formType === 'gallery' && (
             <>
-              <Field label="Magazine Page Title *">
-                <LuxInput value={galleryForm.title} onChange={e => setGalleryForm({ ...galleryForm, title: e.target.value })} placeholder="e.g. Symmetric Silver Plate" required minLength={2} maxLength={100} />
-              </Field>
-              <Field label="Magazine Issue / Volume *">
-                <LuxInput value={galleryForm.category} onChange={e => setGalleryForm({ ...galleryForm, category: e.target.value })} placeholder="e.g. Magazine Issue #44" required maxLength={100} />
-              </Field>
               <Field label="Upload Gallery Image *">
                 <ImageUploadDropzone 
                   onFileSelect={e => handleImageFileChange(e, 'gallery')}
@@ -1206,7 +1294,8 @@ const AdminPage = () => {
   const tabTitles = {
     dashboard: ['Dashboard Overview', 'System status and live counters'],
     slider: ['Hero Slider', 'Manage high-resolution home page banners'],
-    products: ['Signature Collections', 'Create, edit, and remove silver products'],
+    collections: ['Signature Collections', 'Create and manage product collections'],
+    products: ['Product Manage', 'Create, edit, and remove silver products'],
     gallery: ['Digital Gallery', 'Configure magazine pages and portfolios'],
     popup: ['Form Popup', 'Enable or disable the 5s login popup'],
     users: ['User Registry', 'View all registered client profiles']
@@ -1446,12 +1535,23 @@ const AdminPage = () => {
                 )
               )}
 
+              {/* ── TAB: COLLECTIONS ── */}
+              {activeTab === 'collections' && (
+                showAddModal && formType === 'collection' ? renderInPlaceForm() : (
+                  <CollectionManage 
+                    collections={collections}
+                    onAddClick={() => handleOpenAdd('collection')}
+                    onDeleteClick={id => handleDeleteItem('collection', id)}
+                  />
+                )
+              )}
+
               {/* ── TAB: PRODUCTS ── */}
               {activeTab === 'products' && (
                 showAddModal && formType === 'product' ? renderInPlaceForm() : (
                   <ProductManage 
                     products={products}
-                    availableCollections={availableCollections}
+                    availableCollections={collections.map(c => c.name)}
                     availableCategories={availableCategories}
                     onAddClick={() => handleOpenAdd('product')}
                     onEditClick={item => handleOpenEdit('product', item)}
@@ -1592,8 +1692,59 @@ const AdminPage = () => {
                   </motion.div>
                 ) : (
                   <div className="space-y-5">
-                    <div className="flex justify-between items-center">
-                      <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{users.length} Registered Users</span>
+                    <div className="flex flex-col gap-4">
+                      {/* Date Filter Controls */}
+                      <div className="flex flex-wrap items-end gap-3 bg-white p-4 rounded-xl border border-[rgba(26,65,115,0.08)] shadow-[0_1px_4px_rgba(0,0,0,0.02)]">
+                        <div className="flex flex-col gap-1.5">
+                          <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">From Date</label>
+                          <input 
+                            type="date" 
+                            value={filterFromDate}
+                            onChange={(e) => setFilterFromDate(e.target.value)}
+                            className="text-sm outline-none font-outfit border border-[rgba(26,65,115,0.18)] rounded-lg px-3 py-2 text-[#1a4173] focus:border-[#1a4173]"
+                          />
+                        </div>
+                        <div className="flex flex-col gap-1.5">
+                          <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">To Date</label>
+                          <input 
+                            type="date" 
+                            value={filterToDate}
+                            onChange={(e) => setFilterToDate(e.target.value)}
+                            className="text-sm outline-none font-outfit border border-[rgba(26,65,115,0.18)] rounded-lg px-3 py-2 text-[#1a4173] focus:border-[#1a4173]"
+                          />
+                        </div>
+                        <div className="flex gap-2 mb-[1px]">
+                          <button 
+                            onClick={handleApplyFilter}
+                            className="px-4 py-2 bg-[#1a4173] text-white text-[11px] font-bold uppercase tracking-widest rounded-lg transition-transform hover:scale-105"
+                          >
+                            Filter
+                          </button>
+                          <button 
+                            onClick={handleResetFilter}
+                            className="px-4 py-2 bg-gray-100 text-gray-600 text-[11px] font-bold uppercase tracking-widest rounded-lg transition-transform hover:scale-105"
+                          >
+                            Reset
+                          </button>
+                        </div>
+                        <div className="ml-auto mb-[1px]">
+                          <button 
+                            onClick={handleExportExcel}
+                            className="flex items-center gap-2 px-4 py-2 bg-[#059669] text-white text-[11px] font-bold uppercase tracking-widest rounded-lg transition-transform hover:scale-105"
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            Export to Excel
+                          </button>
+                        </div>
+                      </div>
+                      
+                      <div className="flex justify-between items-center mt-2">
+                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                          {appliedFromDate || appliedToDate 
+                            ? `Showing ${filteredUsers.length} users (${appliedFromDate ? new Date(appliedFromDate).toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric'}) : 'Start'} – ${appliedToDate ? new Date(appliedToDate).toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric'}) : 'End'})`
+                            : `${filteredUsers.length} Registered Users`}
+                        </span>
+                      </div>
                     </div>
 
                     {/* Users Table */}
@@ -1608,16 +1759,18 @@ const AdminPage = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {users.length === 0 && (
+                            {filteredUsers.length === 0 && (
                               <tr>
-                                <td colSpan={7} className="p-10 text-center text-sm text-gray-400">No users registered yet</td>
+                                <td colSpan={7} className="p-10 text-center text-sm text-gray-400">
+                                  {users.length === 0 ? "No users registered yet" : "No users found for the selected date range."}
+                                </td>
                               </tr>
                             )}
-                            {users.map((user, i) => (
+                            {filteredUsers.map((user, i) => (
                               <tr 
                                 key={user.id || user._id} 
                                 className="transition-colors"
-                                style={{ borderBottom: i < users.length - 1 ? '1px solid rgba(26,65,115,0.05)' : 'none' }}
+                                style={{ borderBottom: i < filteredUsers.length - 1 ? '1px solid rgba(26,65,115,0.05)' : 'none' }}
                                 onMouseOver={e => { e.currentTarget.style.background = 'rgba(26,65,115,0.02)'; }}
                                 onMouseOut={e => { e.currentTarget.style.background = 'transparent'; }}
                               >
@@ -1695,7 +1848,7 @@ const AdminPage = () => {
                       <div>
                         <h4 className="text-sm font-black uppercase tracking-wider mb-1" style={{ color: '#1a4173' }}>5-Second Login Popup</h4>
                         <p className="text-xs text-gray-400 font-light leading-relaxed max-w-md">
-                          Enables the full-screen registration form that appears automatically 5 seconds after a visitor lands on the website.
+                          Enables the full-screen registration form that appears automatically 5 seconds after a visitor lands on the website. If closed without logging in, it reappears every 90 seconds.
                         </p>
                       </div>
                       <button 
@@ -1720,7 +1873,7 @@ const AdminPage = () => {
                           <span className="px-2 py-0.5 text-[8px] font-bold uppercase tracking-widest rounded-full bg-red-100 text-red-600 border border-red-200">Strict</span>
                         </div>
                         <p className="text-xs text-gray-400 font-light leading-relaxed max-w-md">
-                          Makes registration <span className="font-bold text-gray-600">compulsory</span>. The authentication modal appears immediately on load and cannot be closed without signing in or registering.
+                          Makes registration <span className="font-bold text-gray-600">compulsory</span>. The authentication modal appears 90 seconds after loading and cannot be closed without signing in or registering.
                         </p>
                       </div>
                       <button 
@@ -1745,6 +1898,17 @@ const AdminPage = () => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <ImageCropperModal
+        isOpen={!!cropImageSrc}
+        imageSrc={cropImageSrc}
+        onClose={() => setCropImageSrc(null)}
+        isUploading={isUploading}
+        onCropComplete={async (croppedFile) => {
+          await uploadProcessedFile(croppedFile, cropTargetType);
+          setCropImageSrc(null);
+        }}
+      />
     </div>
   );
 };

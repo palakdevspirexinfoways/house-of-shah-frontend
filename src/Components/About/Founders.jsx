@@ -2,10 +2,13 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { FaLinkedinIn, FaTwitter, FaInstagram, FaCheckCircle } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import hitanshuImg from '../../aasets/Hitanshu Shah.jpg.jpeg';
+import heerImg from '../../aasets/Heer Shah.jpeg';
+
 
 const Founders = () => {
   return (
-    <section className="bg-white py-16 md:py-24 font-outfit overflow-hidden text-[#1a4173]">
+    <section className="bg-white py-10 md:py-14 font-outfit overflow-hidden text-[#1a4173]">
       <div className="container mx-auto px-6 lg:px-12 ">
         
         {/* Header Section */}
@@ -39,10 +42,10 @@ const Founders = () => {
           >
             <div className="bg-[#eef3f7] rounded-sm relative overflow-hidden aspect-[4/5] shadow-sm">
               <div className="absolute top-6 left-6 bg-white px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-[#1a4173] z-10 shadow-sm rounded-sm">
-                Co-Founder
+                Director
               </div>
               <img 
-                src="https://res.cloudinary.com/de64mp51k/image/upload/v1780578756/Hitanshu_Shah_ojwah1.png" 
+                src={hitanshuImg} 
                 alt="Hitanshu Shah"
                 className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
               />
@@ -66,10 +69,6 @@ const Founders = () => {
             </p>
 
             <p className="text-[#1a4173]/70 leading-relaxed font-light mb-4 text-sm lg:text-base">
-              With a strong inclination toward innovation and structured growth, he pursued Management Studies at NMIMS, Mumbai to better contribute to the evolution of his family business, Shah Raichand Premchand & Co.
-            </p>
-
-            <p className="text-[#1a4173]/70 leading-relaxed font-light mb-4 text-sm lg:text-base">
               In 2018, he entered the industry by launching SLG, a 68% purity silver jewellery brand, gaining hands-on business and manufacturing experience at an early stage. As his interest in jewellery design and production deepened, he went on to study Jewellery Designing and Manufacturing at Lorenzo de’ Medici in Florence, Italy, one of the world’s renowned institutes for jewellery design and craftsmanship. 
             </p>
 
@@ -78,18 +77,12 @@ const Founders = () => {
             </p>
 
             <p className="text-[#1a4173]/70 leading-relaxed font-light mb-8 text-sm lg:text-base">
-              At HOS, Hitanshu spearheads production, machinery, and concept development, bringing together technical expertise, innovation, and a deep understanding of modern manufacturing.
+             At HOS, Hitanshu oversees manufacturing, product development, and production strategy, leveraging his technical expertise to drive innovation and uphold the brand's commitment to quality and precision craftsmanship.
             </p>
 
             <div className="flex gap-4 text-[#1a4173]/50 border-t border-gray-100 pt-8 mt-auto">
-              <a href="#" className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-[#1a4173] hover:text-white transition-all duration-300">
+              <a href="https://www.linkedin.com/in/hitanshu-shah-42a6b1230/" className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-[#1a4173] hover:text-white transition-all duration-300" target='_blank'>
                 <FaLinkedinIn size={14} />
-              </a>
-              <a href="#" className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-[#1a4173] hover:text-white transition-all duration-300">
-                <FaTwitter size={14} />
-              </a>
-              <a href="#" className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-[#1a4173] hover:text-white transition-all duration-300">
-                <FaInstagram size={14} />
               </a>
             </div>
           </motion.div>
@@ -111,10 +104,10 @@ const Founders = () => {
           >
             <div className="bg-[#fcf8f5] rounded-sm relative overflow-hidden aspect-[4/5] shadow-sm">
               <div className="absolute top-6 left-6 bg-white px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-[#1a4173] z-10 shadow-sm rounded-sm">
-                Co-Founder
+                Director
               </div>
               <img 
-                src="https://res.cloudinary.com/de64mp51k/image/upload/v1780578751/Heer_Shah_k9jbbe.jpg" 
+                src={heerImg} 
                 alt="Heer Shah"
                 className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
               />
@@ -156,14 +149,8 @@ const Founders = () => {
             </div>
 
             <div className="flex gap-4 text-[#1a4173]/50 border-t border-gray-100 pt-8 mt-auto">
-              <a href="#" className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-[#1a4173] hover:text-white transition-all duration-300">
+              <a href="https://www.linkedin.com/in/heer-shah-084863333/" className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-[#1a4173] hover:text-white transition-all duration-300" target='_blank'>
                 <FaLinkedinIn size={14} />
-              </a>
-              <a href="#" className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-[#1a4173] hover:text-white transition-all duration-300">
-                <FaTwitter size={14} />
-              </a>
-              <a href="#" className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-[#1a4173] hover:text-white transition-all duration-300">
-                <FaInstagram size={14} />
               </a>
             </div>
           </motion.div>

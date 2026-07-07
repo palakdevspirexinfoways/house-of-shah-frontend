@@ -20,7 +20,7 @@ const credentials = [
     id: 3,
     icon: <Globe size={32} strokeWidth={1} />,
     title: "Export Finishing",
-    tagline: "EXPORT QUALITY FINISH",
+    tagline: "EXPORT FINISH",
   },
   {
     id: 4,
@@ -32,7 +32,7 @@ const credentials = [
 
 const Testimonials = () => {
   return (
-    <section id="testimonials" className="py-12 sm:py-16 bg-[var(--white)] font-outfit overflow-hidden border-t border-[var(--primary-blue)]/5">
+    <section id="testimonials" className="py-8 sm:py-10 bg-[var(--white)] font-outfit overflow-hidden border-t border-[var(--primary-blue)]/5">
       <div className="container mx-auto px-6 lg:px-12">
         
         {/* Section Title */}

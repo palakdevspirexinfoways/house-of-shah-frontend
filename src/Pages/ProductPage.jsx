@@ -4,13 +4,16 @@ import { X, ArrowUpRight } from 'lucide-react'
 import HeroSection from '../Components/Product/HeroSection'
 import SignatureCollections from '../Components/Product/collection'
 import SignaturePieces from '../Components/Product/Products'
+import BestSellerSection from '../Components/Home/BestSellerSection'
 
 const ProductPage = () => {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [activeCollection, setActiveCollection] = useState('All');
+  const urlParams = new URLSearchParams(window.location.search);
+  const initialCollection = urlParams.get('collection') || 'All';
+  const [activeCollection, setActiveCollection] = useState(initialCollection);
   const [collectionsCategory, setCollectionsCategory] = useState('All');
   const [activeCategory, setActiveCategory] = useState('All');
   const [selectedDetailProduct, setSelectedDetailProduct] = useState(null);
@@ -76,10 +79,16 @@ const ProductPage = () => {
         setSelectedDetailProduct={setSelectedDetailProduct}
       />
 
+      {activeCollection === 'All' && (
+        <BestSellerSection />
+      )}
+
       <SignaturePieces 
         activeCategory={activeCategory}
         setActiveCategory={setActiveCategory}
         categories={categories}
+        activeCollection={activeCollection}
+        searchQuery={searchQuery}
       />
 
       {/* Visual Search Masterpiece Detail Modal */}

@@ -65,16 +65,6 @@ const GalleryManage = ({ gallery, onAddClick, onEditClick, onDeleteClick }) => {
             </div>
 
             <div className="p-4 flex-1 flex flex-col justify-between">
-              {/* Meta */}
-              <div className="mb-4">
-                <span className="text-[9px] font-mono tracking-widest text-gray-400 block uppercase mb-1">
-                  {item.category}
-                </span>
-                <h3 className="text-sm font-bold uppercase tracking-wider" style={{ color: '#1a4173' }}>
-                  {item.title}
-                </h3>
-              </div>
-
               {/* Actions */}
               <div className="flex justify-end gap-2 pt-3" style={{ borderTop: '1px solid rgba(26,65,115,0.06)' }}>
                 <button 

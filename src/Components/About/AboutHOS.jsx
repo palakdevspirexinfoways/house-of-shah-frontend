@@ -1,10 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import arvindShahImg from '../../aasets/Our Legacy - Arvind Shah.png';
+import rpLogoImg from '../../aasets/RP Logo.jpg (2).jpeg';
 
 const AboutHOS = () => {
   return (
-    <section className="py-24 bg-white text-[#1a4173] font-outfit overflow-hidden relative">
+    <section className="py-10 md:py-14 bg-white text-[#1a4173] font-outfit overflow-hidden relative">
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
 
         {/* About HOS Section */}
@@ -22,7 +22,7 @@ const AboutHOS = () => {
                 <span className="text-[10px] font-bold uppercase tracking-[0.4em] opacity-60">The Brand</span>
               </div>
               <h2 className="text-4xl lg:text-7xl font-black uppercase tracking-tighter mb-4 leading-[0.9]">
-                About <br/><span className="text-[#1a4173]/30 font-light italic">H.O.S</span>
+                About <br/><span className="text-[#1a4173]/30 font-light italic">HOS</span>
               </h2>
               <div className="w-24 h-1 bg-[#1a4173] mt-8 mb-8" />
             </motion.div>
@@ -45,7 +45,7 @@ const AboutHOS = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              Specialising in lightweight silver jewellery, HOS focuses on creating fashion-forward collections designed for contemporary wearers while also catering to customised designs for domestic retailers, online brands, and boutiques. Today, the brand also works with corporate clients such as GIVA.
+             Specialising in lightweight silver jewellery, HOS focuses on creating fashion-forward collections for contemporary wearers while partnering with retailers, online brands, and boutiques to develop customised designs. Today, the brand is a trusted manufacturing partner to leading jewellery brands across India.
             </motion.p>
 
             <motion.p
@@ -96,8 +96,8 @@ const AboutHOS = () => {
               {/* Image replacing the title */}
               <div className="rounded-[2rem] overflow-hidden shadow-md border border-[#1a4173]/10 bg-white p-2">
                 <img
-                  src={arvindShahImg}
-                  alt="Arvind Raichand Shah"
+                  src={rpLogoImg}
+                  alt="Raichand Premchand Logo"
                   className="w-full h-auto object-cover rounded-[1.5rem] hover:scale-105 transition-transform duration-700"
                 />
               </div>

@@ -268,7 +268,7 @@ const ProductManage = ({
           <CustomDropdown 
             value={filterHighlight === 'All' ? '' : filterHighlight}
             onChange={(v) => setFilterHighlight(v)}
-            options={['All', 'Signature Creations', 'Jewellery Design', 'None']}
+            options={['All', 'Jewellery Design', 'None']}
             placeholder="All Highlights"
           />
         </div>
@@ -353,17 +353,6 @@ const ProductManage = ({
                     {/* Highlight Toggles */}
                     <td className="p-4">
                       <div className="flex items-center gap-1.5 flex-wrap">
-                        <button 
-                          onClick={() => onAssignHighlight(product.id, product.homepageHighlight === 'Signature Creations' ? '' : 'Signature Creations')}
-                          className="text-[8px] font-bold uppercase tracking-widest px-2.5 py-1.5 rounded-full transition-all"
-                          style={{
-                            background: product.homepageHighlight === 'Signature Creations' ? '#1a4173' : 'rgba(26,65,115,0.06)',
-                            color: product.homepageHighlight === 'Signature Creations' ? 'white' : '#1a4173',
-                            border: `1px solid ${product.homepageHighlight === 'Signature Creations' ? '#1a4173' : 'rgba(26,65,115,0.15)'}`
-                          }}
-                        >
-                          Signature
-                        </button>
                         <button 
                           onClick={() => onAssignHighlight(product.id, product.homepageHighlight === 'Jewellery Design' ? '' : 'Jewellery Design')}
                           className="text-[8px] font-bold uppercase tracking-widest px-2.5 py-1.5 rounded-full transition-all"

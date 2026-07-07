@@ -54,16 +54,18 @@ const HeroSection = () => {
         )}
 
         {/* Main Title */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.3, duration: 1 }}
-          className="relative"
-        >
-          <h1 className="text-white text-4xl md:text-7xl lg:text-[9rem] font-bold tracking-tighter leading-none mb-4 uppercase">
-            {slide?.title || "BEYOND JEWELLERY"}
-          </h1>
-        </motion.div>
+        {(slide?.title !== undefined ? slide.title : "BEYOND JEWELLERY") && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3, duration: 1 }}
+            className="relative"
+          >
+            <h1 className="text-white text-4xl md:text-7xl lg:text-[9rem] font-bold tracking-tighter leading-none mb-4 uppercase">
+              {slide?.title !== undefined ? slide.title : "BEYOND JEWELLERY"}
+            </h1>
+          </motion.div>
+        )}
 
         {/* Subtitle / Description */}
         <motion.p

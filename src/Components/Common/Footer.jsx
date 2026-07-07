@@ -31,7 +31,7 @@ const Footer = () => {
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
 
         {/* TOP SECTION: BRAND & LINKS */}
-        <div className="flex flex-col lg:flex-row justify-between items-start gap-16 mb-24">
+        <div className="flex flex-col lg:flex-row justify-between items-start gap-12 lg:gap-16 mb-16 md:mb-24">
           <div className="max-w-sm">
             <motion.div
               initial={{ opacity: 0, y: -20 }}
@@ -53,12 +53,12 @@ const Footer = () => {
                 </div>
               </div>
             </motion.div>
-            <p className="text-[var(--white)]/60 text-sm leading-relaxed font-light tracking-wide italic">
-              "Where silver finds its form, and craftsmanship finds its legacy."
+            <p className="text-[var(--white)]/60 text-lg leading-relaxed font-light tracking-wide italic">
+              "Crafting Silver Symphony."
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-12 lg:gap-24">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-8 sm:gap-12 lg:gap-24 w-full lg:w-auto">
             {/* Quick Links */}
             <div>
               <h4 className="text-[10px] font-bold tracking-[0.4em] uppercase mb-8 text-[var(--white)]/30">Navigation</h4>
@@ -94,7 +94,7 @@ const Footer = () => {
             </div>
 
             {/* Support */}
-            <div className="hidden sm:block">
+            <div>
               <h4 className="text-[10px] font-bold tracking-[0.4em] uppercase mb-8 text-[var(--white)]/30">Legal</h4>
               <ul className="space-y-4">
                 {footerLinks.legal.map((link) => (
@@ -110,19 +110,23 @@ const Footer = () => {
         </div>
 
         {/* MIDDLE SECTION: CONTACT BAR */}
-        <div className="grid grid-cols-1 md:grid-cols-3 border-t border-b border-[var(--white)]/10 py-12 mb-16 gap-8 items-center justify-center">
+        <div className="grid grid-cols-1 md:grid-cols-3 border-t border-b border-[var(--white)]/10 py-8 md:py-12 mb-8 md:mb-16 gap-6 md:gap-8 items-center justify-center">
 
           {/* Item 1: Manufacturing HQ */}
-          <div className="flex flex-col md:flex-row items-center md:items-start text-center md:text-left gap-4 justify-self-center">
-             <div className="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-[var(--white)]/5 rounded-full group-hover:bg-[var(--white)] group-hover:text-[var(--primary-blue)] transition-all">
-              <Globe size={18} className="text-[var(--white)]/50" />
+          <a
+            href="https://maps.app.goo.gl/jcryDF3kYoxPe5sq9"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex flex-col md:flex-row items-center md:items-start text-center md:text-left gap-4 transition-colors p-4 rounded group justify-self-center"
+          >
+            <div className="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-[var(--white)]/5 rounded-full group-hover:bg-[var(--white)] group-hover:text-[var(--primary-blue)] transition-all">
+              <Globe size={18} />
             </div>
             <div>
               <p className="text-[9px] uppercase tracking-[0.3em] text-[var(--white)]/30 font-bold">Manufacturing HQ</p>
               <p className="text-xs font-bold tracking-widest uppercase"> House Of Shah, Jalganga Chowk,<br/> Rajkot 360003</p>
             </div>
-          </div>
-
+          </a>
           {/* Item 2: Concierge Line */}
           <a
             href="tel:+919510806869"

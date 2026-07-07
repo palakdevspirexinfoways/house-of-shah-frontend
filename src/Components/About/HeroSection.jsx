@@ -54,16 +54,18 @@ const AboutHeroCenter = () => {
         )}
 
         {/* Main Title: ABOUT US */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.3, duration: 1 }}
-          className="relative"
-        >
-          <h1 className="text-white text-5xl md:text-8xl lg:text-[11rem] font-bold tracking-tighter leading-none mb-4">
-            {slide?.title || "ABOUT US"}
-          </h1>
-        </motion.div>
+        {(slide?.title !== undefined ? slide.title : "ABOUT US") && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3, duration: 1 }}
+            className="relative"
+          >
+            <h1 className="text-white text-5xl md:text-8xl lg:text-[11rem] font-bold tracking-tighter leading-none mb-4">
+              {slide?.title !== undefined ? slide.title : "ABOUT US"}
+            </h1>
+          </motion.div>
+        )}
 
         {/* Subtitle / Description */}
         <motion.p

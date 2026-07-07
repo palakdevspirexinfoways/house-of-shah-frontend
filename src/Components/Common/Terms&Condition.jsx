@@ -39,7 +39,7 @@ const TermsCondition = () => {
             <section>
               <h2 className="text-xl font-bold text-[var(--primary-blue)] mb-4 uppercase tracking-wide">Product Specifications</h2>
               <p className="mb-2">
-                All jewellery manufactured by House of Shah is produced using 925 sterling silver unless otherwise specified.
+                All jewellery manufactured by House of Shah is produced using 925 sterling silver.
               </p>
               <p className="mb-2">
                 As our products are manufactured through a combination of advanced technology and skilled but manual craftsmanship, minor variations in:
@@ -52,7 +52,7 @@ const TermsCondition = () => {
                 <li>dimensions</li>
               </ul>
               <p>
-                may occur and shall not be considered manufacturing defects.
+                may occur.
               </p>
             </section>
 
@@ -189,7 +189,7 @@ const TermsCondition = () => {
             </section>
 
             <section>
-              <h2 className="text-xl font-bold text-[var(--primary-blue)] mb-4 uppercase tracking-wide">13. Contact Information</h2>
+              <h2 className="text-xl font-bold text-[var(--primary-blue)] mb-4 uppercase tracking-wide">Contact Information</h2>
               <p className="mb-2">
                 For any questions regarding these Terms & Conditions, please contact:
               </p>
@@ -197,10 +197,11 @@ const TermsCondition = () => {
                 <p className="font-bold text-[var(--primary-blue)] mb-1">House of Shah</p>
                 <p>Rajkot, Gujarat, India</p>
                 <p className="mt-2 text-gray-700">
-                  <span className="font-semibold">Email:</span> 
+                  <span className="font-semibold">Email : houseofshahexports@gmail.com
+</span> 
                 </p>
                 <p className="mt-1 text-gray-700">
-                  <span className="font-semibold">Phone:</span> 
+                  <span className="font-semibold">Phone : +91 9510806869</span> 
                 </p>
               </div>
             </section>

@@ -5,7 +5,9 @@ import { ChevronLeft, ChevronRight, MessageCircle } from 'lucide-react';
 const SignaturePieces = ({
   activeCategory = 'All',
   setActiveCategory,
-  categories = []
+  categories = [],
+  activeCollection = 'All',
+  searchQuery = ''
 }) => {
   const scrollRef = useRef(null);
   const [products, setProducts] = useState([]);
@@ -20,8 +22,14 @@ const SignaturePieces = ({
     setIsLoadingData(true);
     try {
       let url = `${import.meta.env.VITE_API_BASE_URL}/products?limit=10&page=${currentPage}`;
+      if (searchQuery && searchQuery.trim() !== '') {
+        url += `&search=${encodeURIComponent(searchQuery)}`;
+      }
       if (activeCategory && activeCategory !== 'All') {
         url += `&category=${encodeURIComponent(activeCategory)}`;
+      }
+      if (activeCollection && activeCollection !== 'All') {
+        url += `&collection=${encodeURIComponent(activeCollection)}`;
       }
 
       const res = await fetch(url);
@@ -45,25 +53,33 @@ const SignaturePieces = ({
 
   // Reset and fetch on filter change
   useEffect(() => {
-    setPage(1);
-    setHasMore(true);
-    fetchProducts(1, true);
-  }, [activeCategory]);
+    const timer = setTimeout(() => {
+      setPage(1);
+      setHasMore(true);
+      fetchProducts(1, true);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [activeCategory, activeCollection, searchQuery]);
 
-  // Handle Horizontal Infinite Scroll
-  const handleScrollEvent = () => {
-    if (scrollRef.current && hasMore && !isLoadingData) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-      // Trigger fetch when user is 80% through the scroll
-      if (scrollLeft + clientWidth >= scrollWidth * 0.8) {
-        setPage(prev => {
-          const nextPage = prev + 1;
-          fetchProducts(nextPage);
-          return nextPage;
-        });
-      }
-    }
-  };
+  const observerTarget = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore && !isLoadingData) {
+          setPage(prev => {
+            const nextPage = prev + 1;
+            fetchProducts(nextPage);
+            return nextPage;
+          });
+        }
+      },
+      { threshold: 0.1, rootMargin: '200px' }
+    );
+    
+    if (observerTarget.current) observer.observe(observerTarget.current);
+    return () => observer.disconnect();
+  }, [hasMore, isLoadingData]);
 
   // Horizontal Scroll Function (Arrow clicks)
   const handleScroll = (direction) => {
@@ -89,67 +105,71 @@ const SignaturePieces = ({
   };
 
   return (
-    <section id="signature-pieces" className="py-16 bg-white relative font-outfit overflow-x-hidden">
+    <section id="signature-pieces" className={`bg-[var(--white)] relative font-outfit overflow-x-hidden ${activeCollection === 'All' ? 'py-10 md:py-14' : 'pb-10 md:pb-14 pt-3 md:pt-5'}`}>
       <div className="container mx-auto px-6 lg:px-12">
 
         {/* ── Section Header ── */}
-        <div className="flex flex-row items-end justify-between mb-14 gap-8">
-          <div className="max-w-2xl">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="flex items-center gap-4 mb-4"
-            >
-              <div className="w-10 h-[1px] bg-[var(--primary-blue)]" />
-              <span className="text-[var(--primary-blue)] font-bold tracking-[0.4em] uppercase text-[10px]">
-                House of Shah Exclusives
-              </span>
-            </motion.div>
-            <h2 className="text-4xl md:text-7xl font-bold text-[var(--primary-blue)] tracking-tighter leading-none">
-              Signature <br />
-              <span className="font-light italic text-[var(--primary-blue)]/40 lowercase tracking-normal">Pieces</span>
-            </h2>
+        {activeCollection === 'All' && (
+          <div className="flex flex-row items-end justify-between mb-14 gap-8">
+            <div className="max-w-2xl">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="flex items-center gap-4 mb-4"
+              >
+                <div className="w-10 h-[1px] bg-[var(--primary-blue)]" />
+                <span className="text-[var(--primary-blue)] font-bold tracking-[0.4em] uppercase text-[10px]">
+                  House of Shah Exclusives
+                </span>
+              </motion.div>
+              <h2 className="text-4xl md:text-7xl font-bold text-[var(--primary-blue)] tracking-tighter leading-none">
+                Signature <br />
+                <span className="font-light italic text-[var(--primary-blue)]/40 lowercase tracking-normal">Pieces</span>
+              </h2>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* ── Category Names for Filtering ── */}
-        <div className="mb-10">
-          <span className="text-[10px] uppercase font-bold tracking-widest text-[#1a4173]/40 block mb-3">Filter By Category:</span>
-          <div className='flex flex-col md:flex-row justify-between items-start md:items-center gap-4 md:gap-0'>
-            <div className="flex flex-wrap gap-2.5 items-center">
-              {categories.map((cat) => (
+        {activeCollection === 'All' && (
+          <div className="mb-10">
+            <span className="text-[10px] uppercase font-bold tracking-widest text-[#1a4173]/40 block mb-3">Filter By Category:</span>
+            <div className='flex flex-col md:flex-row justify-between items-start md:items-center gap-4 md:gap-0'>
+              <div className="flex flex-wrap gap-2.5 items-center">
+                {categories.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setActiveCategory(cat)}
+                    className={`px-4 py-1.5 md:py-2 md:px-5 rounded-none text-[9px] md:text-[10px] font-bold uppercase tracking-widest transition-all duration-300 border ${activeCategory === cat
+                      ? 'bg-[#1a4173] text-white border-[#1a4173] shadow-md'
+                      : 'bg-white text-[#1a4173]/50 border border-gray-150 hover:text-[#1a4173] hover:border-gray-200'
+                      }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+              {/* Scroll Arrows */}
+              <div className="flex gap-2 lg:gap-3 shrink-0">
                 <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  className={`px-4 py-1.5 md:py-2 md:px-5 rounded-none text-[9px] md:text-[10px] font-bold uppercase tracking-widest transition-all duration-300 border ${activeCategory === cat
-                    ? 'bg-[#1a4173] text-white border-[#1a4173] shadow-md'
-                    : 'bg-white text-[#1a4173]/50 border border-gray-150 hover:text-[#1a4173] hover:border-gray-200'
-                    }`}
+                  onClick={() => handleScroll('left')}
+                  className="w-10 h-10 lg:w-12 lg:h-12 flex items-center justify-center border border-[var(--primary-blue)]/10 text-[var(--primary-blue)] hover:bg-[var(--primary-blue)] hover:text-white transition-all rounded-full hover:scale-105 active:scale-95"
+                  aria-label="Previous"
                 >
-                  {cat}
+                  <ChevronLeft size={16} strokeWidth={1.5} />
                 </button>
-              ))}
-            </div>
-            {/* Scroll Arrows */}
-            <div className="flex gap-2 lg:gap-3 shrink-0">
-              <button
-                onClick={() => handleScroll('left')}
-                className="w-10 h-10 lg:w-12 lg:h-12 flex items-center justify-center border border-[var(--primary-blue)]/10 text-[var(--primary-blue)] hover:bg-[var(--primary-blue)] hover:text-white transition-all rounded-full hover:scale-105 active:scale-95"
-                aria-label="Previous"
-              >
-                <ChevronLeft size={16} strokeWidth={1.5} />
-              </button>
-              <button
-                onClick={() => handleScroll('right')}
-                className="w-10 h-10 lg:w-12 lg:h-12 flex items-center justify-center border border-[var(--primary-blue)]/10 text-[var(--primary-blue)] hover:bg-[var(--primary-blue)] hover:text-white transition-all rounded-full hover:scale-105 active:scale-95"
-                aria-label="Next"
-              >
-                <ChevronRight size={16} strokeWidth={1.5} />
-              </button>
+                <button
+                  onClick={() => handleScroll('right')}
+                  className="w-10 h-10 lg:w-12 lg:h-12 flex items-center justify-center border border-[var(--primary-blue)]/10 text-[var(--primary-blue)] hover:bg-[var(--primary-blue)] hover:text-white transition-all rounded-full hover:scale-105 active:scale-95"
+                  aria-label="Next"
+                >
+                  <ChevronRight size={16} strokeWidth={1.5} />
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Dynamic Items Counter */}
         <div className="mb-6">
@@ -163,13 +183,12 @@ const SignaturePieces = ({
           <div className="flex flex-col gap-8">
             <div
               ref={scrollRef}
-              onScroll={handleScrollEvent}
               className="flex overflow-x-auto gap-6 scrollbar-hide py-4 px-2 snap-x snap-mandatory"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
-              {products.map((product) => (
+              {products.map((product, index) => (
                 <motion.div
-                  key={product.id || product._id}
+                  key={`${product.id || product._id}-${index}`}
                   layout
                   initial={{ opacity: 0, scale: 0.95 }}
                   whileInView={{ opacity: 1, scale: 1 }}
@@ -215,14 +234,27 @@ const SignaturePieces = ({
                 </motion.div>
               ))}
 
-              {/* Loading Indicator inside slider */}
-              {isLoadingData && hasMore && (
-                <div className="flex-shrink-0 w-[285px] md:w-[325px] flex items-center justify-center bg-[#fafafa]/50 border border-gray-100/50">
-                  <div className="animate-pulse space-y-4 text-center">
-                    <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#1a4173]/50 block">Loading More</span>
-                  </div>
-                </div>
+              {/* Skeleton Loaders inside slider */}
+              {isLoadingData && (
+                <>
+                  {[1, 2, 3].map((i) => (
+                    <div key={`skeleton-${i}`} className="flex-shrink-0 w-[285px] md:w-[325px] bg-[#fafafa] rounded-none overflow-hidden border border-gray-100 animate-pulse snap-start flex flex-col justify-between">
+                      <div className="relative aspect-[4/5] bg-gray-200" />
+                      <div className="p-6 flex flex-col justify-between flex-grow">
+                        <div className="h-2 bg-gray-200 rounded w-1/3 mb-2" />
+                        <div className="h-4 bg-gray-200 rounded w-3/4 mb-4" />
+                        <div className="pt-4 border-t border-gray-150 flex items-center justify-between mt-auto">
+                          <div className="h-6 bg-gray-200 rounded w-1/4" />
+                          <div className="h-8 bg-gray-200 rounded w-1/3" />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </>
               )}
+
+              {/* Infinite Scroll Trigger */}
+              <div ref={observerTarget} className="shrink-0 w-[1px]" />
             </div>
           </div>
         ) : (

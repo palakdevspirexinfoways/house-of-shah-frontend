@@ -59,40 +59,83 @@ const ProductSection = () => {
   const scrollRef = useRef(null);
   const { cartItems, isCartOpen, setIsCartOpen, addToCart } = useCart();
   const [products, setProducts] = useState([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const fetchProducts = async (currentPage) => {
+    if (isLoading || (!hasMore && currentPage > 1)) return;
+    setIsLoading(true);
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/products?homepageHighlight=Jewellery%20Design&limit=10&page=${currentPage}`);
+      const data = await res.json();
+      if (data.success && data.data && data.data.length > 0) {
+        const mapped = data.data.map((item, idx) => ({
+          id: item.id || idx + Date.now(),
+          title: item.title,
+          category: item.category,
+          weight: item.weight || null,
+          price: item.weight ? parseFloat(item.weight) || 4999 : 4999,
+          image: item.image,
+          tag: null,
+        }));
+        
+        if (currentPage === 1) {
+          setProducts(mapped);
+        } else {
+          setProducts(prev => [...prev, ...mapped]);
+        }
+        
+        if (currentPage >= data.totalPages) {
+          setHasMore(false);
+        }
+      } else {
+        if (currentPage === 1) setProducts([]);
+        setHasMore(false);
+      }
+    } catch (err) {
+      console.error('[Products Section Connection Error]', err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const sectionRef = useRef(null);
+  const observerTarget = useRef(null);
+  const [hasFetchedInitial, setHasFetchedInitial] = useState(false);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_BASE_URL}/products`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success && data.data && data.data.length > 0) {
-          const filtered = data.data.filter(item => item.homepageHighlight === 'Signature Creations');
-          if (filtered.length > 0) {
-            const mapped = filtered.map((item, idx) => ({
-              id: item.id || idx,
-              title: item.title,
-              category: item.category,
-              weight: item.weight || null,
-              price: item.weight ? parseFloat(item.weight) || 4999 : 4999,
-              image: item.image,
-              tag: null,
-            }));
-            setProducts(mapped);
-          } else {
-            setProducts([]);
-          }
-        } else {
-          setProducts([]);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !hasFetchedInitial) {
+          fetchProducts(1);
+          setHasFetchedInitial(true);
         }
-      })
-      .catch((err) => {
-        console.error('[Products Section Connection Error]', err);
-        setProducts([]);
-      });
-  }, []);
+      },
+      { threshold: 0.1, rootMargin: '200px' }
+    );
+    
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, [hasFetchedInitial]);
 
-  if (products.length === 0) {
-    return null;
-  }
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore && !isLoading && hasFetchedInitial) {
+          setPage(prev => {
+            const nextPage = prev + 1;
+            fetchProducts(nextPage);
+            return nextPage;
+          });
+        }
+      },
+      { threshold: 0.1, rootMargin: '200px' }
+    );
+    
+    if (observerTarget.current) observer.observe(observerTarget.current);
+    return () => observer.disconnect();
+  }, [hasMore, isLoading, hasFetchedInitial]);
 
   const handleScroll = (direction) => {
     if (scrollRef.current) {
@@ -104,7 +147,7 @@ const ProductSection = () => {
   };
 
   return (
-    <section id="products" className="py-12 md:py-16 bg-[var(--white)] relative font-outfit overflow-x-hidden">
+    <section id="products" ref={sectionRef} className="py-8 md:py-10 bg-[var(--white)] relative font-outfit overflow-x-hidden">
       <div className="container mx-auto px-6 lg:px-12">
 
         {/* Header Section */}
@@ -115,8 +158,8 @@ const ProductSection = () => {
               <span className="text-[var(--primary-blue)] font-bold tracking-[0.4em] uppercase text-[10px]">House of Shah Exclusives</span>
             </motion.div>
             <h2 className="text-4xl md:text-7xl font-bold text-[var(--primary-blue)] tracking-tighter leading-none">
-              Signature <br />
-              <span className="font-light italic text-[var(--primary-blue)]/40 lowercase tracking-normal">Collection</span>
+              Jewellery <br />
+              <span className="font-light italic text-[var(--primary-blue)]/40 lowercase tracking-normal">Designs</span>
             </h2>
           </div>
 
@@ -155,7 +198,7 @@ const ProductSection = () => {
         >
           {products.map((product, index) => (
             <motion.div
-              key={product.id}
+              key={`${product.id}-${index}`}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: (index % 3) * 0.1 }}
@@ -195,6 +238,24 @@ const ProductSection = () => {
               </div>
             </motion.div>
           ))}
+          
+          {isLoading && (
+            <>
+              {[1, 2, 3, 4].map((i) => (
+                <div key={`skeleton-${i}`} className="shrink-0 w-[85%] sm:w-[45%] lg:w-[23%] snap-center animate-pulse">
+                  <div className="relative aspect-[4/5] bg-gray-100" />
+                  <div className="mt-6">
+                    <div className="h-2 bg-gray-100 rounded w-1/3 mb-2" />
+                    <div className="h-4 bg-gray-100 rounded w-3/4" />
+                    <div className="h-2 bg-gray-100 rounded w-1/4 mt-2" />
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
+
+          {/* Infinite Scroll Trigger */}
+          <div ref={observerTarget} className="shrink-0 w-[1px]" />
         </div>
       </div>
     </section>

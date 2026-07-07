@@ -14,8 +14,8 @@ const HomePage = () => {
     <div>
       <HeroSection />
       <AboutSection /> 
-      <ProductSection/>
       <BestSellerSection />
+      <ProductSection/>
       <WhyChooseUs />
       {/* <StatsSection /> */}
       <BannerSection />

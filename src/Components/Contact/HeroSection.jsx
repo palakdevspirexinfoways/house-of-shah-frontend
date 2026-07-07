@@ -79,26 +79,28 @@ const ContactHero = () => {
                 )}
 
                 {/* Main Title: PRODUCTS */}
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.2, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                    className="relative"
-                >
-                    <h1 className="text-white text-5xl md:text-9xl lg:text-[13rem] uppercase font-bold leading-none mb-4 mix-blend-difference">
-                        {slide?.title || "Contact Us"}
-                    </h1>
-                    {/* Luxury Floating Element */}
-                    <motion.div
-                        animate={{ y: [0, -10, 0] }}
-                        transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-                        className="absolute -top-12 -right-8 md:-top-20 md:-right-20"
-                    >
-                        <span className="text-[10px] md:text-xs text-white/20 font-light italic tracking-widest vertical-text uppercase">
-                            Rajkot • India
-                        </span>
-                    </motion.div>
-                </motion.div>
+                {(slide?.title !== undefined ? slide.title : "Contact Us") && (
+                  <motion.div
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.2, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                      className="relative"
+                  >
+                      <h1 className="text-white text-5xl md:text-9xl lg:text-[13rem] uppercase font-bold leading-none mb-4 mix-blend-difference">
+                          {slide?.title !== undefined ? slide.title : "Contact Us"}
+                      </h1>
+                      {/* Luxury Floating Element */}
+                      <motion.div
+                          animate={{ y: [0, -10, 0] }}
+                          transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+                          className="absolute -top-12 -right-8 md:-top-20 md:-right-20"
+                      >
+                          {/* <span className="text-[10px] md:text-xs text-white/20 font-light italic tracking-widest vertical-text uppercase">
+                              Rajkot • India
+                          </span> */}
+                      </motion.div>
+                  </motion.div>
+                )}
 
                 {/* Subtitle / Description */}
                 {/* <motion.div
