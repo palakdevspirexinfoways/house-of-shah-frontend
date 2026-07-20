@@ -191,8 +191,8 @@ const SignaturePieces = () => {
           ))}
           </div>
 
-          {/* Scroll Navigation */}
-          <div className="flex items-center gap-3 shrink-0 justify-center lg:justify-end">
+          {/* Scroll Navigation — desktop only */}
+          <div className="hidden md:flex items-center gap-3 shrink-0 justify-center lg:justify-end">
             <button 
               onClick={() => handleScroll('left')}
               className="w-12 h-12 rounded-full border border-gray-200 hover:border-[#1a4173] flex items-center justify-center text-[#1a4173]/70 hover:text-[#1a4173] transition-all bg-white shadow-sm"
@@ -212,6 +212,24 @@ const SignaturePieces = () => {
 
         {/* Horizontal Left-to-Right Swipeable List */}
         <div className="relative">
+          {/* Mobile Left Arrow */}
+          <button
+            onClick={() => handleScroll('left')}
+            className="md:hidden absolute left-0 top-1/2 -translate-y-1/2 z-10 w-9 h-9 flex items-center justify-center bg-white/90 backdrop-blur border border-[#1a4173]/15 text-[#1a4173] shadow-md rounded-full -translate-x-1"
+            aria-label="Scroll left"
+          >
+            <ChevronLeft size={16} />
+          </button>
+
+          {/* Mobile Right Arrow */}
+          <button
+            onClick={() => handleScroll('right')}
+            className="md:hidden absolute right-0 top-1/2 -translate-y-1/2 z-10 w-9 h-9 flex items-center justify-center bg-white/90 backdrop-blur border border-[#1a4173]/15 text-[#1a4173] shadow-md rounded-full translate-x-1"
+            aria-label="Scroll right"
+          >
+            <ChevronRight size={16} />
+          </button>
+
           <div 
             ref={scrollContainerRef}
             className="flex overflow-x-auto gap-6 scrollbar-hide py-4 px-2 snap-x snap-mandatory"

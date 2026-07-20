@@ -8,7 +8,8 @@ import {
   Edit2,
   Trash2,
   ChevronDown,
-  Search
+  Search,
+  Menu
 } from 'lucide-react';
 import * as XLSX from 'xlsx';
 
@@ -286,6 +287,7 @@ const AdminPage = () => {
   const [loginError, setLoginError] = useState('');
 
   // Active Tab
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('dashboard');
 
   // Datastore States
@@ -309,7 +311,7 @@ const AdminPage = () => {
   // Gallery Form Fields
   const [galleryForm, setGalleryForm] = useState({ id: '', title: '', category: '', image: '' });
   // Collection Form Fields
-  const [collectionForm, setCollectionForm] = useState({ id: '', name: '', image: '' });
+  const [collectionForm, setCollectionForm] = useState({ id: '', name: '', description: '', image: '' });
 
   // Users Registry
   const [users, setUsers] = useState([]);
@@ -755,7 +757,7 @@ const AdminPage = () => {
     if (type === 'slide') setSlideForm({ id: '', tagline: '', title: '', desc: '', image: '', page: 'home' });
     else if (type === 'product') setProductForm({ title: '', collection: '', category: '', homepageHighlight: '', weight: '', image: '', dynamicText: '' });
     else if (type === 'gallery') setGalleryForm({ title: '', category: 'Magazine Issue #44', image: '' });
-    else if (type === 'collection') setCollectionForm({ name: '', image: '' });
+    else if (type === 'collection') setCollectionForm({ name: '', description: '', image: '' });
     setShowAddModal(true);
   };
 
@@ -765,6 +767,7 @@ const AdminPage = () => {
     if (type === 'slide') setSlideForm({ id: item.id || item._id, tagline: item.tagline || '', title: item.title, desc: item.desc || '', image: item.image, page: item.page || 'home' });
     else if (type === 'product') setProductForm({ title: item.title, collection: item.collection || '', category: item.category, homepageHighlight: item.homepageHighlight || '', weight: item.weight || '', image: item.image, dynamicText: item.dynamicText || '' });
     else if (type === 'gallery') setGalleryForm({ title: item.title, category: item.category, image: item.image });
+    else if (type === 'collection') setCollectionForm({ id: item.id || item._id, name: item.name, description: item.description || '', image: item.image });
     setShowAddModal(true);
   };
 
@@ -1216,6 +1219,9 @@ const AdminPage = () => {
               <Field label="Collection Name *">
                 <LuxInput value={collectionForm.name} onChange={e => setCollectionForm({ ...collectionForm, name: e.target.value })} placeholder="e.g. Signature Collection" maxLength={100} />
               </Field>
+              <Field label="Collection Description (Optional)">
+                <LuxInput textarea value={collectionForm.description} onChange={e => setCollectionForm({ ...collectionForm, description: e.target.value })} placeholder="Write a short description..." maxLength={300} />
+              </Field>
               <Field label="Upload Collection Image *">
                 <ImageUploadDropzone onFileSelect={e => handleImageFileChange(e, 'collection')} isUploading={isUploading} required={!collectionForm.image} id="collection-img-upload" />
                 {collectionForm.image && (
@@ -1343,10 +1349,10 @@ const AdminPage = () => {
             className="flex min-h-screen"
           >
             {/* Sidebar */}
-            <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} onLogout={handleLogout} />
+            <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} onLogout={handleLogout} isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
 
             {/* Main Content */}
-            <main className="flex-1 p-8 md:p-10 overflow-y-auto max-h-screen" style={{ background: '#f0f4f8' }}>
+            <main className="flex-1 p-4 sm:p-8 md:p-10 overflow-y-auto max-h-screen" style={{ background: '#f0f4f8' }}>
               
               {/* Page Header */}
               <header className="flex justify-between items-center mb-8 pb-6" style={{ borderBottom: '1px solid rgba(26,65,115,0.08)' }}>
@@ -1363,6 +1369,14 @@ const AdminPage = () => {
                     <span className="text-[9px] font-bold tracking-widest text-gray-400 block uppercase">CONSOLE CLEARANCE</span>
                     <span className="text-xs font-black uppercase" style={{ color: '#1a4173' }}>Atelier Admin</span>
                   </div>
+                  <button 
+                    onClick={() => setIsSidebarOpen(true)}
+                    className="p-3 rounded-xl md:hidden transition-all bg-white"
+                    style={{ color: '#1a4173', border: '1px solid rgba(26,65,115,0.15)' }}
+                    title="Menu"
+                  >
+                    <Menu size={16} />
+                  </button>
                   <button 
                     onClick={handleLogout}
                     className="p-3 rounded-xl md:hidden transition-all"
@@ -1541,6 +1555,7 @@ const AdminPage = () => {
                   <CollectionManage 
                     collections={collections}
                     onAddClick={() => handleOpenAdd('collection')}
+                    onEditClick={(item) => handleOpenEdit('collection', item)}
                     onDeleteClick={id => handleDeleteItem('collection', id)}
                   />
                 )

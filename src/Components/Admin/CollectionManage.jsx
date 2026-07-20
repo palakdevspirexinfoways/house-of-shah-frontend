@@ -1,7 +1,7 @@
 import React from 'react';
-import { Plus, Trash2 } from 'lucide-react';
+import { Plus, Trash2, Edit2 } from 'lucide-react';
 
-const CollectionManage = ({ collections, onAddClick, onDeleteClick }) => {
+const CollectionManage = ({ collections, onAddClick, onEditClick, onDeleteClick }) => {
   return (
     <div className="space-y-6 font-outfit">
       
@@ -68,6 +68,19 @@ const CollectionManage = ({ collections, onAddClick, onDeleteClick }) => {
               <h3 className="text-xs font-bold text-[#1a4173] uppercase tracking-wider mb-3">{item.name}</h3>
               {/* Actions */}
               <div className="flex justify-end gap-2 pt-3" style={{ borderTop: '1px solid rgba(26,65,115,0.06)' }}>
+                <button 
+                  onClick={() => onEditClick(item)}
+                  className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider transition-all"
+                  style={{
+                    padding: '7px 12px', background: 'rgba(26,65,115,0.06)',
+                    color: '#1a4173', borderRadius: '8px', border: '1px solid rgba(26,65,115,0.12)'
+                  }}
+                  onMouseOver={e => { e.currentTarget.style.background = '#1a4173'; e.currentTarget.style.color = 'white'; }}
+                  onMouseOut={e => { e.currentTarget.style.background = 'rgba(26,65,115,0.06)'; e.currentTarget.style.color = '#1a4173'; }}
+                  title="Edit Collection"
+                >
+                  <Edit2 size={11} /> Edit
+                </button>
                 <button 
                   onClick={() => onDeleteClick(item.id)}
                   className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider transition-all"

@@ -226,52 +226,16 @@ const GallerySection = () => {
                 animate={{ scale: 1, y: 0 }}
                 exit={{ scale: 0.95, y: 20 }}
                 transition={{ type: "spring", damping: 25 }}
-                className="max-w-5xl w-full max-h-[85vh] grid grid-cols-1 md:grid-cols-12 bg-white"
+                className="max-w-4xl w-full max-h-[85vh] flex justify-center items-center p-4"
                 onClick={(e) => e.stopPropagation()} // Modal body click block karne ke liye
               >
-                {/* Lightbox Image */}
-                <div className="md:col-span-8 bg-gray-900 overflow-hidden flex items-center justify-center aspect-[4/5] md:aspect-auto md:h-[75vh]">
+                {/* Lightbox Image Only */}
+                <div className="w-full flex items-center justify-center h-[80vh]">
                   <img 
                     src={selectedImage.image} 
-                    alt={selectedImage.title} 
-                    className="w-full h-full object-cover"
+                    alt="Gallery item" 
+                    className="w-full h-full object-contain"
                   />
-                </div>
-
-                {/* Lightbox Text Details */}
-                <div className="md:col-span-4 p-8 md:p-12 flex flex-col justify-between bg-white text-[var(--primary-blue)]">
-                  <div className="space-y-6">
-                    <div>
-                      <p className="text-[10px] font-bold tracking-[0.3em] uppercase text-gray-400 mb-1">
-                        {selectedImage.category}
-                      </p>
-                      <h2 className="text-2xl md:text-3xl font-bold uppercase tracking-tight">
-                        {selectedImage.title}
-                      </h2>
-                    </div>
-
-                    <div className="space-y-4 pt-4 border-t border-gray-100">
-                      <div className="flex justify-between text-xs">
-                        <span className="text-gray-400 uppercase">Material Composition</span>
-                        <span className="font-bold">{selectedImage.purity}</span>
-                      </div>
-                      <div className="flex justify-between text-xs">
-                        <span className="text-gray-400 uppercase">Exhibition Tag</span>
-                        <span className="font-bold italic">{selectedImage.size}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <button 
-                    onClick={() => {
-                      setSelectedImage(null);
-                      // In case you want to scroll them to the product section
-                      document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' });
-                    }}
-                    className="w-full bg-[var(--primary-blue)] text-white py-4 text-[10px] font-bold uppercase tracking-[0.3em] flex items-center justify-center gap-3 mt-8 hover:bg-black transition-colors"
-                  >
-                    Inquire Product <ArrowUpRight size={14} />
-                  </button>
                 </div>
               </motion.div>
             </motion.div>

@@ -141,6 +141,25 @@ const SignaturePieces = () => {
 
         {/* Left-to-Right Swipeable Product Carousel */}
         <div className="relative">
+
+          {/* Mobile Left Arrow */}
+          <button
+            onClick={() => handleScroll('left')}
+            className="md:hidden absolute left-0 top-1/2 -translate-y-1/2 z-10 w-9 h-9 flex items-center justify-center bg-white/90 backdrop-blur border border-[#1a4173]/15 text-[#1a4173] shadow-md rounded-full -translate-x-1"
+            aria-label="Previous"
+          >
+            <ChevronLeft size={16} />
+          </button>
+
+          {/* Mobile Right Arrow */}
+          <button
+            onClick={() => handleScroll('right')}
+            className="md:hidden absolute right-0 top-1/2 -translate-y-1/2 z-10 w-9 h-9 flex items-center justify-center bg-white/90 backdrop-blur border border-[#1a4173]/15 text-[#1a4173] shadow-md rounded-full translate-x-1"
+            aria-label="Next"
+          >
+            <ChevronRight size={16} />
+          </button>
+
           <div 
             ref={scrollContainerRef}
             className="flex overflow-x-auto gap-6 scrollbar-hide py-4 px-2 snap-x snap-mandatory"
@@ -165,11 +184,6 @@ const SignaturePieces = () => {
                         alt={item.title} 
                         className="w-full h-full object-cover transition-transform duration-700 hover:scale-105 rounded-none"
                       />
-                      
-                      {/* Floating Category Tag - Square/Sharp */}
-                      <span className="absolute top-4 left-4 bg-white/90 backdrop-blur-md text-[#1a4173] text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-none shadow-sm">
-                        {item.category}
-                      </span>
                     </div>
 
                     {/* Content Section: Category Name + Weight + Inquiry Button */}

@@ -14,7 +14,8 @@ const SignatureCollections = ({
   activeCategory = 'All',
   setActiveCategory,
   categories = [],
-  setSelectedDetailProduct
+  setSelectedDetailProduct,
+  collectionsData = []
 }) => {
   // WhatsApp Inquiry Link Generator
   const handleInquiry = (item) => {
@@ -50,6 +51,11 @@ const SignatureCollections = ({
             <h2 className="text-4xl md:text-5xl font-extrabold tracking-tighter uppercase text-[#1a4173]">
               {activeCollection === 'All' ? 'Signature Collections' : activeCollection}
             </h2>
+            {activeCollection !== 'All' && collectionsData?.find(c => c.name === activeCollection)?.description && (
+              <p className="mt-4 text-sm text-[#1a4173]/80 max-w-2xl font-medium tracking-wide">
+                {collectionsData.find(c => c.name === activeCollection).description}
+              </p>
+            )}
           </div>
         </div>
 

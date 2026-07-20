@@ -111,7 +111,7 @@ const BestSellerSection = () => {
   };
 
   return (
-    <section id="products" ref={sectionRef} className="py-8 md:py-10 bg-[var(--white)] relative font-outfit overflow-x-hidden">
+    <section id="collections" ref={sectionRef} className="py-8 md:py-10 bg-[var(--white)] relative font-outfit overflow-x-hidden">
       <div className="container mx-auto px-6 lg:px-12">
 
         {/* Header Section */}
@@ -122,8 +122,7 @@ const BestSellerSection = () => {
               <span className="text-[var(--primary-blue)] font-bold tracking-[0.4em] uppercase text-[10px]">House of Shah Exclusives</span>
             </motion.div>
             <h2 className="text-4xl md:text-7xl font-bold text-[var(--primary-blue)] tracking-tighter leading-none">
-              Signature <br />
-              <span className="font-light italic text-[var(--primary-blue)]/40 lowercase tracking-normal">Collections</span>
+              Signature <span className="font-light italic text-[var(--primary-blue)]/40 lowercase tracking-normal">Collections</span>
             </h2>
           </div>
 
@@ -136,7 +135,8 @@ const BestSellerSection = () => {
               View All
               <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
             </Link>
-            <div className="flex gap-3">
+            {/* Arrows — desktop only */}
+            <div className="hidden md:flex gap-3">
               <button
                 onClick={() => handleScroll('left')}
                 className="p-3 lg:p-4 border border-[var(--primary-blue)]/10 text-[var(--primary-blue)] hover:bg-[var(--primary-blue)] hover:text-white transition-all rounded-full hover:scale-105 active:scale-95"
@@ -155,11 +155,32 @@ const BestSellerSection = () => {
           </div>
         </div>
 
-        {/* Product Slider (Smooth Horizontal Touch-Scroll) */}
-        <div
-          ref={scrollRef}
-          className="flex overflow-x-auto snap-x snap-mandatory gap-6 lg:gap-8 pb-8 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] scroll-smooth"
-        >
+        {/* Product Slider — wrapped with side arrows on mobile */}
+        <div className="relative">
+
+          {/* Mobile Left Arrow */}
+          <button
+            onClick={() => handleScroll('left')}
+            className="md:hidden absolute left-0 top-1/2 -translate-y-1/2 z-10 w-9 h-9 flex items-center justify-center bg-white/90 backdrop-blur border border-[var(--primary-blue)]/15 text-[var(--primary-blue)] shadow-md rounded-full -translate-x-1"
+            aria-label="Previous"
+          >
+            <ChevronLeft size={16} strokeWidth={1.5} />
+          </button>
+
+          {/* Mobile Right Arrow */}
+          <button
+            onClick={() => handleScroll('right')}
+            className="md:hidden absolute right-0 top-1/2 -translate-y-1/2 z-10 w-9 h-9 flex items-center justify-center bg-white/90 backdrop-blur border border-[var(--primary-blue)]/15 text-[var(--primary-blue)] shadow-md rounded-full translate-x-1"
+            aria-label="Next"
+          >
+            <ChevronRight size={16} strokeWidth={1.5} />
+          </button>
+
+          {/* Product Slider (Smooth Horizontal Touch-Scroll) */}
+          <div
+            ref={scrollRef}
+            className="flex overflow-x-auto snap-x snap-mandatory gap-6 lg:gap-8 pb-8 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] scroll-smooth"
+          >
           {products.map((product, index) => (
             <motion.div
               key={`${product.id}-${index}`}
@@ -220,7 +241,8 @@ const BestSellerSection = () => {
 
           {/* Infinite Scroll Trigger */}
           <div ref={sectionRef} className="shrink-0 w-[1px]" />
-        </div>
+          </div>
+        </div>{/* end relative wrapper */}
       </div>
     </section>
   );

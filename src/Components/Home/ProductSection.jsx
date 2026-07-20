@@ -158,7 +158,7 @@ const ProductSection = () => {
               <span className="text-[var(--primary-blue)] font-bold tracking-[0.4em] uppercase text-[10px]">House of Shah Exclusives</span>
             </motion.div>
             <h2 className="text-4xl md:text-7xl font-bold text-[var(--primary-blue)] tracking-tighter leading-none">
-              Jewellery <br />
+              Jewellery 
               <span className="font-light italic text-[var(--primary-blue)]/40 lowercase tracking-normal">Designs</span>
             </h2>
           </div>
@@ -172,7 +172,8 @@ const ProductSection = () => {
               View All
               <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
             </Link>
-            <div className="flex gap-3">
+            {/* Arrows — desktop only */}
+            <div className="hidden md:flex gap-3">
               <button
                 onClick={() => handleScroll('left')}
                 className="p-3 lg:p-4 border border-[var(--primary-blue)]/10 text-[var(--primary-blue)] hover:bg-[var(--primary-blue)] hover:text-white transition-all rounded-full hover:scale-105 active:scale-95"
@@ -190,6 +191,27 @@ const ProductSection = () => {
             </div>
           </div>
         </div>
+
+        {/* Product Slider — wrapped with side arrows on mobile */}
+        <div className="relative">
+
+          {/* Mobile Left Arrow */}
+          <button
+            onClick={() => handleScroll('left')}
+            className="md:hidden absolute left-0 top-1/2 -translate-y-1/2 z-10 w-9 h-9 flex items-center justify-center bg-white/90 backdrop-blur border border-[var(--primary-blue)]/15 text-[var(--primary-blue)] shadow-md rounded-full -translate-x-1"
+            aria-label="Previous"
+          >
+            <ChevronLeft size={16} strokeWidth={1.5} />
+          </button>
+
+          {/* Mobile Right Arrow */}
+          <button
+            onClick={() => handleScroll('right')}
+            className="md:hidden absolute right-0 top-1/2 -translate-y-1/2 z-10 w-9 h-9 flex items-center justify-center bg-white/90 backdrop-blur border border-[var(--primary-blue)]/15 text-[var(--primary-blue)] shadow-md rounded-full translate-x-1"
+            aria-label="Next"
+          >
+            <ChevronRight size={16} strokeWidth={1.5} />
+          </button>
 
         {/* Product Slider (Smooth Horizontal Touch-Scroll) */}
         <div
@@ -257,6 +279,7 @@ const ProductSection = () => {
           {/* Infinite Scroll Trigger */}
           <div ref={observerTarget} className="shrink-0 w-[1px]" />
         </div>
+        </div>{/* end relative wrapper */}
       </div>
     </section>
   );

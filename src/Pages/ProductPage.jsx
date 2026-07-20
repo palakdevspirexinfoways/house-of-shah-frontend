@@ -17,6 +17,7 @@ const ProductPage = () => {
   const [collectionsCategory, setCollectionsCategory] = useState('All');
   const [activeCategory, setActiveCategory] = useState('All');
   const [selectedDetailProduct, setSelectedDetailProduct] = useState(null);
+  const [collectionsData, setCollectionsData] = useState([]);
 
   // Fetch metadata (categories and collections) once
   useEffect(() => {
@@ -34,6 +35,15 @@ const ProductPage = () => {
         console.error('[ProductPage Fetch Error]', err);
         setIsLoading(false);
       });
+
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/collections`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.data) {
+          setCollectionsData(data.data);
+        }
+      })
+      .catch(console.error);
   }, []);
 
   const [collections, setCollections] = useState(['All']);
@@ -77,6 +87,7 @@ const ProductPage = () => {
         setActiveCategory={setCollectionsCategory}
         categories={categories}
         setSelectedDetailProduct={setSelectedDetailProduct}
+        collectionsData={collectionsData}
       />
 
       {activeCollection === 'All' && (

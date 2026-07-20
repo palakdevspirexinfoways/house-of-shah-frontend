@@ -71,6 +71,14 @@ const HeroSlider = () => {
   const nextSlide = () => setCurrent(current === slides.length - 1 ? 0 : current + 1);
   const prevSlide = () => setCurrent(current === 0 ? slides.length - 1 : current - 1);
 
+  const handleScrollToCollections = (e) => {
+    e.preventDefault();
+    const element = document.getElementById('collections');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   const textVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.8, delay: 0.2 } }
@@ -120,11 +128,12 @@ const HeroSlider = () => {
                 transition={{ delay: 1.3, duration: 0.8 }}
                 className="mt-12"
               >
-                <a href="#collection">
-                  <button className="px-12 py-5 bg-white text-black font-bold uppercase text-[10px] tracking-[0.4em] hover:bg-[var(--primary-blue)] hover:text-white transition-all duration-500 shadow-2xl">
-                    Explore Collections
-                  </button>
-                </a>
+                <button 
+                  onClick={handleScrollToCollections}
+                  className="px-12 py-5 bg-white text-black font-bold uppercase text-[10px] tracking-[0.4em] hover:bg-[var(--primary-blue)] hover:text-white transition-all duration-500 shadow-2xl"
+                >
+                  Explore Collections
+                </button>
               </motion.div>
             </>
           )}
@@ -199,11 +208,12 @@ const HeroSlider = () => {
                     animate={{ opacity: 1 }}
                     transition={{ delay: 1.3, duration: 0.8 }}
                   >
-                    <a href="#collection">
-                      <button className="px-12 py-5 bg-white text-black font-bold uppercase text-[10px] tracking-[0.4em] hover:bg-[var(--primary-blue)] hover:text-white transition-all duration-500 shadow-2xl">
-                        Explore Collections
-                      </button>
-                    </a>
+                    <button 
+                      onClick={handleScrollToCollections}
+                      className="px-12 py-5 bg-white text-black font-bold uppercase text-[10px] tracking-[0.4em] hover:bg-[var(--primary-blue)] hover:text-white transition-all duration-500 shadow-2xl"
+                    >
+                      Explore Collections
+                    </button>
                   </motion.div>
                 </>
               )}

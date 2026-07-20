@@ -10,7 +10,7 @@ import {
    Crown
 } from 'lucide-react';
  
-const Sidebar = ({ activeTab, setActiveTab, onLogout }) => {
+const Sidebar = ({ activeTab, setActiveTab, onLogout, isOpen, setIsOpen }) => {
    const tabs = [
      { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={16} /> },
      { id: 'slider', label: 'Slider Manage', icon: <Sliders size={16} /> },
@@ -22,12 +22,22 @@ const Sidebar = ({ activeTab, setActiveTab, onLogout }) => {
    ];
 
   return (
-    <aside className="w-64 shrink-0 flex flex-col justify-between hidden md:flex font-outfit"
-      style={{
-        background: 'linear-gradient(180deg, #0d2140 0%, #1a4173 60%, #0d2140 100%)',
-        borderRight: '1px solid rgba(255,255,255,0.08)'
-      }}
-    >
+    <>
+      {/* Mobile Backdrop */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[55] md:hidden" 
+          onClick={() => setIsOpen && setIsOpen(false)} 
+        />
+      )}
+
+      {/* Sidebar Drawer */}
+      <aside className={`fixed inset-y-0 left-0 z-[60] w-64 shrink-0 flex flex-col justify-between font-outfit transform transition-transform duration-300 md:relative md:translate-x-0 md:flex ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        style={{
+          background: 'linear-gradient(180deg, #0d2140 0%, #1a4173 60%, #0d2140 100%)',
+          borderRight: '1px solid rgba(255,255,255,0.08)'
+        }}
+      >
       
       {/* Brand Header */}
       <div>
@@ -44,7 +54,10 @@ const Sidebar = ({ activeTab, setActiveTab, onLogout }) => {
           {tabs.map((tab) => (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
+              onClick={() => {
+                setActiveTab(tab.id);
+                if (setIsOpen) setIsOpen(false);
+              }}
               className={`w-full flex items-center gap-3 px-4 py-3 text-[11px] tracking-wider uppercase font-bold transition-all duration-200 rounded-xl ${
                 activeTab === tab.id 
                   ? 'bg-white/15 text-white shadow-lg backdrop-blur-sm border border-white/20' 
@@ -82,7 +95,8 @@ const Sidebar = ({ activeTab, setActiveTab, onLogout }) => {
         </button>
       </div>
 
-    </aside>
+      </aside>
+    </>
   );
 };
 

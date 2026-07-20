@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, MessageCircle } from 'lucide-react';
+import { ChevronLeft, ChevronRight, MessageCircle, ChevronDown, Check } from 'lucide-react';
 
 const SignaturePieces = ({
   activeCategory = 'All',
@@ -10,29 +10,53 @@ const SignaturePieces = ({
   searchQuery = ''
 }) => {
   const scrollRef = useRef(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [isLoadingData, setIsLoadingData] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
+  const abortControllerRef = useRef(null);
 
   // Fetch data from backend
-  const fetchProducts = async (currentPage, isReset = false) => {
-    if (isLoadingData) return;
+  const fetchProducts = async (currentPage, isReset = false, overrideCategory, overrideCollection, overrideSearch) => {
+    // Cancel any in-flight request
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
+
     setIsLoadingData(true);
+    const cat = overrideCategory !== undefined ? overrideCategory : activeCategory;
+    const col = overrideCollection !== undefined ? overrideCollection : activeCollection;
+    const search = overrideSearch !== undefined ? overrideSearch : searchQuery;
+
     try {
       let url = `${import.meta.env.VITE_API_BASE_URL}/products?limit=10&page=${currentPage}`;
-      if (searchQuery && searchQuery.trim() !== '') {
-        url += `&search=${encodeURIComponent(searchQuery)}`;
+      if (search && search.trim() !== '') {
+        url += `&search=${encodeURIComponent(search)}`;
       }
-      if (activeCategory && activeCategory !== 'All') {
-        url += `&category=${encodeURIComponent(activeCategory)}`;
+      if (cat && cat !== 'All') {
+        url += `&category=${encodeURIComponent(cat)}`;
       }
-      if (activeCollection && activeCollection !== 'All') {
-        url += `&collection=${encodeURIComponent(activeCollection)}`;
+      if (col && col !== 'All') {
+        url += `&collection=${encodeURIComponent(col)}`;
       }
 
-      const res = await fetch(url);
+      const res = await fetch(url, { signal: controller.signal });
       const data = await res.json();
 
       if (data.success && data.data) {
@@ -45,21 +69,32 @@ const SignaturePieces = ({
         setHasMore(currentPage < (data.totalPages || 1));
       }
     } catch (err) {
-      console.error('[Products Fetch Error]', err);
+      if (err.name !== 'AbortError') {
+        console.error('[Products Fetch Error]', err);
+      }
     } finally {
       setIsLoadingData(false);
     }
   };
 
-  // Reset and fetch on filter change
+  // Instant reset on category/collection change (no debounce)
+  useEffect(() => {
+    setPage(1);
+    setHasMore(true);
+    setProducts([]);
+    fetchProducts(1, true, activeCategory, activeCollection, searchQuery);
+  }, [activeCategory, activeCollection]);
+
+  // Debounce only for search typing (300ms)
   useEffect(() => {
     const timer = setTimeout(() => {
       setPage(1);
       setHasMore(true);
-      fetchProducts(1, true);
+      setProducts([]);
+      fetchProducts(1, true, activeCategory, activeCollection, searchQuery);
     }, 300);
     return () => clearTimeout(timer);
-  }, [activeCategory, activeCollection, searchQuery]);
+  }, [searchQuery]);
 
   const observerTarget = useRef(null);
 
@@ -124,34 +159,74 @@ const SignaturePieces = ({
                 </span>
               </motion.div>
               <h2 className="text-4xl md:text-7xl font-bold text-[var(--primary-blue)] tracking-tighter leading-none">
-                Signature <br />
-                <span className="font-light italic text-[var(--primary-blue)]/40 lowercase tracking-normal">Pieces</span>
+                Signature <span className="font-light italic text-[var(--primary-blue)]/40 lowercase tracking-normal">Pieces</span>
               </h2>
             </div>
           </div>
         )}
 
-        {/* ── Category Names for Filtering ── */}
+        {/* ── Category Dropdown for Filtering ── */}
         {activeCollection === 'All' && (
           <div className="mb-10">
             <span className="text-[10px] uppercase font-bold tracking-widest text-[#1a4173]/40 block mb-3">Filter By Category:</span>
-            <div className='flex flex-col md:flex-row justify-between items-start md:items-center gap-4 md:gap-0'>
-              <div className="flex flex-wrap gap-2.5 items-center">
-                {categories.map((cat) => (
-                  <button
-                    key={cat}
-                    onClick={() => setActiveCategory(cat)}
-                    className={`px-4 py-1.5 md:py-2 md:px-5 rounded-none text-[9px] md:text-[10px] font-bold uppercase tracking-widest transition-all duration-300 border ${activeCategory === cat
-                      ? 'bg-[#1a4173] text-white border-[#1a4173] shadow-md'
-                      : 'bg-white text-[#1a4173]/50 border border-gray-150 hover:text-[#1a4173] hover:border-gray-200'
-                      }`}
+            <div className='flex flex-row justify-between items-center gap-4'>
+
+              {/* Custom Dropdown */}
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  onClick={() => setDropdownOpen(prev => !prev)}
+                  className="flex items-center gap-3 pl-5 pr-4 py-3 border border-[#1a4173]/20 bg-white text-[#1a4173] hover:border-[#1a4173]/60 transition-all duration-300 min-w-[220px] group"
+                >
+                  <span className="flex-1 text-left text-[10px] font-bold uppercase tracking-widest truncate">
+                    {activeCategory}
+                  </span>
+                  <motion.div
+                    animate={{ rotate: dropdownOpen ? 180 : 0 }}
+                    transition={{ duration: 0.25, ease: 'easeInOut' }}
                   >
-                    {cat}
-                  </button>
-                ))}
+                    <ChevronDown size={14} strokeWidth={2} className="text-[#1a4173]/60 group-hover:text-[#1a4173] transition-colors" />
+                  </motion.div>
+                </button>
+
+                {/* Dropdown Panel */}
+                <AnimatePresence>
+                  {dropdownOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -6, scaleY: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scaleY: 1 }}
+                      exit={{ opacity: 0, y: -6, scaleY: 0.95 }}
+                      transition={{ duration: 0.2, ease: 'easeOut' }}
+                      style={{ transformOrigin: 'top' }}
+                      className="absolute top-full left-0 mt-1 min-w-[220px] bg-white border border-[#1a4173]/15 shadow-xl z-50 overflow-hidden"
+                    >
+                      <div className="max-h-64 overflow-y-auto">
+                        {categories.map((cat) => (
+                          <button
+                            key={cat}
+                            onClick={() => {
+                              setActiveCategory(cat);
+                              setDropdownOpen(false);
+                            }}
+                            className={`w-full flex items-center justify-between px-5 py-3 text-left text-[10px] font-bold uppercase tracking-widest transition-all duration-200 border-b border-[#1a4173]/5 last:border-b-0 ${
+                              activeCategory === cat
+                                ? 'bg-[#1a4173] text-white'
+                                : 'text-[#1a4173]/60 hover:bg-[#1a4173]/5 hover:text-[#1a4173]'
+                            }`}
+                          >
+                            <span>{cat}</span>
+                            {activeCategory === cat && (
+                              <Check size={11} strokeWidth={3} />
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
-              {/* Scroll Arrows */}
-              <div className="flex gap-2 lg:gap-3 shrink-0">
+
+              {/* Scroll Arrows — desktop only */}
+              <div className="hidden md:flex gap-2 lg:gap-3 shrink-0">
                 <button
                   onClick={() => handleScroll('left')}
                   className="w-10 h-10 lg:w-12 lg:h-12 flex items-center justify-center border border-[var(--primary-blue)]/10 text-[var(--primary-blue)] hover:bg-[var(--primary-blue)] hover:text-white transition-all rounded-full hover:scale-105 active:scale-95"
@@ -179,7 +254,58 @@ const SignaturePieces = ({
         </div>
 
         {/* ── Product Slider ── */}
-        {products.length > 0 ? (
+        <div className="relative">
+          {/* Mobile Left Arrow */}
+          <button
+            onClick={() => handleScroll('left')}
+            className="md:hidden absolute left-0 top-1/2 -translate-y-1/2 z-10 w-9 h-9 flex items-center justify-center bg-white/90 backdrop-blur border border-[#1a4173]/15 text-[#1a4173] shadow-md rounded-full -translate-x-1"
+            aria-label="Previous"
+          >
+            <ChevronLeft size={16} />
+          </button>
+
+          {/* Mobile Right Arrow */}
+          <button
+            onClick={() => handleScroll('right')}
+            className="md:hidden absolute right-0 top-1/2 -translate-y-1/2 z-10 w-9 h-9 flex items-center justify-center bg-white/90 backdrop-blur border border-[#1a4173]/15 text-[#1a4173] shadow-md rounded-full translate-x-1"
+            aria-label="Next"
+          >
+            <ChevronRight size={16} />
+          </button>
+
+        {isLoadingData && products.length === 0 ? (
+          /* ── Full Skeleton Row (shows immediately on category select) ── */
+          <div
+            className="flex overflow-x-auto gap-6 scrollbar-hide py-4 px-2 snap-x snap-mandatory"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            {[1, 2, 3, 4].map((i) => (
+              <div
+                key={`skeleton-${i}`}
+                className="flex-shrink-0 w-[285px] md:w-[325px] bg-[#fafafa] rounded-none overflow-hidden border border-gray-100 animate-pulse snap-start flex flex-col justify-between"
+              >
+                {/* Image placeholder */}
+                <div className="relative aspect-[4/5] bg-gradient-to-br from-gray-200 to-gray-100" />
+
+                {/* Body placeholder */}
+                <div className="p-6 flex flex-col justify-between flex-grow">
+                  <div>
+                    <div className="h-2 bg-gray-200 rounded-none w-1/3 mb-3" />
+                    <div className="h-4 bg-gray-200 rounded-none w-3/4 mb-2" />
+                    <div className="h-3 bg-gray-100 rounded-none w-2/4" />
+                  </div>
+                  <div className="pt-4 border-t border-gray-100 flex items-center justify-between mt-6">
+                    <div>
+                      <div className="h-2 bg-gray-200 rounded-none w-16 mb-1" />
+                      <div className="h-4 bg-gray-200 rounded-none w-12" />
+                    </div>
+                    <div className="h-9 bg-gray-200 rounded-none w-24" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : products.length > 0 ? (
           <div className="flex flex-col gap-8">
             <div
               ref={scrollRef}
@@ -202,9 +328,6 @@ const SignaturePieces = ({
                       alt={product.title}
                       className="w-full h-full object-cover transition-transform duration-700 hover:scale-105 rounded-none"
                     />
-                    <span className="absolute top-4 left-4 bg-white/90 backdrop-blur-md text-[#1a4173] text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-none shadow-sm">
-                      {product.collection || 'Exclusive'}
-                    </span>
                   </div>
 
                   <div className="p-6 flex flex-col justify-between flex-grow rounded-none">
@@ -234,12 +357,12 @@ const SignaturePieces = ({
                 </motion.div>
               ))}
 
-              {/* Skeleton Loaders inside slider */}
+              {/* Inline skeleton for infinite scroll loading */}
               {isLoadingData && (
                 <>
                   {[1, 2, 3].map((i) => (
-                    <div key={`skeleton-${i}`} className="flex-shrink-0 w-[285px] md:w-[325px] bg-[#fafafa] rounded-none overflow-hidden border border-gray-100 animate-pulse snap-start flex flex-col justify-between">
-                      <div className="relative aspect-[4/5] bg-gray-200" />
+                    <div key={`inline-skeleton-${i}`} className="flex-shrink-0 w-[285px] md:w-[325px] bg-[#fafafa] rounded-none overflow-hidden border border-gray-100 animate-pulse snap-start flex flex-col justify-between">
+                      <div className="relative aspect-[4/5] bg-gradient-to-br from-gray-200 to-gray-100" />
                       <div className="p-6 flex flex-col justify-between flex-grow">
                         <div className="h-2 bg-gray-200 rounded w-1/3 mb-2" />
                         <div className="h-4 bg-gray-200 rounded w-3/4 mb-4" />
@@ -272,6 +395,7 @@ const SignaturePieces = ({
             </motion.div>
           )
         )}
+        </div>
       </div>
     </section>
   );
