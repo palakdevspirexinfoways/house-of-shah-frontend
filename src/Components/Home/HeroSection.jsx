@@ -24,8 +24,6 @@ const HeroSlider = () => {
   const [slides, setSlides] = useState(defaultSlides);
   const [heroMode, setHeroMode] = useState('video');
   const [heroVideoUrl, setHeroVideoUrl] = useState('');
-  const [heroVideoTagline, setHeroVideoTagline] = useState('');
-  const [heroVideoTitle, setHeroVideoTitle] = useState('');
 
   useEffect(() => {
     // Fetch Slides
@@ -53,8 +51,6 @@ const HeroSlider = () => {
         if (data.success && data.data) {
           if (data.data.hero_mode !== undefined) setHeroMode(data.data.hero_mode);
           if (data.data.hero_video_url !== undefined) setHeroVideoUrl(data.data.hero_video_url);
-          if (data.data.hero_video_tagline !== undefined) setHeroVideoTagline(data.data.hero_video_tagline);
-          if (data.data.hero_video_title !== undefined) setHeroVideoTitle(data.data.hero_video_title);
         }
       })
       .catch((err) => console.error('[Hero Settings Connection Error]', err));
@@ -102,41 +98,19 @@ const HeroSlider = () => {
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
         
         <div className="relative h-full flex flex-col items-center justify-center text-center px-4 z-10">
-          {heroVideoTitle && (
-            <>
-              {heroVideoTagline && (
-                <motion.p
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.6, duration: 0.8 }}
-                  className="text-white drop-shadow-md tracking-[0.6em] uppercase text-[10px] md:text-xs mb-6 font-bold"
-                >
-                  {heroVideoTagline}
-                </motion.p>
-              )}
-              <motion.h1
-                initial={{ y: 30, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.8, duration: 1 }}
-                className="text-white drop-shadow-2xl text-4xl sm:text-5xl md:text-6xl lg:text-[7.5rem] font-bold mb-4 tracking-tighter leading-[0.9] uppercase"
-              >
-                {heroVideoTitle}
-              </motion.h1>
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1.3, duration: 0.8 }}
-                className="mt-12"
-              >
-                <button 
-                  onClick={handleScrollToCollections}
-                  className="px-12 py-5 bg-white text-black font-bold uppercase text-[10px] tracking-[0.4em] hover:bg-[var(--primary-blue)] hover:text-white transition-all duration-500 shadow-2xl"
-                >
-                  Explore Collections
-                </button>
-              </motion.div>
-            </>
-          )}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.3, duration: 0.8 }}
+            className="mt-12"
+          >
+            <button 
+              onClick={handleScrollToCollections}
+              className="px-12 py-5 bg-white text-black font-bold uppercase text-[10px] tracking-[0.4em] hover:bg-[var(--primary-blue)] hover:text-white transition-all duration-500 shadow-2xl"
+            >
+              Explore Collections
+            </button>
+          </motion.div>
         </div>
       </section>
     );
