@@ -102,23 +102,6 @@ const SignaturePieces = () => {
             </h2>
           </div>
           
-          {/* Scroll Buttons */}
-          <div className="flex items-center gap-3">
-            <button 
-              onClick={() => handleScroll('left')}
-              className="w-12 h-12 rounded-none border border-gray-200 hover:border-[#1a4173] flex items-center justify-center text-[#1a4173]/70 hover:text-[#1a4173] transition-all bg-white shadow-sm"
-              aria-label="Scroll left"
-            >
-              <ChevronLeft size={18} />
-            </button>
-            <button 
-              onClick={() => handleScroll('right')}
-              className="w-12 h-12 rounded-none border border-gray-200 hover:border-[#1a4173] flex items-center justify-center text-[#1a4173]/70 hover:text-[#1a4173] transition-all bg-white shadow-sm"
-              aria-label="Scroll right"
-            >
-              <ChevronRight size={18} />
-            </button>
-          </div>
         </div>
 
         {/* Category Names for Filtering */}
@@ -142,22 +125,22 @@ const SignaturePieces = () => {
         {/* Left-to-Right Swipeable Product Carousel */}
         <div className="relative">
 
-          {/* Mobile Left Arrow */}
+          {/* Left Side Arrow */}
           <button
             onClick={() => handleScroll('left')}
-            className="md:hidden absolute left-0 top-1/2 -translate-y-1/2 z-10 w-9 h-9 flex items-center justify-center bg-white/90 backdrop-blur border border-[#1a4173]/15 text-[#1a4173] shadow-md rounded-full -translate-x-1"
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 flex items-center justify-center bg-white/95 backdrop-blur-md border border-[#1a4173]/15 text-[#1a4173] shadow-lg hover:shadow-xl rounded-full -translate-x-3 md:-translate-x-5 hover:bg-[#1a4173] hover:text-white transition-all duration-300 active:scale-95 cursor-pointer"
             aria-label="Previous"
           >
-            <ChevronLeft size={16} />
+            <ChevronLeft size={18} strokeWidth={1.75} className="sm:w-5 sm:h-5 md:w-6 md:h-6" />
           </button>
 
-          {/* Mobile Right Arrow */}
+          {/* Right Side Arrow */}
           <button
             onClick={() => handleScroll('right')}
-            className="md:hidden absolute right-0 top-1/2 -translate-y-1/2 z-10 w-9 h-9 flex items-center justify-center bg-white/90 backdrop-blur border border-[#1a4173]/15 text-[#1a4173] shadow-md rounded-full translate-x-1"
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 flex items-center justify-center bg-white/95 backdrop-blur-md border border-[#1a4173]/15 text-[#1a4173] shadow-lg hover:shadow-xl rounded-full translate-x-3 md:translate-x-5 hover:bg-[#1a4173] hover:text-white transition-all duration-300 active:scale-95 cursor-pointer"
             aria-label="Next"
           >
-            <ChevronRight size={16} />
+            <ChevronRight size={18} strokeWidth={1.75} className="sm:w-5 sm:h-5 md:w-6 md:h-6" />
           </button>
 
           <div 

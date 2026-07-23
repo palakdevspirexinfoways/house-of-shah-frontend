@@ -224,24 +224,6 @@ const SignaturePieces = ({
                   )}
                 </AnimatePresence>
               </div>
-
-              {/* Scroll Arrows — desktop only */}
-              <div className="hidden md:flex gap-2 lg:gap-3 shrink-0">
-                <button
-                  onClick={() => handleScroll('left')}
-                  className="w-10 h-10 lg:w-12 lg:h-12 flex items-center justify-center border border-[var(--primary-blue)]/10 text-[var(--primary-blue)] hover:bg-[var(--primary-blue)] hover:text-white transition-all rounded-full hover:scale-105 active:scale-95"
-                  aria-label="Previous"
-                >
-                  <ChevronLeft size={16} strokeWidth={1.5} />
-                </button>
-                <button
-                  onClick={() => handleScroll('right')}
-                  className="w-10 h-10 lg:w-12 lg:h-12 flex items-center justify-center border border-[var(--primary-blue)]/10 text-[var(--primary-blue)] hover:bg-[var(--primary-blue)] hover:text-white transition-all rounded-full hover:scale-105 active:scale-95"
-                  aria-label="Next"
-                >
-                  <ChevronRight size={16} strokeWidth={1.5} />
-                </button>
-              </div>
             </div>
           </div>
         )}
@@ -255,22 +237,22 @@ const SignaturePieces = ({
 
         {/* ── Product Slider ── */}
         <div className="relative">
-          {/* Mobile Left Arrow */}
+          {/* Left Side Arrow */}
           <button
             onClick={() => handleScroll('left')}
-            className="md:hidden absolute left-0 top-1/2 -translate-y-1/2 z-10 w-9 h-9 flex items-center justify-center bg-white/90 backdrop-blur border border-[#1a4173]/15 text-[#1a4173] shadow-md rounded-full -translate-x-1"
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 flex items-center justify-center bg-white/95 backdrop-blur-md border border-[#1a4173]/15 text-[#1a4173] shadow-lg hover:shadow-xl rounded-full -translate-x-3 md:-translate-x-5 hover:bg-[#1a4173] hover:text-white transition-all duration-300 active:scale-95 cursor-pointer"
             aria-label="Previous"
           >
-            <ChevronLeft size={16} />
+            <ChevronLeft size={18} strokeWidth={1.75} className="sm:w-5 sm:h-5 md:w-6 md:h-6" />
           </button>
 
-          {/* Mobile Right Arrow */}
+          {/* Right Side Arrow */}
           <button
             onClick={() => handleScroll('right')}
-            className="md:hidden absolute right-0 top-1/2 -translate-y-1/2 z-10 w-9 h-9 flex items-center justify-center bg-white/90 backdrop-blur border border-[#1a4173]/15 text-[#1a4173] shadow-md rounded-full translate-x-1"
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 flex items-center justify-center bg-white/95 backdrop-blur-md border border-[#1a4173]/15 text-[#1a4173] shadow-lg hover:shadow-xl rounded-full translate-x-3 md:translate-x-5 hover:bg-[#1a4173] hover:text-white transition-all duration-300 active:scale-95 cursor-pointer"
             aria-label="Next"
           >
-            <ChevronRight size={16} />
+            <ChevronRight size={18} strokeWidth={1.75} className="sm:w-5 sm:h-5 md:w-6 md:h-6" />
           </button>
 
         {isLoadingData && products.length === 0 ? (

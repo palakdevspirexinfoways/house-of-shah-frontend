@@ -52,22 +52,56 @@ const ProductPage = () => {
   const [suggestions, setSuggestions] = useState([]);
 
   useEffect(() => {
-    if (searchQuery.trim() === '') {
+    const query = searchQuery.trim().toLowerCase();
+    if (!query) {
       setSuggestions([]);
       return;
     }
+
     const timer = setTimeout(() => {
-      fetch(`${import.meta.env.VITE_API_BASE_URL}/products?search=${encodeURIComponent(searchQuery)}&limit=5`)
+      // 1. Match Categories (e.g. "Earrings", "Pendent Sets")
+      const matchedCategories = categories
+        .filter(cat => cat && cat !== 'All' && cat.toLowerCase().includes(query))
+        .slice(0, 4)
+        .map(cat => ({
+          id: `cat-${cat}`,
+          title: cat,
+          category: 'Category',
+          isCategory: true,
+          type: 'category'
+        }));
+
+      // 2. Match Collections (e.g. "Tiny Treasures")
+      const matchedCollections = collections
+        .filter(col => col && col !== 'All' && col.toLowerCase().includes(query))
+        .slice(0, 3)
+        .map(col => ({
+          id: `col-${col}`,
+          title: col,
+          category: 'Collection',
+          isCollection: true,
+          type: 'collection'
+        }));
+
+      // 3. Match Products from Backend API
+      fetch(`${import.meta.env.VITE_API_BASE_URL}/products?search=${encodeURIComponent(searchQuery)}&limit=6`)
         .then(res => res.json())
         .then(data => {
-          if (data.success && data.data) {
-            setSuggestions(data.data);
-          }
+          const matchedProducts = (data.success && data.data) ? data.data.map(p => ({
+            ...p,
+            type: 'product'
+          })) : [];
+
+          setSuggestions([...matchedCategories, ...matchedCollections, ...matchedProducts]);
         })
-        .catch(console.error);
-    }, 300);
+        .catch(err => {
+          console.error(err);
+          setSuggestions([...matchedCategories, ...matchedCollections]);
+        });
+    }, 200);
+
     return () => clearTimeout(timer);
-  }, [searchQuery]);
+  }, [searchQuery, categories, collections]);
 
   return (
     <div className="bg-white min-h-screen font-outfit">
@@ -83,8 +117,8 @@ const ProductPage = () => {
         activeCollection={activeCollection}
         setActiveCollection={setActiveCollection}
         collections={collections}
-        activeCategory={collectionsCategory}
-        setActiveCategory={setCollectionsCategory}
+        activeCategory={activeCategory}
+        setActiveCategory={setActiveCategory}
         categories={categories}
         setSelectedDetailProduct={setSelectedDetailProduct}
         collectionsData={collectionsData}

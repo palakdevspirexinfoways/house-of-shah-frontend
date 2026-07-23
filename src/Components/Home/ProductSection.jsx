@@ -163,7 +163,7 @@ const ProductSection = () => {
             </h2>
           </div>
 
-          {/* Elegant Slider Navigation & View All */}
+          {/* View All Link */}
           <div className="flex items-center justify-between md:justify-end w-full md:w-auto gap-6 pb-2 sm:pb-3 shrink-0">
             <Link 
               to="/product" 
@@ -172,45 +172,28 @@ const ProductSection = () => {
               View All
               <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
             </Link>
-            {/* Arrows — desktop only */}
-            <div className="hidden md:flex gap-3">
-              <button
-                onClick={() => handleScroll('left')}
-                className="p-3 lg:p-4 border border-[var(--primary-blue)]/10 text-[var(--primary-blue)] hover:bg-[var(--primary-blue)] hover:text-white transition-all rounded-full hover:scale-105 active:scale-95"
-                aria-label="Previous Creation"
-              >
-                <ChevronLeft size={20} strokeWidth={1.5} />
-              </button>
-              <button
-                onClick={() => handleScroll('right')}
-                className="p-3 lg:p-4 border border-[var(--primary-blue)]/10 text-[var(--primary-blue)] hover:bg-[var(--primary-blue)] hover:text-white transition-all rounded-full hover:scale-105 active:scale-95"
-                aria-label="Next Creation"
-              >
-                <ChevronRight size={20} strokeWidth={1.5} />
-              </button>
-            </div>
           </div>
         </div>
 
         {/* Product Slider — wrapped with side arrows on mobile */}
         <div className="relative">
 
-          {/* Mobile Left Arrow */}
+          {/* Left Side Arrow */}
           <button
             onClick={() => handleScroll('left')}
-            className="md:hidden absolute left-0 top-1/2 -translate-y-1/2 z-10 w-9 h-9 flex items-center justify-center bg-white/90 backdrop-blur border border-[var(--primary-blue)]/15 text-[var(--primary-blue)] shadow-md rounded-full -translate-x-1"
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 flex items-center justify-center bg-white/95 backdrop-blur-md border border-[var(--primary-blue)]/15 text-[var(--primary-blue)] shadow-lg hover:shadow-xl rounded-full -translate-x-3 md:-translate-x-5 hover:bg-[var(--primary-blue)] hover:text-white transition-all duration-300 active:scale-95 cursor-pointer"
             aria-label="Previous"
           >
-            <ChevronLeft size={16} strokeWidth={1.5} />
+            <ChevronLeft size={18} strokeWidth={1.75} className="sm:w-5 sm:h-5 md:w-6 md:h-6" />
           </button>
 
-          {/* Mobile Right Arrow */}
+          {/* Right Side Arrow */}
           <button
             onClick={() => handleScroll('right')}
-            className="md:hidden absolute right-0 top-1/2 -translate-y-1/2 z-10 w-9 h-9 flex items-center justify-center bg-white/90 backdrop-blur border border-[var(--primary-blue)]/15 text-[var(--primary-blue)] shadow-md rounded-full translate-x-1"
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 flex items-center justify-center bg-white/95 backdrop-blur-md border border-[var(--primary-blue)]/15 text-[var(--primary-blue)] shadow-lg hover:shadow-xl rounded-full translate-x-3 md:translate-x-5 hover:bg-[var(--primary-blue)] hover:text-white transition-all duration-300 active:scale-95 cursor-pointer"
             aria-label="Next"
           >
-            <ChevronRight size={16} strokeWidth={1.5} />
+            <ChevronRight size={18} strokeWidth={1.75} className="sm:w-5 sm:h-5 md:w-6 md:h-6" />
           </button>
 
         {/* Product Slider (Smooth Horizontal Touch-Scroll) */}
@@ -232,13 +215,13 @@ const ProductSection = () => {
 
                 <div className="absolute inset-0 bg-[var(--primary-blue)]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6 flex justify-between items-end opacity-100 sm:opacity-0 sm:group-hover:opacity-100 translate-y-0 sm:translate-y-8 sm:group-hover:translate-y-0 transition-all duration-500">
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       window.location.href = '/contact';
                     }}
-                    className="w-full bg-[var(--primary-blue)] text-[var(--white)] px-6 py-4 text-[10px] font-bold uppercase tracking-widest flex items-center justify-center gap-2 shadow-2xl hover:bg-black transition-colors"
+                    className="w-full bg-[var(--primary-blue)] text-[var(--white)] px-4 sm:px-6 py-3.5 sm:py-4 text-[10px] font-bold uppercase tracking-widest flex items-center justify-center gap-2 shadow-2xl hover:bg-black transition-colors"
                   >
                     Inquiry
                   </button>

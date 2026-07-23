@@ -196,33 +196,9 @@ const HeroSlider = () => {
         </AnimatePresence>
       </div>
 
-      {/* Navigation Arrows */}
-      <div className="absolute bottom-[100px] right-4 md:right-12 flex gap-4 z-30">
-        <button 
-          onClick={prevSlide}
-          className="w-14 h-14 flex items-center justify-center border border-white/40 text-white hover:bg-white hover:text-black transition-all duration-500 rounded-full backdrop-blur-sm"
-        >
-          <ChevronLeft size={20} />
-        </button>
-        <button 
-          onClick={nextSlide}
-          className="w-14 h-14 flex items-center justify-center border border-white/40 text-white hover:bg-white hover:text-black transition-all duration-500 rounded-full backdrop-blur-sm"
-        >
-          <ChevronRight size={20} />
-        </button>
-      </div>
 
-      {/* Indicators */}
-      <div className="absolute left-12 bottom-12 hidden md:flex flex-col gap-6 z-30">
-        {slides.map((_, index) => (
-          <button key={index} onClick={() => setCurrent(index)} className="group flex items-center gap-4 outline-none">
-            <div className={`h-16 w-[2px] transition-all duration-700 ${index === current ? 'bg-white' : 'bg-white/30 group-hover:bg-white/50'}`} />
-            <span className={`text-[10px] font-bold tracking-[0.3em] transition-all duration-500 ${index === current ? 'text-white opacity-100 translate-x-0' : 'text-white opacity-0 -translate-x-4'}`}>
-              
-            </span>
-          </button>
-        ))}
-      </div>
+
+
 
     </section>
   );

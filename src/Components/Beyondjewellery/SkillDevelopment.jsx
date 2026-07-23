@@ -46,12 +46,12 @@ const SkillDevelopment = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="lg:col-span-5 relative w-full aspect-square overflow-hidden shadow-md"
+            className="lg:col-span-5 relative w-full aspect-square overflow-hidden  shadow-md bg-gray-50"
           >
             <img 
               src={skillImg} 
               alt="Skill Development Training"
-              className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+              className="w-full h-full object-cover scale-[1.06] translate-y-2 transition-transform duration-700 hover:scale-110"
             />
           </motion.div>
 

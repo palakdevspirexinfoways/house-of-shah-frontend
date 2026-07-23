@@ -120,7 +120,7 @@ const ContactHero = () => {
                         className="inline-flex items-center gap-6 px-10 py-5 bg-white/5 backdrop-blur-xl border border-white/10 text-white cursor-pointer group transition-all"
                         onClick={() => document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' })}
                     >
-                        <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Explore Collection</span>
+                        <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Explore Collections</span>
                         <div className="w-12 h-[1px] bg-white/30 group-hover:w-16 transition-all" />
                     </motion.div>
                 </motion.div> */}

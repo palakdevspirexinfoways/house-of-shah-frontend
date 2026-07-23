@@ -20,7 +20,7 @@ const credentials = [
     id: 3,
     icon: <Globe size={32} strokeWidth={1} />,
     title: "Export Finishing",
-    tagline: "EXPORT FINISH",
+    tagline: "Premium Finish",
   },
   {
     id: 4,

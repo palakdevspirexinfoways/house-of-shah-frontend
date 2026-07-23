@@ -178,9 +178,9 @@ const ProductHero = () => {
                 variants={contentVariants}
                 whileHover={{ scale: 1.05 }}
                 className="inline-flex items-center gap-6 px-10 py-5 bg-white/5 backdrop-blur-xl border border-white/10 text-white cursor-pointer group transition-all"
-                onClick={() => document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => document.getElementById('collections')?.scrollIntoView({ behavior: 'smooth' })}
               >
-                <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Explore Collection</span>
+                <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Explore Collections</span>
                 <div className="w-12 h-[1px] bg-white/30 group-hover:w-16 transition-all" />
               </motion.div>
             )}
@@ -188,25 +188,7 @@ const ProductHero = () => {
         </AnimatePresence>
       </div>
 
-      {/* --- Manual Slider Controls --- */}
-      {slides.length > 1 && (
-        <>
-          <button 
-            onClick={handlePrev}
-            className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full border border-white/10 bg-black/20 text-white flex items-center justify-center hover:bg-white hover:text-black transition-all"
-            aria-label="Previous slide"
-          >
-            <ChevronLeft size={20} />
-          </button>
-          <button 
-            onClick={handleNext}
-            className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full border border-white/10 bg-black/20 text-white flex items-center justify-center hover:bg-white hover:text-black transition-all"
-            aria-label="Next slide"
-          >
-            <ChevronRight size={20} />
-          </button>
-        </>
-      )}
+
 
       {/* --- Paginated Dots (Bottom Right) --- */}
       {slides.length > 1 && (
@@ -232,12 +214,7 @@ const ProductHero = () => {
         </div>
       )}
 
-      {/* --- Corner Embellishments --- */}
-      <div className="absolute top-12 left-12 w-32 h-[1px] bg-white/5 hidden lg:block" />
-      <div className="absolute top-12 left-12 w-[1px] h-32 bg-white/5 hidden lg:block" />
-      
-      <div className="absolute bottom-12 left-12 w-32 h-[1px] bg-white/5 hidden lg:block" />
-      <div className="absolute bottom-12 left-12 w-[1px] h-32 bg-white/5 hidden lg:block" />
+
 
 
     </section>

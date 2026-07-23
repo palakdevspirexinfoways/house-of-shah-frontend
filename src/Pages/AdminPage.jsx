@@ -273,7 +273,7 @@ const ImageUploadDropzone = ({ onFileSelect, isUploading, required, id }) => {
         {isUploading ? 'Uploading...' : 'Click or Drag Image Here'}
       </p>
       <p className="text-[9px] text-gray-400 font-medium tracking-widest uppercase">
-        PNG, JPG up to 3MB
+        PNG, JPG, WEBP up to 50MB
       </p>
     </div>
   );
@@ -401,7 +401,7 @@ const AdminPage = () => {
 
   const uploadProcessedFile = async (file, type) => {
     if (!file) return;
-    if (file.size > 3 * 1024 * 1024) { alert('File size exceeds the 3MB limit.'); return; }
+    if (file.size > 50 * 1024 * 1024) { alert('File size exceeds the 50MB limit.'); return; }
 
     const token = localStorage.getItem('hos_admin_token');
     const formData = new FormData();
@@ -1055,10 +1055,10 @@ const AdminPage = () => {
               <Field label="Banner Tagline">
                 <LuxInput value={slideForm.tagline} onChange={e => setSlideForm({ ...slideForm, tagline: e.target.value })} placeholder="e.g. A 15-Year Legacy of Purity" maxLength={100} />
               </Field>
-              <Field label="Main Slide Title">
-                <LuxInput value={slideForm.title} onChange={e => setSlideForm({ ...slideForm, title: e.target.value })} placeholder="e.g. Artistry" maxLength={50} />
+              <Field label="Main Slide Title (Optional)">
+                <LuxInput value={slideForm.title} onChange={e => setSlideForm({ ...slideForm, title: e.target.value })} placeholder="e.g. Artistry (or leave empty)" maxLength={50} />
               </Field>
-              <Field label="Banner Description">
+              <Field label="Banner Description (Optional)">
                 <LuxInput textarea value={slideForm.desc} onChange={e => setSlideForm({ ...slideForm, desc: e.target.value })} placeholder="e.g. Curating bespoke silver collections..." maxLength={300} />
               </Field>
               <Field label="Upload Banner Image *">
@@ -1076,7 +1076,7 @@ const AdminPage = () => {
                   />
                 </div>
                 <p className="text-[9px] text-gray-400 font-medium tracking-widest uppercase mt-2 text-right">
-                  Recommended: 1920x1080px (16:9) | Max: 3MB
+                  Recommended: 1920x1080px (16:9) | Max: 50MB
                 </p>
                 {slideForm.image && (
                   <div className="mt-3 p-3 rounded-xl inline-block relative group" style={{ background: 'rgba(26,65,115,0.04)', border: '1px solid rgba(26,65,115,0.1)' }}>
@@ -1215,8 +1215,8 @@ const AdminPage = () => {
               <Field label="Collection Name *">
                 <LuxInput value={collectionForm.name} onChange={e => setCollectionForm({ ...collectionForm, name: e.target.value })} placeholder="e.g. Signature Collection" maxLength={100} />
               </Field>
-              <Field label="Collection Description (Optional)">
-                <LuxInput textarea value={collectionForm.description} onChange={e => setCollectionForm({ ...collectionForm, description: e.target.value })} placeholder="Write a short description..." maxLength={300} />
+              <Field label={`Collection Description (Optional) — ${collectionForm.description?.length || 0} / 1000 characters (~150-200 words)`}>
+                <LuxInput textarea value={collectionForm.description} onChange={e => setCollectionForm({ ...collectionForm, description: e.target.value })} placeholder="Write a description for this collection..." maxLength={1000} />
               </Field>
               <Field label="Upload Collection Image *">
                 <ImageUploadDropzone onFileSelect={e => handleImageFileChange(e, 'collection')} isUploading={isUploading} required={!collectionForm.image} id="collection-img-upload" />

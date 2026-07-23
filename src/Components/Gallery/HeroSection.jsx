@@ -111,12 +111,7 @@ const ProductHero = () => {
 
             </motion.div>
 
-            {/* --- Corner Embellishments --- */}
-            <div className="absolute top-12 left-12 w-32 h-[1px] bg-white/5 hidden lg:block" />
-            <div className="absolute top-12 left-12 w-[1px] h-32 bg-white/5 hidden lg:block" />
 
-            <div className="absolute bottom-12 right-12 w-32 h-[1px] bg-white/5 hidden lg:block" />
-            <div className="absolute bottom-12 right-12 w-[1px] h-32 bg-white/5 hidden lg:block" />
 
          
 

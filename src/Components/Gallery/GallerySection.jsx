@@ -104,14 +104,14 @@ const GallerySection = () => {
     return null;
   }
 
-  const filteredItems = activeFilter === 'ALL' 
-    ? galleryItems 
+  const filteredItems = activeFilter === 'ALL'
+    ? galleryItems
     : galleryItems.filter(item => item.category === activeFilter);
 
   return (
     <section className="bg-white py-16 md:py-32 px-6 md:px-12 lg:px-24 font-outfit overflow-hidden">
       <div className="max-w-[1600px] mx-auto">
-        
+
         {/* --- SECTION HEADER --- */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-24 gap-12">
           <div className="max-w-3xl">
@@ -127,7 +127,7 @@ const GallerySection = () => {
               </span>
             </h1>
           </div>
-          
+
           <p className="text-gray-400 text-xs md:text-sm font-light max-w-xs leading-relaxed uppercase tracking-wider">
             A visual curation of 15 years of Rajkot’s high-purity silver engineering, immortalized through fine photography.
           </p>
@@ -144,8 +144,8 @@ const GallerySection = () => {
             >
               {cat}
               {activeFilter === cat && (
-                <motion.div 
-                  layoutId="activeGalleryTab" 
+                <motion.div
+                  layoutId="activeGalleryTab"
                   className="absolute bottom-0 left-0 w-full h-[2px] bg-[var(--primary-blue)]"
                 />
               )}
@@ -179,9 +179,9 @@ const GallerySection = () => {
                 </div>
 
                 {/* Zooming Image */}
-                <img 
-                  src={item.image} 
-                  alt={item.title} 
+                <img
+                  src={item.image}
+                  alt={item.title}
                   className="w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-110"
                 />
 
@@ -207,21 +207,21 @@ const GallerySection = () => {
         {/* --- LIGHTBOX MODAL (Full Screen View) --- */}
         <AnimatePresence>
           {selectedImage && (
-            <motion.div 
-              initial={{ opacity: 0 }} 
-              animate={{ opacity: 1 }} 
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               className="fixed inset-0 bg-black/95 backdrop-blur-md z-[2000] flex items-center justify-center p-4 md:p-12"
               onClick={() => setSelectedImage(null)}
             >
-              <button 
+              <button
                 className="absolute top-8 right-8 text-white/50 hover:text-white p-2 text-xs uppercase tracking-widest flex items-center gap-2 border border-white/10 px-4 py-2"
                 onClick={() => setSelectedImage(null)}
               >
                 Close ESC
               </button>
 
-              <motion.div 
+              <motion.div
                 initial={{ scale: 0.95, y: 20 }}
                 animate={{ scale: 1, y: 0 }}
                 exit={{ scale: 0.95, y: 20 }}
@@ -231,9 +231,9 @@ const GallerySection = () => {
               >
                 {/* Lightbox Image Only */}
                 <div className="w-full flex items-center justify-center h-[80vh]">
-                  <img 
-                    src={selectedImage.image} 
-                    alt="Gallery item" 
+                  <img
+                    src={selectedImage.image}
+                    alt="Gallery item"
                     className="w-full h-full object-contain"
                   />
                 </div>
